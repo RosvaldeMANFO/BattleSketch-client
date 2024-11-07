@@ -1,5 +1,7 @@
+package com.florientmanfo.battlesketch.ui.components
+
 import android.graphics.Color.HSVToColor
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,73 +22,95 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.center
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 @Composable
 fun ColorWheel(
     modifier: Modifier = Modifier,
-    diameter: Dp = LocalAppDimens.provides(largeDimens).value.size,
+    wheelRadius: Dp = LocalAppDimens.provides(largeDimens).value.size,
     currentColor: Color? = null,
     currentOffset: Offset? = null,
     onPickColor: (Color, Offset) -> Unit,
 ) {
+    val pointerColor = if (isSystemInDarkTheme()) Color.Black else Color.White
     val scope = rememberCoroutineScope()
     val interactionSource = remember {
         MutableInteractionSource()
     }
-    val radius = diameter.value / 2
-    val wheelThickness = radius * 0.3f
 
-    var pressOffset by remember {
-        mutableStateOf(currentOffset ?: Offset.Zero)
+    var pointerOffset by remember {
+        mutableStateOf(currentOffset)
     }
     var selectedColor by remember {
         mutableStateOf(currentColor)
     }
 
-
-    Canvas(
+    Box(
         modifier = modifier
-            .size(diameter)
+            .size(wheelRadius)
+            .background(Color.Transparent, CircleShape)
+            .clip(CircleShape)
             .emitDragGesture(interactionSource)
-    ) {
+            .drawWithCache {
+                val vertices = 720
+                val colors = mutableListOf<Color>()
+                var hue = 0f
+                for (i in 0..vertices) {
+                    colors.add(Color(HSVToColor(floatArrayOf(hue, 1f, 1f))))
+                    hue += 360f / 720
+                }
 
-        fun pointToColor(pointX: Float, pointY: Float): Color {
+                scope.collectForPress(interactionSource) { position ->
+                    val center = size.center
+                    val motionDistance = sqrt(
+                        abs((position.x - center.x).pow(2) + (position.y - center.y).pow(2))
+                    )
+                    val minSpace = size.width / 2 - size.width / 6 + size.width / 24
+                    val maxSpace = size.width / 2 - size.width / 24
+                    if (motionDistance in minSpace..maxSpace) {
+                        val angle = (atan2(position.y - center.y, position.x - center.x) * (180 / Math.PI)).toFloat()
+                        val currentHue = ((angle + 360) % 360)
+                        selectedColor = Color(HSVToColor(floatArrayOf(currentHue, 1f, 1f)))
+                        pointerOffset = position
+                        onPickColor(selectedColor!!, pointerOffset!!)
+                    }
 
-            return Color.Black
-        }
+                }
 
-        scope.collectForPress(interactionSource) { pressPosition ->
-            val centerToPress = (pressPosition - center).getDistance()
-
-        }
-
-        // Generate colors for the smooth hue gradient
-        val colors = mutableListOf<Color>()
-        var hue = 0f
-        for (i in 0..720) {
-            colors.add(Color(HSVToColor(floatArrayOf(hue, 1f, 1f))))
-            hue += 360f / 720
-        }
-
-        drawCircle(
-            Brush.sweepGradient(colors = colors),
-            radius = radius - wheelThickness,
-            center = center,
-            style = Stroke(width = wheelThickness)
-        )
-
-        drawCircle(
-            Color.White,
-            radius = wheelThickness / 2,
-            center = if (currentColor == null) center else pressOffset,
-        )
-    }
+                onDrawBehind {
+                    drawCircle(
+                        brush = Brush.sweepGradient(colors),
+                        style = Stroke(size.width / 3)
+                    )
+                    drawCircle(
+                        pointerColor,
+                        radius = size.width / 24,
+                        style = Fill,
+                        center = pointerOffset ?: center
+                    )
+                }
+            }
+    )
 }
 
 fun CoroutineScope.collectForPress(
@@ -119,6 +143,27 @@ private fun Modifier.emitDragGesture(
 @Preview
 fun ColorWheelPreview() {
     BattleSketchTheme {
-        ColorWheel { _, _ -> }
+        Column(
+            modifier = Modifier,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin)
+        ) {
+            var currentColor by remember {
+                mutableStateOf(Color.Black)
+            }
+            var currentOffset by remember {
+                mutableStateOf(Offset.Zero)
+            }
+            ColorWheel {color, offset ->
+                currentColor = color
+                currentOffset = offset
+            }
+            Box(
+                modifier = Modifier
+                    .size(LocalAppDimens.current.size)
+                    .background(currentColor)
+            ) {  }
+            Text("X: ${currentOffset.x}, Y: ${currentOffset.y}")
+        }
     }
 }
