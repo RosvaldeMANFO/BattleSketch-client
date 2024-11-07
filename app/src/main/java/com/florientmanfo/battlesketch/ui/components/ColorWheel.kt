@@ -17,12 +17,7 @@ import androidx.compose.ui.unit.Dp
 import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 import com.florientmanfo.battlesketch.ui.theme.largeDimens
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.PressInteraction
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,14 +26,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.input.pointer.pointerInput
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.dp
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -47,12 +40,10 @@ import kotlin.math.sqrt
 @Composable
 fun ColorWheel(
     modifier: Modifier = Modifier,
-    wheelRadius: Dp = LocalAppDimens.provides(largeDimens).value.size,
     currentColor: Color? = null,
     currentOffset: Offset? = null,
     onPickColor: (Color, Offset) -> Unit,
 ) {
-    val pointerColor = if (isSystemInDarkTheme()) Color.Black else Color.White
     val scope = rememberCoroutineScope()
     val interactionSource = remember {
         MutableInteractionSource()
@@ -64,6 +55,8 @@ fun ColorWheel(
     var selectedColor by remember {
         mutableStateOf(currentColor)
     }
+    val configuration = LocalConfiguration.current.screenWidthDp
+    val wheelRadius = (configuration * 0.5).dp
 
     Box(
         modifier = modifier
@@ -103,7 +96,7 @@ fun ColorWheel(
                         style = Stroke(size.width / 3)
                     )
                     drawCircle(
-                        pointerColor,
+                        Color.Black,
                         radius = size.width / 24,
                         style = Fill,
                         center = pointerOffset ?: center
@@ -111,32 +104,6 @@ fun ColorWheel(
                 }
             }
     )
-}
-
-fun CoroutineScope.collectForPress(
-    interactionSource: InteractionSource,
-    setOffset: (Offset) -> Unit
-) {
-    launch {
-        interactionSource.interactions.collect { interaction ->
-            (interaction as? PressInteraction.Press)
-                ?.pressPosition
-                ?.let(setOffset)
-        }
-    }
-}
-
-private fun Modifier.emitDragGesture(
-    interactionSource: MutableInteractionSource
-): Modifier = composed {
-    val scope = rememberCoroutineScope()
-    pointerInput(Unit) {
-        detectDragGestures { input, _ ->
-            scope.launch {
-                interactionSource.emit(PressInteraction.Press(input.position))
-            }
-        }
-    }.clickable(interactionSource, null) {}
 }
 
 @Composable

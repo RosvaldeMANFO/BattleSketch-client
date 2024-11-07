@@ -1,6 +1,5 @@
 package com.florientmanfo.battlesketch.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -18,12 +18,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.florientmanfo.battlesketch.R
 import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
@@ -38,10 +45,23 @@ import com.florientmanfo.battlesketch.ui.theme.yellow
 @Composable
 fun ColorPalette(
     modifier: Modifier = Modifier,
+    pickerOffset: Offset = Offset.Zero,
     currentColor: Color = if (isSystemInDarkTheme()) Color.White else Color.Black,
-    onColorChange: (Color) -> Unit,
-    onPickColor: () -> Unit
+    onColorChange: (Color, Offset?) -> Unit,
 ) {
+    var showColoWheel by remember {
+        mutableStateOf(false)
+    }
+
+    if (showColoWheel) {
+        ColorWheelDialog(
+            currentColor = currentColor,
+            currentOffset = pickerOffset?: Offset.Zero,
+            onDismissRequest = { showColoWheel = false},
+            onPickColor = onColorChange
+        )
+    }
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -58,26 +78,26 @@ fun ColorPalette(
                         ColorItem(
                             color = Color.White,
                             isSelected = currentColor == Color.White,
-                            onClick = onColorChange
+                            onClick = {color -> onColorChange(color, null)}
                         )
                     } else {
                         ColorItem(
                             color = Color.Black,
                             isSelected = currentColor == Color.Black,
-                            onClick = onColorChange
+                            onClick = {color -> onColorChange(color, null)}
                         )
                     }
                 } else {
                     ColorItem(
                         color = it.color,
                         isSelected = currentColor == it.color,
-                        onClick = onColorChange
+                        onClick = {color -> onColorChange(color, null)}
                     )
                 }
             }
         }
         IconButton(
-            onClick = onPickColor,
+            onClick = { showColoWheel = true },
             modifier = Modifier
                 .size(LocalAppDimens.current.size)
                 .padding(0.dp)
@@ -85,6 +105,7 @@ fun ColorPalette(
             Icon(
                 painter = painterResource(R.drawable.color_wheel),
                 contentDescription = null,
+                tint= Color.Unspecified
             )
         }
     }
@@ -103,7 +124,7 @@ fun ColorItem(
     }
     val selectionAccent by remember {
         mutableStateOf(
-            if(isSelected){
+            if (isSelected) {
                 if (isDarkTheme) Color.White
                 else Color.Black
             } else color
@@ -112,11 +133,19 @@ fun ColorItem(
 
     Box(
         modifier = modifier
-            .background(color = color, shape = CircleShape)
             .size(LocalAppDimens.current.size)
             .graphicsLayer {
                 clip = true
                 shape = CircleShape
+            }
+            .drawBehind {
+                drawCircle(color)
+                if (selected) {
+                    drawCircle(
+                        selectionAccent,
+                        style = Stroke(size.width / 7)
+                    )
+                }
             }
             .clickable {
                 onClick(color)
@@ -128,6 +157,41 @@ fun ColorItem(
             )
 
     )
+}
+
+@Composable
+fun ColorWheelDialog(
+    currentColor: Color,
+    currentOffset: Offset,
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit,
+    onPickColor: (Color, Offset) -> Unit
+) {
+    var boxSize by remember { mutableStateOf(IntSize.Zero) }
+    var initColor by remember {
+        mutableStateOf(currentColor)
+    }
+    var initOffset by remember {
+        mutableStateOf(currentOffset)
+    }
+
+    CustomAlertDialog(
+        modifier = modifier.onSizeChanged { boxSize = it },
+        title = stringResource(R.string.color_wheel_dialog_title),
+        onConfirmRequest = {
+            onPickColor(initColor, initOffset)
+            onDismissRequest()
+        },
+        onDismissRequest = onDismissRequest
+    ) {
+        ColorWheel(
+            currentColor = initColor,
+            currentOffset = initOffset
+        ) { color, offset ->
+            initColor = color
+            initOffset = offset
+        }
+    }
 }
 
 enum class DefaultColorOptions(val color: Color?) {
@@ -144,9 +208,7 @@ enum class DefaultColorOptions(val color: Color?) {
 fun ColorPalettePreview() {
     BattleSketchTheme {
         ColorPalette(
-            currentColor = orange,
-            onColorChange = {},
-            onPickColor = {}
+            onColorChange = {_, _ ->},
         )
     }
 }
