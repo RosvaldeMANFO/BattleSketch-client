@@ -20,8 +20,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -103,21 +103,26 @@ fun ColorItem(
     }
     val selectionAccent by remember {
         mutableStateOf(
-            if (isDarkTheme) Color.White
-            else Color.Black
+            if(isSelected){
+                if (isDarkTheme) Color.White
+                else Color.Black
+            } else color
         )
     }
 
     Box(
         modifier = modifier
             .background(color = color, shape = CircleShape)
-            .clip(CircleShape)
             .size(LocalAppDimens.current.size)
+            .graphicsLayer {
+                clip = true
+                shape = CircleShape
+            }
             .clickable {
                 onClick(color)
             }
             .border(
-                width = if (selected) 2.dp else 0.dp,
+                width = if (selected) 1.2.dp else 0.dp,
                 shape = CircleShape,
                 color = selectionAccent
             )
@@ -139,6 +144,7 @@ enum class DefaultColorOptions(val color: Color?) {
 fun ColorPalettePreview() {
     BattleSketchTheme {
         ColorPalette(
+            currentColor = orange,
             onColorChange = {},
             onPickColor = {}
         )

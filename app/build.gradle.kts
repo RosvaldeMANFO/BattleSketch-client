@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material3.adaptive.android)
     implementation(libs.androidx.compose.material3.windows.size)
+    implementation(libs.androidx.graphics.shapes)
     //implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.3.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
