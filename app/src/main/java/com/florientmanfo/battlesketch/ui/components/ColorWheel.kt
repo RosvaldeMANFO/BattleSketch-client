@@ -13,10 +13,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
-import com.florientmanfo.battlesketch.ui.theme.largeDimens
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +30,7 @@ import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.packInts
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -55,8 +54,9 @@ fun ColorWheel(
     var selectedColor by remember {
         mutableStateOf(currentColor)
     }
-    val configuration = LocalConfiguration.current.screenWidthDp
-    val wheelRadius = (configuration * 0.5).dp
+    val configuration = LocalConfiguration.current
+    val minSize = listOf(configuration.screenHeightDp, configuration.screenWidthDp).min()
+    val wheelRadius = (minSize * 0.5).dp
 
     Box(
         modifier = modifier

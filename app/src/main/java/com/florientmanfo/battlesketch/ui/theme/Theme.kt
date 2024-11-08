@@ -1,5 +1,7 @@
 package com.florientmanfo.battlesketch.ui.theme
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -12,6 +14,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.ui.platform.LocalContext
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -106,13 +109,16 @@ fun BattleSketchTheme(
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
     content: @Composable () -> Unit,
 ) {
+    val context = LocalContext.current
     val colorScheme = if (darkTheme) lightScheme else darkScheme
-    val dimensions = when(windowSizeClass.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> smallDimens
-        WindowWidthSizeClass.Medium -> mediumDimens
-        WindowWidthSizeClass.Expanded -> largeDimens
-        else -> mediumDimens
-    }
+    val dimensions = if(isTablet(context)){
+        when(windowSizeClass.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> smallDimens
+            WindowWidthSizeClass.Medium -> smallDimens
+            else -> mediumDimens
+        }
+    } else smallDimens
+
     ProvideDimens(dimensions) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -120,5 +126,11 @@ fun BattleSketchTheme(
             content = content
         )
     }
+}
+
+fun isTablet(context: Context): Boolean {
+    val configuration: Configuration = context.resources.configuration
+    val screenLayout = configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK
+    return screenLayout >= Configuration.SCREENLAYOUT_SIZE_LARGE
 }
 

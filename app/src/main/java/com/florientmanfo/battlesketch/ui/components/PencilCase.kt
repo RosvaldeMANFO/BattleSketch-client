@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,7 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,12 +30,15 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import com.florientmanfo.battlesketch.R
+import com.florientmanfo.battlesketch.ui.components.model.DrawingMode
 import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 import com.florientmanfo.battlesketch.ui.theme.smallDimens
@@ -51,16 +53,11 @@ fun PencilCase(
     onUndo: () -> Unit,
     onRedo: () -> Unit,
     onReset: () -> Unit,
-    onChangeThickness: (Int) -> Unit,
+    onChangeThickness: (Float) -> Unit,
     onChangeDrawingMode: (DrawingMode) -> Unit
 ) {
-
-    var showThicknessEditor by remember {
-        mutableStateOf(false)
-    }
-    var currentThickness by remember {
-        mutableIntStateOf(1)
-    }
+    var showThicknessEditor by remember { mutableStateOf(false) }
+    var currentThickness by remember { mutableFloatStateOf(1f) }
 
     if (showThicknessEditor) {
         ThicknessEditor(
@@ -73,97 +70,57 @@ fun PencilCase(
     }
 
     FlowRow(
-        modifier = modifier,
+        modifier = modifier.padding(LocalAppDimens.current.margin),
         maxItemsInEachRow = 3,
         verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin),
         horizontalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin)
     ) {
-        IconButton(
-            modifier = Modifier.size(LocalAppDimens.current.size),
+        CustomIconButton(
             onClick = onUndo,
-            enabled = canUndo
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.Undo,
-                contentDescription = null
-            )
-        }
-        IconButton(
-            modifier = Modifier.size(LocalAppDimens.current.size),
+            enabled = canUndo,
+            icon = Icons.AutoMirrored.Filled.Undo
+        )
+        CustomIconButton(
             onClick = onRedo,
-            enabled = canRedo
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.Redo,
-                contentDescription = null
-            )
-        }
-        IconButton(
-            modifier = Modifier.size(LocalAppDimens.current.size),
+            enabled = canRedo,
+            icon = Icons.AutoMirrored.Filled.Redo
+        )
+        CustomIconButton(
             onClick = onReset,
-            enabled = canErase
-        ) {
-            Icon(
-                imageVector = Icons.Default.Refresh,
-                contentDescription = null
-            )
-        }
-        IconButton(
-            modifier = Modifier.size(LocalAppDimens.current.size),
+            enabled = canErase,
+            icon = Icons.Default.Refresh
+        )
+        CustomIconButton(
             onClick = { onChangeDrawingMode(DrawingMode.Draw) },
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.pencil),
-                contentDescription = null,
-                tint= Color.Unspecified
-            )
-        }
-        IconButton(
-            modifier = Modifier.size(LocalAppDimens.current.size),
+            painter = painterResource(R.drawable.pencil)
+        )
+        CustomIconButton(
             onClick = { onChangeDrawingMode(DrawingMode.Erase) },
-            enabled = canErase
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.eraser),
-                contentDescription = null,
-                tint = Color.Unspecified
-            )
-        }
-        IconButton(
-            modifier = Modifier.size(LocalAppDimens.current.size),
-            onClick = {
-                showThicknessEditor = !showThicknessEditor
-            },
-        ) {
-            Icon(
-                imageVector = Icons.Default.LineWeight,
-                contentDescription = null
-            )
-        }
+            enabled = canErase,
+            painter = painterResource(R.drawable.eraser)
+        )
+        CustomIconButton(
+            onClick = { showThicknessEditor = !showThicknessEditor },
+            icon = Icons.Default.LineWeight
+        )
     }
 }
+
 
 @Composable
 fun ThicknessEditor(
     modifier: Modifier = Modifier,
-    currentThickness: Int = 1,
+    currentThickness: Float = 1f,
     onDismissRequest: () -> Unit,
-    onThicknessChange: (Int) -> Unit
+    onThicknessChange: (Float) -> Unit
 ) {
-    val scope = rememberCoroutineScope()
-    val interactionSource = remember {
-        MutableInteractionSource()
-    }
-    var thickness by remember {
-        mutableIntStateOf(currentThickness)
-    }
-    var cursorOffset by remember {
-        mutableStateOf(
-            Offset(currentThickness.toFloat(), 0f)
-        )
-    }
-    val slideColor = MaterialTheme.colorScheme.primary
+
     var boxSize by remember { mutableStateOf(IntSize.Zero) }
+    val interactionSource = remember { MutableInteractionSource() }
+    var thickness by remember { mutableFloatStateOf(currentThickness) }
+    var cursorOffset by remember { mutableStateOf(Offset(currentThickness, 0f)) }
+    val slideColor = MaterialTheme.colorScheme.primary
+    val scope = rememberCoroutineScope()
 
     CustomAlertDialog(
         modifier = modifier,
@@ -183,10 +140,9 @@ fun ThicknessEditor(
                 .emitDragGesture(interactionSource)
                 .drawWithCache {
                     onDrawBehind {
-
                         scope.collectForPress(interactionSource) { position ->
-                            thickness = position.x.toInt()
                             if (position.x in 0f..boxSize.width.toFloat()) {
+                                thickness = position.x
                                 cursorOffset = Offset(
                                     x = position.x,
                                     y = 0f

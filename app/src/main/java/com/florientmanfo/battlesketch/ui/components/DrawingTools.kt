@@ -3,8 +3,9 @@ package com.florientmanfo.battlesketch.ui.components
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -14,8 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.florientmanfo.battlesketch.ui.components.model.DrawingMode
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
-import com.florientmanfo.battlesketch.ui.theme.mediumDimens
+import com.florientmanfo.battlesketch.ui.theme.smallDimens
 
 @Composable
 fun DrawingTools(
@@ -28,7 +30,7 @@ fun DrawingTools(
     onUndo: () -> Unit = {},
     onRedo: () -> Unit = {},
     onReset: () -> Unit = {},
-    onChangeThickness: (Int) -> Unit = { _ -> },
+    onChangeThickness: (Float) -> Unit = { _ -> },
     onColorChange: (Color, Offset?) -> Unit = { _, _ -> },
     onChangeDrawingMode: (DrawingMode) -> Unit = { _ -> }
 ) {
@@ -40,7 +42,7 @@ fun DrawingTools(
             modifier = Modifier
                 .padding(LocalAppDimens.current.margin),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(LocalAppDimens.provides(mediumDimens).value.margin)
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             PencilCase(
                 canUndo = canUndo,
@@ -52,9 +54,10 @@ fun DrawingTools(
                 onChangeThickness = onChangeThickness,
                 onChangeDrawingMode = onChangeDrawingMode
             )
+            Spacer(modifier = Modifier.width(LocalAppDimens.provides(smallDimens).value.margin))
             ColorPalette(
-                currentColor = currentColor,
-                pickerOffset = pickerOffset,
+                initColor = currentColor,
+                initPickerOffset = pickerOffset,
                 onColorChange = onColorChange
             )
         }

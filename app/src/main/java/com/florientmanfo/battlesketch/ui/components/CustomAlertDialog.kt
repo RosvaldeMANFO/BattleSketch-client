@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.florientmanfo.battlesketch.R
 import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
-import com.florientmanfo.battlesketch.ui.theme.mediumDimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,9 +52,9 @@ fun CustomAlertDialog(
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Spacer(modifier = Modifier.height(LocalAppDimens.provides(mediumDimens).value.margin))
+                Spacer(modifier = Modifier.height(LocalAppDimens.current.margin))
                 content()
-                Spacer(modifier = Modifier.height(LocalAppDimens.provides(mediumDimens).value.margin))
+                Spacer(modifier = Modifier.height(LocalAppDimens.current.margin))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
