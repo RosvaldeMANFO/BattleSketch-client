@@ -64,7 +64,7 @@ fun PencilCase(
     }
 
     FlowRow(
-        modifier = modifier.padding(LocalAppDimens.current.margin),
+        modifier = modifier,
         maxItemsInEachRow = 3,
         verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin),
         horizontalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin)
