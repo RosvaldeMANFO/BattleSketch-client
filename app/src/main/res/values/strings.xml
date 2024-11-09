@@ -4,4 +4,9 @@
     <string name="cancel">Cancel</string>
     <string name="thickness_dialog_title">Thickness</string>
     <string name="color_wheel_dialog_title">Color wheel</string>
+    <string name="join_room_label">Join room</string>
+    <string name="create_room_label">Create room</string>
+    <string name="create_label">Create</string>
+    <string name="name_placeholder">Name</string>
+    <string name="password_placeholder">Password</string>
 </resources>

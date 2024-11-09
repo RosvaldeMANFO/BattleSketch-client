@@ -50,7 +50,7 @@ fun CustomAlertDialog(
                     title,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.height(LocalAppDimens.current.margin))
                 content()
