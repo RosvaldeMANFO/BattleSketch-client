@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +31,7 @@ fun HomeScreen(
             password = state.roomPassword,
             onNameChange = {viewModel.onUiEvent(UiEvent.OnTypingRoomName(it))},
             onPasswordChange = {viewModel.onUiEvent(UiEvent.OnTypingRoomPassword(it))},
-            onCreate = {viewModel.onUiEvent(UiEvent.OnCreateRoom)},
+            onCreate = {viewModel.onUiEvent(UiEvent.OnSubmitRoom)},
             onDismissRequest = {viewModel.onUiEvent(UiEvent.OnToggleDialog(false))}
         )
     }

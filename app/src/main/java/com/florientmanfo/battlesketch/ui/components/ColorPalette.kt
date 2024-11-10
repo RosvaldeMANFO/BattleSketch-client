@@ -81,6 +81,7 @@ fun ColorPalette(
     }
 
     FlowRow(
+        modifier = modifier,
         maxItemsInEachRow = 3,
         verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin),
         horizontalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin)
@@ -97,7 +98,7 @@ fun ColorPalette(
         CustomIconButton(
             onClick = { showColorWheel = true },
             painter = painterResource(R.drawable.color_wheel),
-            accent = if(isDark) Color.Black else Color.White,
+            accent = if (isDark) Color.Black else Color.White,
             contentDescription = stringResource(R.string.color_wheel_dialog_title),
             isSelected = !defaultColors.any { it.selected }
         )
@@ -151,7 +152,6 @@ fun ColorWheelDialog(
         title = stringResource(R.string.color_wheel_dialog_title),
         onConfirmRequest = {
             onPickColor(initColor, initOffset)
-            onDismissRequest()
         },
         onDismissRequest = onDismissRequest
     ) {

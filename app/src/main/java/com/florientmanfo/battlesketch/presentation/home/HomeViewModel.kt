@@ -31,13 +31,8 @@ class HomeViewModel: ViewModel() {
             UiEvent.OnJoinRoom -> {
 
             }
-            UiEvent.OnCreateRoom -> {
-                _homeSate.update {
-                    it.copy(showDialog = true)
-                }
-            }
             UiEvent.OnSubmitRoom -> {
-
+                throw Error("An unexpected error occurred !")
             }
         }
     }
@@ -45,7 +40,6 @@ class HomeViewModel: ViewModel() {
 
 sealed class UiEvent{
     data object OnJoinRoom: UiEvent()
-    data object OnCreateRoom: UiEvent()
     data class OnToggleDialog(val show: Boolean): UiEvent()
     data class OnTypingRoomName(val roomName: String): UiEvent()
     data class OnTypingRoomPassword(val roomPassword: String): UiEvent()

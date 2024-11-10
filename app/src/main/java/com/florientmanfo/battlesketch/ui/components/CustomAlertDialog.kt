@@ -30,6 +30,8 @@ import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 fun CustomAlertDialog(
     title: String,
     modifier: Modifier = Modifier,
+    confirmLabel: String = stringResource(R.string.confirm),
+    cancelLabel: String = stringResource(R.string.cancel),
     onDismissRequest: () -> Unit,
     onConfirmRequest: () -> Unit,
     content: @Composable () -> Unit,
@@ -52,9 +54,7 @@ fun CustomAlertDialog(
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.titleLarge
                 )
-                Spacer(modifier = Modifier.height(LocalAppDimens.current.margin))
                 content()
-                Spacer(modifier = Modifier.height(LocalAppDimens.current.margin))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -66,16 +66,21 @@ fun CustomAlertDialog(
                             contentColor = MaterialTheme.colorScheme.error
                         )
                     ) {
-                        Text(stringResource(R.string.cancel))
+                        Text(cancelLabel)
                     }
                     Spacer(modifier = Modifier.width(LocalAppDimens.current.margin))
                     TextButton(
-                        onClick = {onConfirmRequest()},
+                        onClick = {
+                            try{
+                                onConfirmRequest()
+                                onDismissRequest()
+                            } catch (_: Error){}
+                        },
                         colors = ButtonDefaults.textButtonColors(
                             contentColor = MaterialTheme.colorScheme.primary
                         )
                     ) {
-                        Text(stringResource(R.string.confirm))
+                        Text(confirmLabel)
                     }
                 }
             }

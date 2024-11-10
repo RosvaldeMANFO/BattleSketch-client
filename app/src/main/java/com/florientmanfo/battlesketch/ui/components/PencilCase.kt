@@ -121,7 +121,6 @@ fun ThicknessEditor(
         title = stringResource(R.string.thickness_dialog_title),
         onConfirmRequest = {
             onThicknessChange(thickness)
-            onDismissRequest()
         },
         onDismissRequest = { onDismissRequest() }
     ) {
