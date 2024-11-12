@@ -2,46 +2,65 @@ package com.florientmanfo.battlesketch.presentation.home
 
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.florientmanfo.battlesketch.presentation.coordinator.BattleSketchRoute
+import com.florientmanfo.battlesketch.presentation.coordinator.Coordinator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class HomeViewModel: ViewModel() {
+class HomeViewModel(
+    private val coordinator: Coordinator
+) : ViewModel() {
 
     private val _homeSate = MutableStateFlow(HomeState())
     val homeState = _homeSate.asStateFlow()
 
-    fun onUiEvent(event: UiEvent){
-        when(event){
-            is UiEvent.OnTypingRoomName -> {
+    fun onUiEvent(event: HomeUiEvent) {
+        when (event) {
+            is HomeUiEvent.OnTypingCreatorName -> {
                 _homeSate.update {
-                    it.copy(roomName = event.roomName)
+                    it.copy(room = it.room.copy(creator = event.creatorName))
                 }
             }
-            is UiEvent.OnTypingRoomPassword -> {
+
+            is HomeUiEvent.OnTypingRoomName -> {
                 _homeSate.update {
-                    it.copy(roomPassword = event.roomPassword)
+                    it.copy(room = it.room.copy(name = event.roomName))
                 }
             }
-            is UiEvent.OnToggleDialog -> {
+
+            is HomeUiEvent.OnTypingRoomPassword -> {
+                _homeSate.update {
+                    it.copy(room = it.room.copy(password = event.roomPassword))
+                }
+            }
+
+            is HomeUiEvent.OnToggleDialog -> {
                 _homeSate.update {
                     it.copy(showDialog = event.show)
                 }
             }
-            UiEvent.OnJoinRoom -> {
 
+            HomeUiEvent.OnJoinRoom -> {
+                viewModelScope.launch {
+                    coordinator.navigateTo(BattleSketchRoute.RoomList)
+                }
             }
-            UiEvent.OnSubmitRoom -> {
+
+            HomeUiEvent.OnSubmitRoom -> {
                 throw Error("An unexpected error occurred !")
             }
         }
     }
 }
 
-sealed class UiEvent{
-    data object OnJoinRoom: UiEvent()
-    data class OnToggleDialog(val show: Boolean): UiEvent()
-    data class OnTypingRoomName(val roomName: String): UiEvent()
-    data class OnTypingRoomPassword(val roomPassword: String): UiEvent()
-    data object OnSubmitRoom: UiEvent()
+sealed interface HomeUiEvent {
+    data object OnJoinRoom : HomeUiEvent
+    data class OnToggleDialog(val show: Boolean) : HomeUiEvent
+    data class OnTypingCreatorName(val creatorName: String) : HomeUiEvent
+    data class OnTypingRoomName(val roomName: String) : HomeUiEvent
+    data class OnTypingRoomPassword(val roomPassword: String) : HomeUiEvent
+    data object OnSubmitRoom : HomeUiEvent
 }

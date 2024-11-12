@@ -10,12 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.florientmanfo.battlesketch.presentation.BattleSketchNavGraph
+import com.florientmanfo.battlesketch.presentation.coordinator.BattleSketchNavGraph
+import com.florientmanfo.battlesketch.presentation.coordinator.Coordinator
 import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 import com.florientmanfo.battlesketch.ui.theme.isTablet
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +32,8 @@ class MainActivity : ComponentActivity() {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
+        val coordinator: Coordinator by inject()
+
         setContent {
             BattleSketchTheme {
                 Scaffold(
@@ -35,6 +41,10 @@ class MainActivity : ComponentActivity() {
                         .fillMaxWidth()
                 ) { innerPadding ->
                     val navController = rememberNavController()
+                    val currentRoute by coordinator.currentRoute.collectAsState()
+                    LaunchedEffect(currentRoute) {
+                        navController.navigate(currentRoute.name)
+                    }
                     BattleSketchNavGraph(
                         navController = navController,
                         modifier = Modifier

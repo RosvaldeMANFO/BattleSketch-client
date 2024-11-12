@@ -23,16 +23,16 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel()
-){
+) {
     val state by viewModel.homeState.collectAsState()
-    if(state.showDialog){
+    if (state.showDialog) {
         RoomEditingDialog(
-            name = state.roomName,
-            password = state.roomPassword,
-            onNameChange = {viewModel.onUiEvent(UiEvent.OnTypingRoomName(it))},
-            onPasswordChange = {viewModel.onUiEvent(UiEvent.OnTypingRoomPassword(it))},
-            onCreate = {viewModel.onUiEvent(UiEvent.OnSubmitRoom)},
-            onDismissRequest = {viewModel.onUiEvent(UiEvent.OnToggleDialog(false))}
+            room = state.room,
+            onCreatorNameChange = { viewModel.onUiEvent(HomeUiEvent.OnTypingCreatorName(it)) },
+            onNameChange = { viewModel.onUiEvent(HomeUiEvent.OnTypingRoomName(it)) },
+            onPasswordChange = { viewModel.onUiEvent(HomeUiEvent.OnTypingRoomPassword(it)) },
+            onCreate = { viewModel.onUiEvent(HomeUiEvent.OnSubmitRoom) },
+            onDismissRequest = { viewModel.onUiEvent(HomeUiEvent.OnToggleDialog(false)) }
         )
     }
     Column(
@@ -42,7 +42,7 @@ fun HomeScreen(
     ) {
         ElevatedButton(
             modifier = Modifier.fillMaxWidth(0.75f),
-            onClick = {viewModel.onUiEvent(UiEvent.OnToggleDialog(true))},
+            onClick = { viewModel.onUiEvent(HomeUiEvent.OnToggleDialog(true)) },
             colors = ButtonDefaults.elevatedButtonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
@@ -56,7 +56,7 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(LocalAppDimens.current.margin))
         ElevatedButton(
             modifier = Modifier.fillMaxWidth(0.75f),
-            onClick = {viewModel.onUiEvent(UiEvent.OnJoinRoom)}
+            onClick = { viewModel.onUiEvent(HomeUiEvent.OnJoinRoom) }
         ) {
             Text(
                 stringResource(R.string.join_room_label),

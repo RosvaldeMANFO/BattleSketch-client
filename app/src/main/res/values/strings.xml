@@ -7,6 +7,13 @@
     <string name="join_room_label">Join room</string>
     <string name="create_room_label">Create room</string>
     <string name="create_label">Create</string>
-    <string name="name_placeholder">Name</string>
-    <string name="password_placeholder">Password</string>
+    <string name="player_name_placeholder">Nic name</string>
+    <string name="room_name_placeholder">Name</string>
+    <string name="room_password_placeholder">Password</string>
+    <string name="room_list_title">Rooms</string>
+    <plurals name="room_player_number_label">
+        <item quantity="zero">Empty</item>
+        <item quantity="one">%d player</item>
+        <item quantity="other">%d players</item>
+    </plurals>
 </resources>

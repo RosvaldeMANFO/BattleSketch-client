@@ -18,15 +18,16 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.florientmanfo.battlesketch.R
+import com.florientmanfo.battlesketch.domain.room.models.Room
 import com.florientmanfo.battlesketch.ui.components.CustomAlertDialog
 import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 
 @Composable
 fun RoomEditingDialog(
-    name: String,
+    room: Room,
     modifier: Modifier = Modifier,
-    password: String? = null,
+    onCreatorNameChange: (String) -> Unit,
     onNameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onDismissRequest: () -> Unit,
@@ -44,15 +45,23 @@ fun RoomEditingDialog(
             ) {
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = name,
-                    onValueChange = onNameChange,
+                    value = room.creator,
+                    onValueChange = onCreatorNameChange,
                     singleLine = true,
                     isError = errorMessage != null,
-                    placeholder = { Text(stringResource(R.string.name_placeholder)) }
+                    placeholder = { Text(stringResource(R.string.player_name_placeholder)) }
                 )
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = password ?: "",
+                    value = room.name,
+                    onValueChange = onNameChange,
+                    singleLine = true,
+                    isError = errorMessage != null,
+                    placeholder = { Text(stringResource(R.string.room_name_placeholder)) }
+                )
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = room.password ?: "",
                     onValueChange = { onPasswordChange(it) },
                     singleLine = true,
                     visualTransformation = { text ->
@@ -61,7 +70,7 @@ fun RoomEditingDialog(
                             OffsetMapping.Identity
                         )
                     },
-                    placeholder = { Text(stringResource(R.string.password_placeholder)) }
+                    placeholder = { Text(stringResource(R.string.room_password_placeholder)) }
                 )
                 AnimatedVisibility(
                     visible = errorMessage != null
@@ -86,7 +95,8 @@ fun RoomEditingDialog(
 fun RoomEditingDialogPreview() {
     BattleSketchTheme {
         RoomEditingDialog(
-            name = "",
+            room = Room(),
+            onCreatorNameChange = {},
             onNameChange = {},
             onPasswordChange = {},
             onDismissRequest = {},

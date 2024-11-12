@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.presentation
+package com.florientmanfo.battlesketch.presentation.coordinator
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -7,13 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.florientmanfo.battlesketch.presentation.home.HomeScreen
-
-enum class BattleSketchScreen {
-    Home,
-    RoomList,
-    HoldRoom,
-    Board,
-}
+import com.florientmanfo.battlesketch.presentation.roomList.RoomList
 
 @Composable
 fun BattleSketchNavGraph(
@@ -22,19 +16,19 @@ fun BattleSketchNavGraph(
 ) {
     NavHost(
         navController,
-        startDestination = BattleSketchScreen.Home.name,
+        startDestination = BattleSketchRoute.Home.name,
         modifier = modifier
     ) {
-        composable(route = BattleSketchScreen.Home.name) {
+        composable(route = BattleSketchRoute.Home.name) {
             HomeScreen(modifier = Modifier.fillMaxSize())
         }
-        composable(route = BattleSketchScreen.RoomList.name) {
+        composable(route = BattleSketchRoute.RoomList.name) {
+            RoomList(modifier = Modifier.fillMaxSize())
+        }
+        composable(route = BattleSketchRoute.HoldRoom.name) {
 
         }
-        composable(route = BattleSketchScreen.HoldRoom.name) {
-
-        }
-        composable(route = BattleSketchScreen.Board.name) {
+        composable(route = BattleSketchRoute.Board.name) {
 
         }
     }
