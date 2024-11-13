@@ -1,12 +1,13 @@
 package com.florientmanfo.battlesketch.presentation.roomList
 
+import androidx.annotation.StringRes
 import com.florientmanfo.battlesketch.domain.room.models.Room
 
 data class RoomListState(
-    val allRoom: MutableList<Room> = mutableListOf(),
-    val filteredRoom: MutableList<Room> = mutableListOf(),
+    val allRoom: List<Room> = listOf(),
+    val filteredRoom: List<Room> = mutableListOf(),
     val searchingKeyword: String = "",
     val roomPassword: String = "",
     val selectedRoom: Room? = null,
-    val errorMessage: String? = null
+    val isError: Boolean = false
 )

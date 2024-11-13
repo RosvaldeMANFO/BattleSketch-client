@@ -1,8 +1,10 @@
 package com.florientmanfo.battlesketch.presentation.home
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.florientmanfo.battlesketch.domain.room.useCases.CreateRoomUseCase
 import com.florientmanfo.battlesketch.presentation.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.presentation.coordinator.Coordinator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val coordinator: Coordinator
+    private val coordinator: Coordinator,
+    private val createRoomUseCase: CreateRoomUseCase
 ) : ViewModel() {
 
     private val _homeSate = MutableStateFlow(HomeState())
@@ -50,7 +53,20 @@ class HomeViewModel(
             }
 
             HomeUiEvent.OnSubmitRoom -> {
-                throw Error("An unexpected error occurred !")
+                viewModelScope.launch {
+                    try {
+                        createRoomUseCase(_homeSate.value.room)
+                        Log.d("CREATE_ROOM", "Room created")
+                    } catch (e: Error) {
+                        Log.e("CREATE_ROOM", "Error ${e.message}")
+                        _homeSate.update {
+                            it.copy(
+                                errorMessage = e.message ?: "",
+                                error = true
+                            )
+                        }
+                    }
+                }
             }
         }
     }

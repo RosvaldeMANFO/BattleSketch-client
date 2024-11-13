@@ -1,11 +1,11 @@
 package com.florientmanfo.battlesketch.presentation.roomList
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
@@ -25,10 +26,11 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SearchBar
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -38,10 +40,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
@@ -66,13 +71,14 @@ fun RoomList(
     state.selectedRoom?.let { room ->
         room.password?.let {
             CustomAlertDialog(
-                modifier = modifier,
                 title = state.selectedRoom?.name ?: "",
                 content = {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(LocalAppDimens.current.margin)
+                        modifier = Modifier
+                            .padding(LocalAppDimens.current.margin)
+                            .fillMaxWidth()
                     ) {
                         TextField(
                             modifier = Modifier.fillMaxWidth(),
@@ -90,10 +96,10 @@ fun RoomList(
                             placeholder = { Text(stringResource(R.string.room_password_placeholder)) }
                         )
                         AnimatedVisibility(
-                            visible = state.errorMessage != null
+                            visible = state.isError
                         ) {
                             Text(
-                                text = state.errorMessage ?: "",
+                                text = stringResource(R.string.invalid_room_password),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.error,
                                 textAlign = TextAlign.Center
@@ -103,9 +109,11 @@ fun RoomList(
                     }
                 },
                 confirmLabel = stringResource(R.string.join_room_label),
-                onConfirmRequest = { },
-                onDismissRequest = {
+                onConfirmRequest = {
 
+                },
+                onDismissRequest = {
+                    viewModel.onUiEvent(RoomListUiEvent.OnDismissPasswordDialog)
                 }
             )
         }
@@ -117,51 +125,60 @@ fun RoomList(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            SearchBar(
-                inputField = {
-                    BasicTextField(
-                        value = state.searchingKeyword,
-                        onValueChange = {
-                            viewModel.onUiEvent(
-                                RoomListUiEvent.OnSearchingKeywordChange(it)
-                            )
-                        },
-                        decorationBox = { innerTextField ->
-                            val interactionSource = remember { MutableInteractionSource() }
+            val interactionSource = remember { MutableInteractionSource() }
 
-                            TextFieldDefaults.DecorationBox(
-                                value = state.searchingKeyword,
-                                innerTextField = innerTextField,
-                                enabled = true,
-                                contentPadding = PaddingValues(8.dp),
-                                singleLine = true,
-                                visualTransformation = VisualTransformation.None,
-                                interactionSource = interactionSource,
-                                leadingIcon = {
-                                    Icon(Icons.Default.Search, null)
-                                },
-                                trailingIcon = {
-                                    IconButton(onClick = {
-                                        viewModel.onUiEvent(RoomListUiEvent.RefreshList)
-                                    }
-                                    ) { Icon(Icons.Default.Refresh, null) }
-                                }
-                            )
-                        }
+            BasicTextField(
+                modifier = Modifier.fillMaxWidth(0.75f),
+                value = state.searchingKeyword,
+                cursorBrush = SolidColor(TextFieldDefaults.colors().cursorColor),
+                onValueChange = {
+                    viewModel.onUiEvent(
+                        RoomListUiEvent.OnSearchingKeywordChange(it)
                     )
                 },
-                expanded = state.filteredRoom.isNotEmpty(),
-                onExpandedChange = {}
-            ) {
-                state.filteredRoom.forEach {
-                    RoomListItem(it) {
-                        viewModel.onUiEvent(RoomListUiEvent.OnSelectRoom(it))
-                    }
-                }
-            }
+                textStyle = LocalTextStyle.current.copy(MaterialTheme.colorScheme.onSurface),
+                decorationBox = { innerTextField ->
+                    TextFieldDefaults.DecorationBox(
+                        colors = TextFieldDefaults.colors(
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                        ),
+                        value = state.searchingKeyword,
+                        innerTextField = innerTextField,
+                        enabled = true,
+                        contentPadding = PaddingValues(8.dp),
+                        singleLine = true,
+                        visualTransformation = VisualTransformation.None,
+                        interactionSource = interactionSource,
+                        leadingIcon = {
+                            Icon(Icons.Default.Search, null)
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                viewModel.onUiEvent(RoomListUiEvent.RefreshList)
+                            }
+                            ) { Icon(Icons.Default.Refresh, null) }
+                        },
+                        shape = RoundedCornerShape(LocalAppDimens.current.size)
+                    )
+                },
+            )
+        }
+        item {
             Spacer(modifier = Modifier.height(LocalAppDimens.current.margin))
         }
-        if (state.filteredRoom.isEmpty()) {
+
+        if (state.searchingKeyword.isNotEmpty()) {
+            itemsIndexed(state.filteredRoom) { index, room ->
+                RoomListItem(room) {
+                    viewModel.onUiEvent(RoomListUiEvent.OnSelectRoom(room))
+                }
+                if (index != state.filteredRoom.size - 1) {
+                    HorizontalDivider()
+                }
+            }
+        } else {
             itemsIndexed(state.allRoom) { index, room ->
                 RoomListItem(room) {
                     viewModel.onUiEvent(RoomListUiEvent.OnSelectRoom(room))
@@ -186,6 +203,7 @@ fun RoomListItem(
             Text(
                 pluralStringResource(
                     R.plurals.room_player_number_label,
+                    room.players.size,
                     room.players.size
                 ),
                 style = MaterialTheme.typography.labelMedium

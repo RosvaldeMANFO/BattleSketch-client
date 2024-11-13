@@ -16,4 +16,5 @@
         <item quantity="one">%d player</item>
         <item quantity="other">%d players</item>
     </plurals>
+    <string name="invalid_room_password">Invalid password</string>
 </resources>
