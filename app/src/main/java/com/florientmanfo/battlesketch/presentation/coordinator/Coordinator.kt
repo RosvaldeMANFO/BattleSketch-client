@@ -1,36 +1,28 @@
 package com.florientmanfo.battlesketch.presentation.coordinator
 
-import androidx.annotation.IntegerRes
-import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateListOf
-import com.florientmanfo.battlesketch.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class Coordinator {
 
-    private val _navStack = mutableStateListOf<BattleSketchRoute>()
-    private val _currentRoute = MutableStateFlow(BattleSketchRoute.Home)
+    private val _navStack = mutableStateListOf<BattleSketchRoute>(BattleSketchRoute.Home)
+    private val _currentRoute = MutableStateFlow<BattleSketchRoute>(BattleSketchRoute.Home)
     val currentRoute = _currentRoute.asStateFlow()
 
-    suspend fun navigateTo(destination: BattleSketchRoute){
-        if(!_navStack.contains(destination)){
-            _navStack.add(destination)
-            _currentRoute.emit(destination)
+    suspend fun navigateTo(route: BattleSketchRoute) {
+        if (!_navStack.contains(route)) {
+            _navStack.add(route)
+            _currentRoute.emit(route)
         }
     }
 
-    suspend fun navigateBack(){
-       if(_navStack.isNotEmpty()){
-           _navStack.removeLast()
-           _currentRoute.emit(_navStack.lastOrNull() ?: BattleSketchRoute.Home)
-       }
-    }
-}
+    fun lastDestination() = _navStack.lastOrNull()
 
-enum class BattleSketchRoute(@StringRes val title: Int) {
-    Home(title = R.string.app_name),
-    RoomList(title = R.string.room_list_title),
-    HoldRoom(title = R.string.room_list_title),
-    Board(title = R.string.room_list_title),
+    suspend fun navigateBack() {
+        if (_navStack.isNotEmpty()) {
+            _navStack.remove(_navStack.last())
+            _currentRoute.emit(_navStack.lastOrNull() ?: BattleSketchRoute.Home)
+        }
+    }
 }

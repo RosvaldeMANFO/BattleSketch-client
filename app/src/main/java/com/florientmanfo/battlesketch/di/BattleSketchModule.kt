@@ -21,5 +21,5 @@ val appModule = module {
     single { GetRoomByNameUseCase(get()) }
     single { CreateRoomUseCase(get()) }
     viewModel { HomeViewModel(get(), get()) }
-    viewModel { RoomListViewModel(get(), get(), get()) }
+    viewModel { RoomListViewModel(get(), get(), get(), get()) }
 }

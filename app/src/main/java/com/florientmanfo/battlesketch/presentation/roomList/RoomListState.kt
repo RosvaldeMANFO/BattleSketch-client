@@ -1,6 +1,5 @@
 package com.florientmanfo.battlesketch.presentation.roomList
 
-import androidx.annotation.StringRes
 import com.florientmanfo.battlesketch.domain.room.models.Room
 
 data class RoomListState(

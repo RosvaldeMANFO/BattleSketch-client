@@ -1,13 +1,15 @@
 package com.florientmanfo.battlesketch.presentation.roomList
 
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.florientmanfo.battlesketch.R
+import androidx.navigation.toRoute
 import com.florientmanfo.battlesketch.domain.room.models.Room
 import com.florientmanfo.battlesketch.domain.room.useCases.GetAllRoomUseCase
 import com.florientmanfo.battlesketch.domain.room.useCases.GetRoomByNameUseCase
+import com.florientmanfo.battlesketch.presentation.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.presentation.coordinator.Coordinator
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -15,6 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RoomListViewModel(
+    private val savedStateHandle: SavedStateHandle,
     private val coordinator: Coordinator,
     private val getAllRoomUseCase: GetAllRoomUseCase,
     private val getRoomByNameUseCase: GetRoomByNameUseCase

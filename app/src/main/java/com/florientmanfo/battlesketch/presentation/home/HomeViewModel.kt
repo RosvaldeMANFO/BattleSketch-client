@@ -1,7 +1,6 @@
 package com.florientmanfo.battlesketch.presentation.home
 
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.florientmanfo.battlesketch.domain.room.useCases.CreateRoomUseCase
@@ -48,17 +47,28 @@ class HomeViewModel(
 
             HomeUiEvent.OnJoinRoom -> {
                 viewModelScope.launch {
-                    coordinator.navigateTo(BattleSketchRoute.RoomList)
+                    coordinator.navigateTo(
+                        BattleSketchRoute.RoomList(
+                            null,
+                            null,
+                            null
+                        )
+                    )
                 }
             }
 
             HomeUiEvent.OnSubmitRoom -> {
                 viewModelScope.launch {
                     try {
-                        createRoomUseCase(_homeSate.value.room)
-                        Log.d("CREATE_ROOM", "Room created")
+                        coordinator.navigateTo(
+                            BattleSketchRoute
+                                .RoomList(
+                                    _homeSate.value.room.name,
+                                    _homeSate.value.room.password,
+                                    _homeSate.value.room.creator
+                                )
+                        )
                     } catch (e: Error) {
-                        Log.e("CREATE_ROOM", "Error ${e.message}")
                         _homeSate.update {
                             it.copy(
                                 errorMessage = e.message ?: "",

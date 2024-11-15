@@ -25,11 +25,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.florientmanfo.battlesketch.presentation.coordinator.BattleSketchNavGraph
 import com.florientmanfo.battlesketch.presentation.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.presentation.coordinator.Coordinator
 import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 import com.florientmanfo.battlesketch.ui.theme.isTablet
+import io.ktor.util.reflect.instanceOf
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -54,12 +56,9 @@ class MainActivity : ComponentActivity() {
             val coroutineCope = rememberCoroutineScope()
 
             LaunchedEffect(currentRoute) {
-                if (navController.previousBackStackEntry
-                    ?.destination?.route != currentRoute.name
-                ) {
-                    currentRoute.name.let {
-                        navController.navigate(it)
-                    }
+                val last = coordinator.lastDestination()
+                if (last != null && last == currentRoute) {
+                    navController.navigate(currentRoute)
                 } else navController.popBackStack()
             }
 

@@ -16,19 +16,19 @@ fun BattleSketchNavGraph(
 ) {
     NavHost(
         navController,
-        startDestination = BattleSketchRoute.Home.name,
+        startDestination = BattleSketchRoute.Home,
         modifier = modifier
     ) {
-        composable(route = BattleSketchRoute.Home.name) {
+        composable<BattleSketchRoute.Home> {
             HomeScreen(modifier = Modifier.fillMaxSize())
         }
-        composable(route = BattleSketchRoute.RoomList.name) {
+        composable<BattleSketchRoute.RoomList> {
             RoomList(modifier = Modifier.fillMaxSize())
         }
-        composable(route = BattleSketchRoute.HoldRoom.name) {
+        composable<BattleSketchRoute.Holding> {
 
         }
-        composable(route = BattleSketchRoute.Board.name) {
+        composable<BattleSketchRoute.Board> {
 
         }
     }
