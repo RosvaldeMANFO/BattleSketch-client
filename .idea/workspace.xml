@@ -10,22 +10,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eeb880-25b4-45cd-bb57-9ffebd918f0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/coordinator/BattleSketchRoute.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/roomList/JoinRoomDialog.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/data/KtorClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/data/KtorClient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/di/BattleSketchModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/di/BattleSketchModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/coordinator/BattleSketchNavGraph.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/coordinator/BattleSketchNavGraph.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/coordinator/Coordinator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/coordinator/Coordinator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/home/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/home/HomeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/roomList/RoomListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/roomList/RoomListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/roomList/RoomListState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/roomList/RoomListState.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/roomList/RoomListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/roomList/RoomListViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/data/KtorClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/data/KtorClient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/data/RoomDataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/data/RoomDataSource.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/data/RoomRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/data/RoomRepositoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/data/entities/PlayerEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/data/entities/PlayerEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/data/entities/RoomEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/data/entities/RoomEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/di/BattleSketchApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/BattleSketchApplication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/di/BattleSketchModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/di/RoomModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/domain/room/models/Player.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/models/Player.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/domain/room/models/Room.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/models/Room.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/domain/room/repository/RoomRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/repository/RoomRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/domain/room/useCases/CreateRoomUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/useCases/CreateRoomUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/domain/room/useCases/GetAllRoomUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/useCases/GetAllRoomUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/domain/room/useCases/GetRoomByNameUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/useCases/GetRoomByNameUseCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/coordinator/BattleSketchNavGraph.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/coordinator/BattleSketchNavGraph.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/coordinator/BattleSketchRoute.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/coordinator/BattleSketchRoute.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/coordinator/Coordinator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/coordinator/Coordinator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/home/HomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/home/HomeScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/home/HomeState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/home/HomeState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/home/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/home/HomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/home/RoomEditingDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/home/RoomEditingDialog.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/roomList/RoomListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/roomList/RoomListScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/roomList/RoomListState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/roomList/RoomListState.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/presentation/roomList/RoomListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/roomList/RoomListViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/Board.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/Board.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/ColorPalette.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/ColorPalette.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/ColorWheel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/ColorWheel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/CoroutineScope.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/CoroutineScope.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/CustomAlertDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/CustomAlertDialog.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/CustomIconButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/CustomIconButton.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/DrawingTools.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/DrawingTools.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/Modifier.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/Modifier.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/PencilCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/PencilCase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/model/DefaultColor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/model/DefaultColor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/model/DrawingMode.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/model/DrawingMode.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/ui/components/model/PathSettings.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/model/PathSettings.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,12 +106,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Enum" />
-        <option value="Kotlin File" />
         <option value="Kotlin Data Class" />
         <option value="resourceFile" />
         <option value="Kotlin Interface" />
         <option value="Kotlin Class" />
         <option value="Kotlin Object" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -141,6 +164,8 @@
       <recent name="D:\Projets\Android\app\src\main\java\com\florientmanfo\battlesketch\presentation" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.florientmanfo.battlesketch" />
+      <recent name="com.florientmanfo.battlesketch.core.data" />
       <recent name="com.florientmanfo.battlesketch.ui.components.model" />
     </key>
   </component>

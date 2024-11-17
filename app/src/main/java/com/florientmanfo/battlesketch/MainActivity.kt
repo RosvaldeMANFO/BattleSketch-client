@@ -25,13 +25,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.florientmanfo.battlesketch.presentation.coordinator.BattleSketchNavGraph
-import com.florientmanfo.battlesketch.presentation.coordinator.BattleSketchRoute
-import com.florientmanfo.battlesketch.presentation.coordinator.Coordinator
+import com.florientmanfo.battlesketch.coordinator.BattleSketchNavGraph
+import com.florientmanfo.battlesketch.coordinator.BattleSketchRoute
+import com.florientmanfo.battlesketch.coordinator.Coordinator
 import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 import com.florientmanfo.battlesketch.ui.theme.isTablet
-import io.ktor.util.reflect.instanceOf
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
