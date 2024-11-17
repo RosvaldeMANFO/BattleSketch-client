@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.core.presentation.components.model
+package com.florientmanfo.battlesketch.board.domain.models
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.room.data.entities
+package com.florientmanfo.battlesketch.core.data.entity
 
 import kotlinx.serialization.Serializable
 

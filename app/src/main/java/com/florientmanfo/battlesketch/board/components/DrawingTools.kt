@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.core.presentation.components
+package com.florientmanfo.battlesketch.board.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.florientmanfo.battlesketch.core.presentation.components.model.DrawingMode
+import com.florientmanfo.battlesketch.board.domain.models.DrawingMode
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 import com.florientmanfo.battlesketch.ui.theme.smallDimens
 

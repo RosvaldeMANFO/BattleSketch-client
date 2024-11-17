@@ -144,7 +144,6 @@ fun RoomListItem(
                 ),
                 style = MaterialTheme.typography.labelMedium
             )
-
         },
         overlineContent = {
             Text(
