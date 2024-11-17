@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.board.data
+package com.florientmanfo.battlesketch.board.data.remote
 
 enum class SocketError(val message: String) {
     UnexpectedError("An unexpected error occurred."),

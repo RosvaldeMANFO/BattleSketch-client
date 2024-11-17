@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.board.data
+package com.florientmanfo.battlesketch.board.data.remote
 
 import com.florientmanfo.battlesketch.board.data.entities.SocketResponseEntity
 import com.florientmanfo.battlesketch.core.data.KtorClient
@@ -21,7 +21,7 @@ class WebSocketDataSource {
 
     suspend fun connect(): Flow<Result<SocketResponseEntity>> {
         socket = KtorClient.httpClient.webSocketSession {
-            url.takeFrom("ws://10.0.2.2:8080/")
+            url.takeFrom("ws://10.0.2.2:8080/play")
         }
         return socket.incoming
             .receiveAsFlow()

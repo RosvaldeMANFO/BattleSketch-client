@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.room.data
+package com.florientmanfo.battlesketch.room.data.remote
 
 import com.florientmanfo.battlesketch.room.data.entities.RoomEntity
 import com.florientmanfo.battlesketch.room.domain.models.Player

@@ -26,15 +26,6 @@ sealed interface BattleSketchRoute {
     }
 
     @Serializable
-    data class Holding(
-        val playerName: String,
-        val roomName: String,
-    ) : BattleSketchRoute {
-        override val title: Int
-            get() = R.string.room_list_title
-    }
-
-    @Serializable
     data class Board(
         val playerName: String,
         val roomName: String

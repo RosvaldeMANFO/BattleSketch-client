@@ -1,9 +1,8 @@
 package com.florientmanfo.battlesketch.room.di
 
 import com.florientmanfo.battlesketch.coordinator.Coordinator
-import com.florientmanfo.battlesketch.core.data.KtorClient
-import com.florientmanfo.battlesketch.room.data.RoomDataSource
-import com.florientmanfo.battlesketch.room.data.RoomRepositoryImpl
+import com.florientmanfo.battlesketch.room.data.remote.RoomDataSource
+import com.florientmanfo.battlesketch.room.data.remote.RoomRepositoryImpl
 import com.florientmanfo.battlesketch.room.domain.repository.RoomRepository
 import com.florientmanfo.battlesketch.room.domain.useCases.CreateRoomUseCase
 import com.florientmanfo.battlesketch.room.domain.useCases.GetAllRoomUseCase

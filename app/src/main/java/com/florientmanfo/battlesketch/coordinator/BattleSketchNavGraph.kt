@@ -25,9 +25,6 @@ fun BattleSketchNavGraph(
         composable<BattleSketchRoute.RoomList> {
             RoomList(modifier = Modifier.fillMaxSize())
         }
-        composable<BattleSketchRoute.Holding> {
-
-        }
         composable<BattleSketchRoute.Board> {
 
         }

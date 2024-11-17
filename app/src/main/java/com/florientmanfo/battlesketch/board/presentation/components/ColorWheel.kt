@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.board.components
+package com.florientmanfo.battlesketch.board.presentation.components
 
 import android.graphics.Color.HSVToColor
 import androidx.compose.foundation.background

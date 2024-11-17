@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.board.components
+package com.florientmanfo.battlesketch.board.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
