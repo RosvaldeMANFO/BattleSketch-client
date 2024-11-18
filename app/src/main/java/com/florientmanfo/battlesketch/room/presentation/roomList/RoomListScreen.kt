@@ -45,7 +45,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoomList(
+fun RoomListScreen(
     modifier: Modifier = Modifier,
     viewModel: RoomListViewModel = koinViewModel()
 ) {

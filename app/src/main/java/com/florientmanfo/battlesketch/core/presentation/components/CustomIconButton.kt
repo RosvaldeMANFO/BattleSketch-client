@@ -3,6 +3,8 @@ package com.florientmanfo.battlesketch.core.presentation.components
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -30,6 +32,7 @@ fun CustomIconButton(
         enabled = enabled
     ) {
         IconContent(
+            tint = if(enabled) Color.Unspecified else LocalContentColor.current,
             icon = icon,
             painter = painter,
             contentDescription = contentDescription,
@@ -49,7 +52,8 @@ private fun IconContent(
     icon: ImageVector?,
     painter: Painter?,
     contentDescription: String?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified
 ) {
     if (icon != null) {
         Icon(
@@ -62,7 +66,7 @@ private fun IconContent(
             modifier = modifier,
             painter = painter,
             contentDescription = contentDescription,
-            tint = Color.Unspecified,
+            tint = tint,
         )
     }
 }

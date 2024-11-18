@@ -47,11 +47,17 @@ class HomeViewModel(
 
             HomeUiEvent.OnJoinRoom -> {
                 viewModelScope.launch {
+//                    coordinator.navigateTo(
+//                        BattleSketchRoute.RoomList(
+//                            null,
+//                            null,
+//                            null
+//                        )
+//                    )
                     coordinator.navigateTo(
-                        BattleSketchRoute.RoomList(
-                            null,
-                            null,
-                            null
+                        BattleSketchRoute.Board(
+                            "",
+                            ""
                         )
                     )
                 }
@@ -78,6 +84,7 @@ class HomeViewModel(
                     }
                 }
             }
+
             HomeUiEvent.OnDismissDialog -> {
                 _homeSate.update {
                     it.copy(

@@ -1,13 +1,13 @@
 package com.florientmanfo.battlesketch.board.domain.models
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import com.florientmanfo.battlesketch.ui.theme.blue
 
 data class PathSettings(
-    val start: Offset = Offset.Zero,
-    val end: Offset = Offset.Zero,
-    val color: Color = blue,
-    val thickness: Float = 1f,
+    val points: MutableList<Offset> = mutableStateListOf(),
+    val color: Color,
+    val colorPickerOffset: Offset? = null,
+    val strokeWidth: Float = 1f,
     val drawingMode: DrawingMode = DrawingMode.Draw,
 )

@@ -94,12 +94,11 @@ fun PencilCase(
         )
         CustomIconButton(
             onClick = { onChangeDrawingMode(DrawingMode.Erase) },
-            enabled = canErase,
-            painter = painterResource(R.drawable.eraser)
+            painter = painterResource(R.drawable.eraser),
         )
         CustomIconButton(
             onClick = { showThicknessEditor = !showThicknessEditor },
-            icon = Icons.Default.LineWeight
+            icon = Icons.Default.LineWeight,
         )
     }
 }
@@ -115,8 +114,8 @@ fun ThicknessEditor(
 
     var boxSize by remember { mutableStateOf(IntSize.Zero) }
     val interactionSource = remember { MutableInteractionSource() }
-    var thickness by remember { mutableFloatStateOf(currentThickness) }
-    var cursorOffset by remember { mutableStateOf(Offset(currentThickness, 0f)) }
+    var thickness by remember { mutableFloatStateOf(currentThickness * 0.1f) }
+    var cursorOffset by remember { mutableStateOf(Offset(currentThickness * 0.1f, 0f)) }
     val slideColor = MaterialTheme.colorScheme.primary
     val scope = rememberCoroutineScope()
 
@@ -124,7 +123,7 @@ fun ThicknessEditor(
         modifier = modifier,
         title = stringResource(R.string.thickness_dialog_title),
         onConfirmRequest = {
-            onThicknessChange(thickness)
+            onThicknessChange(thickness * 0.1f)
         },
         onDismissRequest = { onDismissRequest() }
     ) {

@@ -6,8 +6,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.florientmanfo.battlesketch.board.presentation.BoardScreen
 import com.florientmanfo.battlesketch.room.presentation.home.HomeScreen
-import com.florientmanfo.battlesketch.room.presentation.roomList.RoomList
+import com.florientmanfo.battlesketch.room.presentation.roomList.RoomListScreen
 
 @Composable
 fun BattleSketchNavGraph(
@@ -23,10 +24,10 @@ fun BattleSketchNavGraph(
             HomeScreen(modifier = Modifier.fillMaxSize())
         }
         composable<BattleSketchRoute.RoomList> {
-            RoomList(modifier = Modifier.fillMaxSize())
+            RoomListScreen(modifier = Modifier.fillMaxSize())
         }
         composable<BattleSketchRoute.Board> {
-
+            BoardScreen(modifier = Modifier.fillMaxSize())
         }
     }
 }

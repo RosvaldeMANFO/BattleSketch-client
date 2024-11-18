@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,14 +46,15 @@ fun ColorPalette(
     initColor: Color = if (isSystemInDarkTheme()) Color.White else Color.Black,
     onColorChange: (Color, Offset?) -> Unit,
 ) {
-    val isDark = isSystemInDarkTheme()
+    val primaryBrush = MaterialTheme.colorScheme.onSurface
+    val accentColor = MaterialTheme.colorScheme.surface
     var showColorWheel by remember { mutableStateOf(false) }
     var currentColor by remember { mutableStateOf(initColor) }
     var currentPickerOffset by remember { mutableStateOf(initPickerOffset) }
 
     val defaultColors = remember {
         DefaultColorOptions.entries.map {
-            val color = it.color ?: if (isDark) Color.White else Color.Black
+            val color = it.color ?: primaryBrush
             DefaultColor(color, false)
         }.toMutableStateList()
     }
@@ -91,6 +93,7 @@ fun ColorPalette(
         defaultColors.forEachIndexed { index, item ->
             ColorItem(
                 item = item,
+                accent = accentColor,
                 onClick = {
                     setSelection(index)
                     currentColor = item.color
@@ -100,7 +103,7 @@ fun ColorPalette(
         CustomIconButton(
             onClick = { showColorWheel = true },
             painter = painterResource(R.drawable.color_wheel),
-            accent = if (isDark) Color.Black else Color.White,
+            accent = accentColor,
             contentDescription = stringResource(R.string.color_wheel_dialog_title),
             isSelected = !defaultColors.any { it.selected }
         )
@@ -110,12 +113,10 @@ fun ColorPalette(
 @Composable
 fun ColorItem(
     item: DefaultColor,
+    accent: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isDarkTheme = isSystemInDarkTheme()
-    val accentColor = if (isDarkTheme) Color.Black else Color.White
-
     Box(
         modifier = modifier
             .size(LocalAppDimens.current.size)
@@ -128,7 +129,7 @@ fun ColorItem(
                 drawCircle(item.color)
                 if (item.selected) {
                     drawCircle(
-                        color = accentColor,
+                        color = accent,
                         radius = size.width / 2,
                         style = Stroke(width = size.width / 5)
                     )
