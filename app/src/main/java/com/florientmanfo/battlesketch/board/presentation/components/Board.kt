@@ -1,12 +1,13 @@
 package com.florientmanfo.battlesketch.board.presentation.components
 
-import androidx.compose.animation.AnimatedVisibility
+import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,33 +25,39 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerId
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.platform.LocalConfiguration
 import com.florientmanfo.battlesketch.board.domain.models.DrawingMode
 import com.florientmanfo.battlesketch.board.domain.models.PathSettings
+import com.florientmanfo.battlesketch.board.domain.models.fake
+import com.florientmanfo.battlesketch.core.presentation.components.CustomTextField
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 import kotlinx.coroutines.launch
 
 @Composable
 fun Board(
+    modifier: Modifier = Modifier,
+    showEditText: Boolean = true,
+    showDrawingTools: Boolean = true,
     onUndo: () -> Unit,
     onRedo: () -> Unit,
     onReset: (PathSettings) -> Unit,
-    showChat: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
     basePath: PathSettings = PathSettings(
         color = if (isSystemInDarkTheme()) Color.White else Color.Black
     ),
-    onDrawPath: (PathSettings) -> Unit,
+    onDrawPath: ((PathSettings) -> Unit)? = null,
+    onSendMessage: ((String) -> Unit)? = null
 ) {
+    val configuration = LocalConfiguration.current
     val paths = remember { mutableStateListOf<PathSettings>() }
     val redoPaths = remember { mutableStateListOf<PathSettings>() }
 
     var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
 
-    var toggleDrawingTools by remember { mutableStateOf(false) }
+    var toggleMessageList by remember { mutableStateOf(true) }
     var painterState by remember { mutableStateOf(basePath) }
-    var toggleChat by remember { mutableStateOf(true) }
     val coroutineScope = rememberCoroutineScope()
+    var message by remember { mutableStateOf("") }
 
     BoxWithConstraints(
         modifier = modifier
@@ -81,32 +88,34 @@ fun Board(
                 }
                 .transformable(state)
                 .pointerInput(Unit) {
-                    awaitEachGesture {
-                        val down = awaitFirstDown()
-                        paths.add(
-                            painterState.copy(
-                                points = mutableListOf(down.position)
+                    if (showDrawingTools) {
+                        awaitEachGesture {
+                            val down = awaitFirstDown()
+                            paths.add(
+                                painterState.copy(
+                                    points = mutableListOf(down.position)
+                                )
                             )
-                        )
-                        var pointerId: PointerId = down.id
-                        while (true) {
-                            val event = awaitTouchSlopOrCancellation(pointerId) { change, _ ->
-                                if (change.positionChange() != Offset.Zero) change.consume()
-                            }
-                            if (event != null) {
-                                coroutineScope.launch {
-                                    paths[paths.size - 1] = painterState.copy(
-                                        points = paths.last().points
-                                            .toMutableList()
-                                            .apply {
-                                                add(event.position)
-                                            }
-                                    )
+                            var pointerId: PointerId = down.id
+                            while (true) {
+                                val event = awaitTouchSlopOrCancellation(pointerId) { change, _ ->
+                                    if (change.positionChange() != Offset.Zero) change.consume()
                                 }
-                                pointerId = event.id
-                            } else break
+                                if (event != null) {
+                                    coroutineScope.launch {
+                                        paths[paths.size - 1] = painterState.copy(
+                                            points = paths.last().points
+                                                .toMutableList()
+                                                .apply {
+                                                    add(event.position)
+                                                }
+                                        )
+                                    }
+                                    pointerId = event.id
+                                } else break
+                            }
+                            onDrawPath?.invoke(paths.last())
                         }
-                        onDrawPath(paths.last())
                     }
                 }
         ) {
@@ -124,7 +133,7 @@ fun Board(
                     cap = StrokeCap.Round,
                     join = StrokeJoin.Round
                 )
-                if(pathSettings.drawingMode == DrawingMode.Erase){
+                if (pathSettings.drawingMode == DrawingMode.Erase) {
                     drawPath(
                         path = path,
                         color = eraser,
@@ -140,72 +149,89 @@ fun Board(
             }
         }
 
-        Column(
+        Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(LocalAppDimens.current.margin)
                 .wrapContentSize(),
-            verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin)
         ) {
             IconButton(
-                onClick = { toggleDrawingTools = !toggleDrawingTools }
-            ) {
-                Icon(imageVector = Icons.Default.Edit, contentDescription = null)
-            }
-
-            IconButton(
-                onClick = {
-                    toggleChat = !toggleChat
-                    showChat(toggleChat)
-                }
+                onClick = { toggleMessageList = !toggleMessageList }
             ) {
                 Icon(imageVector = Icons.AutoMirrored.Filled.Chat, contentDescription = null)
             }
         }
 
-        AnimatedVisibility(
-            visible = toggleDrawingTools,
-            modifier = Modifier.align(Alignment.BottomCenter),
-        ) {
-            DrawingTools(
-                canUndo = paths.isNotEmpty(),
-                canRedo = redoPaths.isNotEmpty(),
-                canErase = paths.isNotEmpty(),
-                onUndo = {
-                    if (paths.isNotEmpty()) {
-                        redoPaths.add(paths.last())
-                        paths.removeAt(paths.size - 1)
-                        onUndo()
-                    }
-                },
-                onRedo = {
-                    if (redoPaths.isNotEmpty()) {
-                        paths.add(redoPaths.last())
-                        redoPaths.removeAt(redoPaths.size - 1)
-                        onRedo()
-                    }
-                },
-                onReset = {
-                    paths.clear()
-                    redoPaths.clear()
-                    painterState = basePath
-                    onReset(painterState)
-                },
-                onChangeThickness = { thickness ->
-                    painterState = painterState.copy(strokeWidth = thickness)
-                },
-                onColorChange = { color, offset ->
-                    painterState = painterState.copy(
-                        color = color,
-                        colorPickerOffset = offset,
-                        drawingMode = DrawingMode.Draw
-                    )
 
-                },
-                onChangeDrawingMode = { mode ->
-                    painterState = painterState.copy(drawingMode = mode)
+        MessageList(
+            showMessages = toggleMessageList,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth(
+                    if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+                        1f else 0.75f
+                ),
+            onSendMessage = {},
+            messages = fake,
+            headContent = {
+                if (showDrawingTools) {
+                    DrawingTools(
+                        canUndo = paths.isNotEmpty(),
+                        canRedo = redoPaths.isNotEmpty(),
+                        canErase = paths.isNotEmpty(),
+                        onUndo = {
+                            if (paths.isNotEmpty()) {
+                                redoPaths.add(paths.last())
+                                paths.removeAt(paths.size - 1)
+                                onUndo()
+                            }
+                        },
+                        onRedo = {
+                            if (redoPaths.isNotEmpty()) {
+                                paths.add(redoPaths.last())
+                                redoPaths.removeAt(redoPaths.size - 1)
+                                onRedo()
+                            }
+                        },
+                        onReset = {
+                            paths.clear()
+                            redoPaths.clear()
+                            painterState = basePath
+                            onReset(painterState)
+                        },
+                        onChangeThickness = { thickness ->
+                            painterState = painterState.copy(strokeWidth = thickness)
+                        },
+                        onColorChange = { color, offset ->
+                            painterState = painterState.copy(
+                                color = color,
+                                colorPickerOffset = offset,
+                                drawingMode = DrawingMode.Draw
+                            )
+
+                        },
+                        onChangeDrawingMode = { mode ->
+                            painterState = painterState.copy(drawingMode = mode)
+                        }
+                    )
                 }
-            )
-        }
+                if (showEditText) {
+                    CustomTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = message,
+                        onValueChange = { message = it },
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {
+                                    if (message.isNotEmpty()) {
+                                        onSendMessage?.invoke(message)
+                                    }
+                                }
+                            ) { Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null) }
+                        }
+                    )
+                }
+            }
+        )
     }
 }

@@ -1,7 +1,7 @@
 package com.florientmanfo.battlesketch.room.data.remote
 
 import com.florientmanfo.battlesketch.room.data.entities.RoomEntity
-import com.florientmanfo.battlesketch.room.domain.models.Player
+import com.florientmanfo.battlesketch.core.domain.models.Player
 import com.florientmanfo.battlesketch.room.domain.models.Room
 import com.florientmanfo.battlesketch.room.domain.repository.RoomRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi

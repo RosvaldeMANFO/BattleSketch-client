@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.board.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.florientmanfo.battlesketch.board.presentation.components.Board
@@ -10,11 +11,17 @@ fun BoardScreen(
     modifier: Modifier = Modifier,
     viewModel: BoardViewModel = koinViewModel()
 ) {
-    Board(
-        modifier = modifier,
-        onUndo = {},
-        onRedo = {},
-        onReset = { _ -> },
-        showChat = { _ -> },
-    ) { _ -> }
+
+    Box(modifier) {
+        Board(
+            showEditText = false,
+            showDrawingTools = true,
+            modifier = modifier,
+            onUndo = {},
+            onRedo = {},
+            onReset = { _ -> },
+            onSendMessage = {_ ->},
+            onDrawPath =  { _ ->}
+        )
+    }
 }

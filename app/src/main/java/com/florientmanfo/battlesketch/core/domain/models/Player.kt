@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.room.domain.models
+package com.florientmanfo.battlesketch.core.domain.models
 
 data class Player(
     val name: String,
