@@ -40,9 +40,8 @@ import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 fun MessageList(
     modifier: Modifier = Modifier,
     messages: MutableList<Message> = mutableStateListOf(),
-    onSendMessage: (String) -> Unit,
     showMessages: Boolean = false,
-    headContent: @Composable () -> Unit,
+    headContent: (@Composable () -> Unit)?,
 ) {
 
     val listState = rememberLazyListState()
@@ -62,7 +61,7 @@ fun MessageList(
         verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        headContent()
+        headContent?.invoke()
 
         AnimatedVisibility(
             showMessages,
@@ -72,7 +71,6 @@ fun MessageList(
             LazyColumn(
                 state = listState,
                 modifier = Modifier
-                    .fillMaxWidth()
                     .height(messageListHeight),
                 verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin),
                 horizontalAlignment = Alignment.CenterHorizontally

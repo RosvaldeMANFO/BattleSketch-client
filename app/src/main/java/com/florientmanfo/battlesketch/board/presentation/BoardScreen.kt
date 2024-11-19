@@ -14,7 +14,6 @@ fun BoardScreen(
 
     Box(modifier) {
         Board(
-            showEditText = false,
             showDrawingTools = true,
             modifier = modifier,
             onUndo = {},
