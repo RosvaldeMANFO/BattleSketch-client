@@ -17,4 +17,5 @@
         <item quantity="other">%d players</item>
     </plurals>
     <string name="invalid_room_password">Invalid password</string>
+    <string name="player_score">Score: %d</string>
 </resources>

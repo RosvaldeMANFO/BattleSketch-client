@@ -64,14 +64,6 @@ fun MessageCard(
         },
         leadingContent = {
             Icon(Icons.Default.Person, null)
-        },
-        trailingContent = {
-            message.sender?.let {
-                Text(
-                    it.score.toString(),
-                    style = MaterialTheme.typography.labelLarge
-                )
-            }
         }
     )
 }
@@ -84,7 +76,7 @@ fun MessageCardPreview() {
     MessageCard(
         Message(
             "Maison",
-            Player("Test", 0),
+            Player("Test", 0, false),
             MessageType.Suggestion
         )
     )

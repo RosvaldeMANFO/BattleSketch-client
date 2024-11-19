@@ -23,22 +23,22 @@ enum class MessageType{
 val fake = mutableListOf(
     Message(
         "Maison",
-        Player("Test", 0),
+        Player("Test", 0, true),
         MessageType.Suggestion
     ),
     Message(
         "Maison",
-        Player("Test", 0),
+        Player("Test", 0, false),
         MessageType.Suggestion
     ),
     Message(
         "Maison",
-        Player("Test", 0),
+        Player("Test", 0, false),
         MessageType.Suggestion
     ),
     Message(
         "Maison",
-        Player("Test", 0),
+        Player("Test", 0, false),
         MessageType.Suggestion
     )
 )

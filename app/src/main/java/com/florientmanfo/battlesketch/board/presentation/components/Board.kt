@@ -1,11 +1,23 @@
 package com.florientmanfo.battlesketch.board.presentation.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,10 +34,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerId
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import com.florientmanfo.battlesketch.board.domain.models.DrawingMode
 import com.florientmanfo.battlesketch.board.domain.models.PathSettings
 import com.florientmanfo.battlesketch.board.domain.models.fake
+import com.florientmanfo.battlesketch.core.domain.models.players
 import com.florientmanfo.battlesketch.core.presentation.components.CustomTextField
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 import com.florientmanfo.battlesketch.ui.theme.isTablet
@@ -48,7 +64,8 @@ fun Board(
     val paths = remember { mutableStateListOf<PathSettings>() }
     val redoPaths = remember { mutableStateListOf<PathSettings>() }
 
-    var shoMessageList by remember { mutableStateOf(false) }
+    var showMessageList by remember { mutableStateOf(false) }
+    var showPlayerList by remember { mutableStateOf(false) }
     var painterState by remember { mutableStateOf(basePath) }
     val coroutineScope = rememberCoroutineScope()
     var message by remember { mutableStateOf("") }
@@ -167,16 +184,22 @@ fun Board(
         }
     }
 
-    val messageButton: @Composable (Modifier) -> Unit = { innerModifier ->
-        Box(
+    val buttons: @Composable (Modifier) -> Unit = { innerModifier ->
+        Column(
             modifier = innerModifier
                 .padding(LocalAppDimens.current.margin)
                 .wrapContentSize(),
+            verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin)
         ) {
             IconButton(
-                onClick = { shoMessageList = !shoMessageList }
+                onClick = { showMessageList = !showMessageList }
             ) {
                 Icon(imageVector = Icons.AutoMirrored.Filled.Chat, contentDescription = null)
+            }
+            IconButton(
+                onClick = { showPlayerList = !showPlayerList }
+            ) {
+                Icon(imageVector = Icons.Default.Person, contentDescription = null)
             }
         }
     }
@@ -244,7 +267,7 @@ fun Board(
     val messageList: @Composable (Modifier, (@Composable () -> Unit)?) -> Unit =
         { innerModifier, header ->
             MessageList(
-                showMessages = shoMessageList,
+                showMessages = showMessageList,
                 modifier = innerModifier,
                 messages = fake,
                 headContent = header
@@ -253,12 +276,18 @@ fun Board(
 
     if (isTablet(context)) {
         Row(modifier.fillMaxSize()) {
-            shoMessageList = true
+            showMessageList = true
             messageList(
                 Modifier
                     .weight(0.3f)
-                    .fillMaxHeight(), null
-            )
+                    .fillMaxHeight(),
+            ) {
+                PlayerList(
+                    players = players,
+                    modifier = Modifier.fillMaxHeight(0.5f)
+                )
+            }
+
             board(
                 Modifier
                     .weight(0.7f)
@@ -273,8 +302,22 @@ fun Board(
         }
     } else {
         board(modifier) {
-            messageButton(Modifier.align(Alignment.TopEnd))
-            messageList(Modifier) {
+            buttons(Modifier.align(Alignment.TopEnd))
+            AnimatedVisibility(
+                visible = showPlayerList,
+                enter = slideInHorizontally() + expandVertically() + expandVertically() + fadeIn(),
+                exit = slideOutHorizontally() + shrinkVertically() + shrinkHorizontally() + fadeOut(),
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .fillMaxWidth(0.75f)
+                    .fillMaxHeight()
+            ) {
+                PlayerList(
+                    modifier = Modifier.fillMaxSize(),
+                    players = players
+                )
+            }
+            messageList(Modifier.heightIn(min = 0.dp, max = maxHeight/2)) {
                 if (showDrawingTools) {
                     drawingTools(Modifier.align(Alignment.BottomCenter))
                 } else {

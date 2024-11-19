@@ -10,6 +10,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -71,7 +72,7 @@ fun MessageList(
             LazyColumn(
                 state = listState,
                 modifier = Modifier
-                    .height(messageListHeight),
+                    .fillMaxHeight(1f),
                 verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

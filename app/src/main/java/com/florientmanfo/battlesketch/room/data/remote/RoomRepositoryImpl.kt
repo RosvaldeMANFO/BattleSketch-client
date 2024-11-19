@@ -52,7 +52,8 @@ class RoomRepositoryImpl(
                     .map { player ->
                         Player(
                             name = player.name,
-                            score = player.score
+                            score = player.score,
+                            isCurrentPlayer = player.isCurrentPlayer
                         )
                     },
                 password = entity.password
