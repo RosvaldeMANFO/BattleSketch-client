@@ -1,19 +1,31 @@
 package com.florientmanfo.battlesketch.board.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandIn
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitTouchSlopOrCancellation
+import androidx.compose.foundation.gestures.rememberTransformableState
+import androidx.compose.foundation.gestures.transformable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -21,7 +33,14 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.UiComposable
@@ -34,13 +53,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerId
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
-import com.florientmanfo.battlesketch.board.domain.models.DrawingMode
 import com.florientmanfo.battlesketch.board.domain.models.PathSettings
+import com.florientmanfo.battlesketch.board.domain.models.SessionData
 import com.florientmanfo.battlesketch.board.domain.models.fake
+import com.florientmanfo.battlesketch.core.domain.models.DrawingMode
 import com.florientmanfo.battlesketch.core.domain.models.players
 import com.florientmanfo.battlesketch.core.presentation.components.CustomTextField
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
@@ -49,8 +67,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Board(
+    sessionData: SessionData,
     modifier: Modifier = Modifier,
-    showDrawingTools: Boolean = true,
+    showDrawingTools: Boolean,
     onUndo: () -> Unit,
     onRedo: () -> Unit,
     onReset: (PathSettings) -> Unit,
@@ -61,7 +80,7 @@ fun Board(
     onSendMessage: ((String) -> Unit)? = null,
 ) {
     val context = LocalContext.current
-    val paths = remember { mutableStateListOf<PathSettings>() }
+    val paths = remember { sessionData.drawingData }
     val redoPaths = remember { mutableStateListOf<PathSettings>() }
 
     var showMessageList by remember { mutableStateOf(false) }
@@ -269,7 +288,7 @@ fun Board(
             MessageList(
                 showMessages = showMessageList,
                 modifier = innerModifier,
-                messages = fake,
+                messages = sessionData.messages,
                 headContent = header
             )
         }
@@ -283,7 +302,7 @@ fun Board(
                     .fillMaxHeight(),
             ) {
                 PlayerList(
-                    players = players,
+                    players = sessionData.players,
                     modifier = Modifier.fillMaxHeight(0.5f)
                 )
             }
@@ -314,10 +333,10 @@ fun Board(
             ) {
                 PlayerList(
                     modifier = Modifier.fillMaxSize(),
-                    players = players
+                    players = sessionData.players
                 )
             }
-            messageList(Modifier.heightIn(min = 0.dp, max = maxHeight/2)) {
+            messageList(Modifier.heightIn(min = 0.dp, max = maxHeight / 2)) {
                 if (showDrawingTools) {
                     drawingTools(Modifier.align(Alignment.BottomCenter))
                 } else {

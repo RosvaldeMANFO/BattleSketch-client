@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.tooling.preview.Preview
 import com.florientmanfo.battlesketch.board.domain.models.Message
-import com.florientmanfo.battlesketch.board.domain.models.MessageType
+import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import com.florientmanfo.battlesketch.core.domain.models.Player
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 
@@ -35,16 +35,16 @@ fun MessageCard(
                 drawRoundRect(
                     color = color,
                     cornerRadius = CornerRadius(localDimension),
-                    topLeft = Offset(size.width*0.04f, 0f)
+                    topLeft = Offset(size.width * 0.04f, 0f)
                 )
                 drawPath(
                     path = Path().apply {
-                        lineTo(size.width*0.09f, 0f)
-                        lineTo(size.width*0.09f, size.height*0.4f)
+                        lineTo(size.width * 0.09f, 0f)
+                        lineTo(size.width * 0.09f, size.height * 0.4f)
                     },
                     color = color
                 )
-                scale(scale = 0.90f){
+                scale(scale = 0.90f) {
                     this@drawWithContent.drawContent()
                 }
             },
@@ -69,14 +69,13 @@ fun MessageCard(
 }
 
 
-
 @Preview
 @Composable
 fun MessageCardPreview() {
     MessageCard(
         Message(
             "Maison",
-            Player("Test", 0, false),
+            Player("Test", 0),
             MessageType.Suggestion
         )
     )

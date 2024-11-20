@@ -18,6 +18,7 @@ import com.florientmanfo.battlesketch.core.domain.models.Player
 fun PlayerCard(
     player: Player,
     modifier: Modifier = Modifier,
+    isCurrentPlayer: Boolean = false
 ) {
     val color = ListItemDefaults.containerColor
 
@@ -39,7 +40,7 @@ fun PlayerCard(
         leadingContent = {
             Icon(Icons.Default.Person, null)
         },
-        trailingContent = if (player.isCurrentPlayer) {
+        trailingContent = if (isCurrentPlayer) {
             {
                 Icon(Icons.Default.Edit, null)
             }

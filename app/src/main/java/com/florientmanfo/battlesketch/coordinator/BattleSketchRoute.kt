@@ -28,7 +28,8 @@ sealed interface BattleSketchRoute {
     @Serializable
     data class Board(
         val playerName: String,
-        val roomName: String
+        val roomName: String,
+        val password: String? = null
     ) : BattleSketchRoute {
         override val title: Int
             get() = R.string.room_list_title

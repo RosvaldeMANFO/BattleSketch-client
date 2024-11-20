@@ -46,7 +46,7 @@ fun JoinRoomDialog(
                 state.selectedRoom?.password?.let {
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = state.roomPassword,
+                        value = state.roomPassword ?: "",
                         onValueChange = {
                             viewModel.onUiEvent(RoomListUiEvent.OnPasswordChange(it))
                         },
@@ -73,7 +73,7 @@ fun JoinRoomDialog(
         },
         confirmLabel = stringResource(R.string.join_room_label),
         onConfirmRequest = {
-
+            viewModel.onUiEvent(RoomListUiEvent.OnConfirmDialog)
         },
         onDismissRequest = {
             viewModel.onUiEvent(RoomListUiEvent.OnDismissDialog)

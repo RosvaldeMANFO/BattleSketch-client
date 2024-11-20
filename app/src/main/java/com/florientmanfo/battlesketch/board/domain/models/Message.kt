@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.board.domain.models
 
+import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import com.florientmanfo.battlesketch.core.domain.models.Player
 
 
@@ -9,36 +10,25 @@ data class Message(
     val messageType: MessageType
 )
 
-enum class MessageType{
-    Suggestion,
-    PlayerJoined,
-    GameStarted,
-    PlayerLeft,
-    NewSketch,
-    SketchGuessed,
-    NextPlayer,
-    EmptyRoom
-}
-
 val fake = mutableListOf(
     Message(
         "Maison",
-        Player("Test", 0, true),
+        Player("Test", 0),
         MessageType.Suggestion
     ),
     Message(
         "Maison",
-        Player("Test", 0, false),
+        Player("Test", 0),
         MessageType.Suggestion
     ),
     Message(
         "Maison",
-        Player("Test", 0, false),
+        Player("Test", 0),
         MessageType.Suggestion
     ),
     Message(
         "Maison",
-        Player("Test", 0, false),
+        Player("Test", 0),
         MessageType.Suggestion
     )
 )

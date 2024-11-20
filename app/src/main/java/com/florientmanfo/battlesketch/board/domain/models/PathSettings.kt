@@ -3,6 +3,7 @@ package com.florientmanfo.battlesketch.board.domain.models
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import com.florientmanfo.battlesketch.core.domain.models.DrawingMode
 
 data class PathSettings(
     val points: MutableList<Offset> = mutableStateListOf(),

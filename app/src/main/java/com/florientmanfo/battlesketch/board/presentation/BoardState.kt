@@ -1,8 +1,9 @@
 package com.florientmanfo.battlesketch.board.presentation
 
-import androidx.compose.runtime.mutableStateListOf
-import com.florientmanfo.battlesketch.board.domain.models.PathSettings
+import com.florientmanfo.battlesketch.board.domain.models.SessionData
 
 data class BoardState(
-    val drawingDate: MutableList<PathSettings> = mutableStateListOf()
+    val sessionData: SessionData? = null,
+    val errorMessage: String? = null,
+    val payerName: String = ""
 )

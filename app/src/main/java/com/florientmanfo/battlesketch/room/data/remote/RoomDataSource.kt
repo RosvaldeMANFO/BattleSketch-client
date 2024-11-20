@@ -25,25 +25,21 @@ class RoomDataSource {
         }
     }
 
-    fun getAllRoom(): Flow<Result<List<RoomEntity>>> = flow {
-        try {
-            val response = KtorClient.httpClient.get(urlString = "room")
-            val rooms = response.body<List<RoomEntity>>()
-                .filter { it.isOpen }
-            emit(Result.success(rooms))
-        } catch (e: Exception) {
-            emit(Result.failure(e))
-        }
+    suspend fun getAllRoom(): Result<List<RoomEntity>> = try {
+        val response = KtorClient.httpClient.get(urlString = "room")
+        val rooms = response.body<List<RoomEntity>>()
+            .filter { it.isOpen }
+        Result.success(rooms)
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 
-    fun getRoomByName(name: String): Flow<Result<List<RoomEntity>>> = flow {
-        try {
-            val response = KtorClient.httpClient.get(urlString = "room/$name")
-            val rooms = response.body<List<RoomEntity>>()
-                .filter { it.isOpen }
-            emit(Result.success(rooms))
-        } catch (e: Error) {
-            emit(Result.failure(e))
-        }
+    suspend fun getRoomByName(name: String): Result<List<RoomEntity>> = try {
+        val response = KtorClient.httpClient.get(urlString = "room/$name")
+        val rooms = response.body<List<RoomEntity>>()
+            .filter { it.isOpen }
+        Result.success(rooms)
+    } catch (e: Error) {
+        Result.failure(e)
     }
 }

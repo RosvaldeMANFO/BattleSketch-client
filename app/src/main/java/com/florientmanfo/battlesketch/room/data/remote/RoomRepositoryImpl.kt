@@ -1,14 +1,10 @@
 package com.florientmanfo.battlesketch.room.data.remote
 
-import com.florientmanfo.battlesketch.room.data.entities.RoomEntity
 import com.florientmanfo.battlesketch.core.domain.models.Player
+import com.florientmanfo.battlesketch.room.data.entities.RoomEntity
 import com.florientmanfo.battlesketch.room.domain.models.Room
 import com.florientmanfo.battlesketch.room.domain.repository.RoomRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapLatest
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class RoomRepositoryImpl(
     private val dataSource: RoomDataSource
 ) : RoomRepository {
@@ -23,24 +19,18 @@ class RoomRepositoryImpl(
         )
     }
 
-    override suspend fun getAllRoom(): Flow<List<Room>> {
-        return dataSource.getAllRoom().mapLatest {
-            if (it.isSuccess) {
-                mapRooms(it)
-            } else {
-                emptyList()
-            }
-        }
+    override suspend fun getAllRoom(): List<Room> {
+        val result = dataSource.getAllRoom()
+        return if (result.isSuccess) mapRooms(result)
+        else emptyList()
     }
 
-    override suspend fun getRoomByName(name: String): Flow<List<Room>> {
-        return dataSource.getRoomByName(name).mapLatest {
-            if (it.isSuccess) {
-                mapRooms(it)
-            } else {
-                emptyList()
-            }
-        }
+
+    override suspend fun getRoomByName(name: String): List<Room> {
+        val result = dataSource.getRoomByName(name)
+        return if (result.isSuccess) mapRooms(result)
+        else emptyList()
+
     }
 
     private fun mapRooms(result: Result<List<RoomEntity>>) =
@@ -52,8 +42,7 @@ class RoomRepositoryImpl(
                     .map { player ->
                         Player(
                             name = player.name,
-                            score = player.score,
-                            isCurrentPlayer = player.isCurrentPlayer
+                            score = player.score
                         )
                     },
                 password = entity.password

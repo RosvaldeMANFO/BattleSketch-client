@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.room.domain.useCases
+package com.florientmanfo.battlesketch.room.domain.use_cases
 
 import com.florientmanfo.battlesketch.room.domain.models.Room
 import com.florientmanfo.battlesketch.room.domain.repository.RoomRepository

@@ -1,7 +1,66 @@
 package com.florientmanfo.battlesketch.board.presentation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.florientmanfo.battlesketch.board.domain.use_cases.GetSessionDataUseCase
+import com.florientmanfo.battlesketch.board.domain.use_cases.JoinRoomUseCase
+import com.florientmanfo.battlesketch.coordinator.BattleSketchRoute
+import com.florientmanfo.battlesketch.coordinator.Coordinator
+import com.florientmanfo.battlesketch.core.domain.models.MessageType
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class BoardViewModel: ViewModel() {
+class BoardViewModel(
+    private val savedStateHandle: SavedStateHandle,
+    private val joinRoomUseCase: JoinRoomUseCase,
+    private val getSessionDataUseCase: GetSessionDataUseCase,
+    private val coordinator: Coordinator
+) : ViewModel() {
+
+    private val _boardState = MutableStateFlow(BoardState())
+    val boardState = _boardState.asStateFlow()
+
+    private val args = savedStateHandle.toRoute<BattleSketchRoute.Board>()
+
+
+    init {
+        joinRoom()
+    }
+
+    private fun joinRoom() {
+        viewModelScope.launch {
+            joinRoomUseCase(
+                args.playerName,
+                args.roomName,
+                args.password
+            ).collect { result ->
+                result.message?.let {
+                    when (it.messageType) {
+                        MessageType.PlayerJoined -> {
+                            val sessionData = getSessionDataUseCase(args.roomName)
+                            _boardState.update { state ->
+                                state.copy(
+                                    payerName = args.playerName,
+                                    sessionData = sessionData
+                                )
+                            }
+                        }
+
+                        else -> {
+                            coordinator.navigateBack()
+                        }
+                    }
+                }
+
+                result.pathSettings?.let {
+                    _boardState.value.sessionData?.drawingData?.add(it)
+                }
+            }
+        }
+    }
 
 }

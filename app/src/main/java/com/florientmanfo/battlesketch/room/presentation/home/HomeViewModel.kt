@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.florientmanfo.battlesketch.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.coordinator.Coordinator
-import com.florientmanfo.battlesketch.room.domain.useCases.CreateRoomUseCase
+import com.florientmanfo.battlesketch.room.domain.use_cases.CreateRoomUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -47,17 +47,11 @@ class HomeViewModel(
 
             HomeUiEvent.OnJoinRoom -> {
                 viewModelScope.launch {
-//                    coordinator.navigateTo(
-//                        BattleSketchRoute.RoomList(
-//                            null,
-//                            null,
-//                            null
-//                        )
-//                    )
                     coordinator.navigateTo(
-                        BattleSketchRoute.Board(
-                            "",
-                            ""
+                        BattleSketchRoute.RoomList(
+                            null,
+                            null,
+                            null,
                         )
                     )
                 }

@@ -1,9 +1,15 @@
 package com.florientmanfo.battlesketch.board.data.remote
 
+import android.util.Log
+import com.florientmanfo.battlesketch.board.data.entities.SessionDataEntity
 import com.florientmanfo.battlesketch.board.data.entities.SocketResponseEntity
 import com.florientmanfo.battlesketch.core.data.KtorClient
+import com.florientmanfo.battlesketch.core.data.entity.PlayerEntity
+import io.ktor.client.call.body
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
+import io.ktor.client.plugins.websocket.sendSerialized
 import io.ktor.client.plugins.websocket.webSocketSession
+import io.ktor.client.request.get
 import io.ktor.http.takeFrom
 import io.ktor.websocket.CloseReason
 import io.ktor.websocket.Frame
@@ -16,13 +22,22 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.serialization.json.Json
 
-class WebSocketDataSource {
+class BoardDataSource {
     private lateinit var socket: DefaultClientWebSocketSession
 
-    suspend fun connect(): Flow<Result<SocketResponseEntity>> {
+    suspend fun connect(playerName: String, roomName: String, password: String?): Flow<Result<SocketResponseEntity>> {
         socket = KtorClient.httpClient.webSocketSession {
             url.takeFrom("ws://10.0.2.2:8080/play")
         }
+
+        val player = PlayerEntity(
+            name = playerName,
+            roomName = roomName,
+            password = password
+        )
+
+        socket.sendSerialized(player)
+
         return socket.incoming
             .receiveAsFlow()
             .map { frame ->
@@ -45,5 +60,14 @@ class WebSocketDataSource {
 
     suspend fun close() {
         socket.close(CloseReason(CloseReason.Codes.NORMAL, SocketError.SessionClosed.message))
+    }
+
+    suspend fun getSessionData(roomName: String): Result<SessionDataEntity> = try {
+        val response = KtorClient.httpClient.get(urlString = "session/$roomName")
+        val result = response.body<SessionDataEntity>()
+        Result.success(result)
+    } catch (e: Error) {
+        Log.d("SESSION_DATA", "${e.message}")
+        Result.failure(e)
     }
 }
