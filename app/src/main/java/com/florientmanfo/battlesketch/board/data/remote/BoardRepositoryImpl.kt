@@ -24,7 +24,7 @@ class BoardRepositoryImpl(
                 },
                 onSuccess = { entity ->
                     val response = Message(
-                        content = entity.content,
+                        content = entity.content ?: "",
                         sender = entity.sender?.let { sender ->
                             Player(
                                 name = sender.name,
@@ -64,7 +64,7 @@ class BoardRepositoryImpl(
                                     it.sender.score,
                                     false,
                                 ) else null,
-                            content = it.content,
+                            content = it.content ?: "",
                             messageType = it.messageType
                         )
                     }.toMutableList(),

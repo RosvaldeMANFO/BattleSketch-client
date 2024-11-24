@@ -47,7 +47,7 @@ class BoardViewModel(
                 Log.d("SOCKET_ERROR", e.message ?: "Unknown error")
             }.collect { message ->
                 when (message.messageType) {
-                    MessageType.PlayerJoined, MessageType.Refresh -> {
+                   MessageType.Refresh -> {
                         onRefresh()
                     }
 

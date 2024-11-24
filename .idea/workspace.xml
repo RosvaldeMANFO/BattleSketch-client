@@ -10,44 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1eeb880-25b4-45cd-bb57-9ffebd918f0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/remote/WebSocketManager.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/HoldingDialog.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/di/CoreModule.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/domain/models/Message.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/data/remote/WebSocketManager.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/use_cases/WatchRoomListUseCase.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/BattleSketchApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/BattleSketchApplication.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/entities/MessageEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/data/entity/MessageEntity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/entities/SessionDataEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/entities/SessionDataEntity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/entities/SocketResponseEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/entities/SocketResponseEntity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/remote/BoardDataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/remote/BoardDataSource.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/remote/BoardRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/remote/BoardRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/di/BoardModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/di/BoardModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/domain/models/Message.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/domain/models/SessionData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/domain/models/SessionData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/domain/models/SocketResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/domain/models/SocketResponse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/domain/repository/BoardRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/domain/repository/BoardRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/domain/use_cases/JoinRoomUseCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/domain/use_cases/JoinRoomUseCase.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/BoardScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/BoardScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/BoardViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/BoardViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/components/Board.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/components/Board.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/components/MessageCard.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/components/MessageCard.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/components/MessageList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/components/MessageList.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/components/PlayerCard.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/components/PlayerCard.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/coordinator/BattleSketchRoute.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/coordinator/BattleSketchRoute.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/domain/models/MessageType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/domain/models/MessageType.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/domain/models/Player.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/domain/models/Player.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/CustomAlertDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/core/presentation/components/CustomAlertDialog.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/data/remote/RoomDataSource.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/data/remote/RoomDataSource.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/data/remote/RoomRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/data/remote/RoomRepositoryImpl.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/di/RoomModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/di/RoomModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/models/Room.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/models/Room.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/repository/RoomRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/domain/repository/RoomRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/home/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/home/HomeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/roomList/RoomListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/roomList/RoomListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/roomList/RoomListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/presentation/roomList/RoomListViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,31 +92,31 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Android App.app.executor&quot;: &quot;Debug&quot;,
-    &quot;DEBUGGABLE_DEVICE&quot;: &quot;Resizable_Experimental_API_34 [emulator-5554]&quot;,
-    &quot;DEBUGGABLE_PROCESS&quot;: &quot;com.florientmanfo.battlesketch&quot;,
-    &quot;DEBUGGER_ID&quot;: &quot;Auto&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;SHOW_ALL_PROCESSES&quot;: &quot;false&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Projets/Android/BattleSketch/client&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Android App.app.executor": "Run",
+    "DEBUGGABLE_DEVICE": "Resizable_Experimental_API_34 [emulator-5554]",
+    "DEBUGGABLE_PROCESS": "com.florientmanfo.battlesketch",
+    "DEBUGGER_ID": "Auto",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "SHOW_ALL_PROCESSES": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Projets/Android/BattleSketch/client",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater",
+    "show.migrate.to.gradle.popup": "false"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;kotlin-gradle-user-dirs&quot;: [
-      &quot;C:\\Users\\Florient\\.gradle&quot;
+  "keyToStringList": {
+    "kotlin-gradle-user-dirs": [
+      "C:\\Users\\Florient\\.gradle"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projets\Android\app\src\main\res\drawable" />

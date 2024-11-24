@@ -22,5 +22,5 @@ val roomModule = module {
     single { CreateRoomUseCase(get()) }
     single { WatchRoomListUseCase(get()) }
     viewModel { HomeViewModel(get(), get()) }
-    viewModel { RoomListViewModel(get(), get(), get(), get()) }
+    viewModel { RoomListViewModel(get(), get(), get(), get(), get()) }
 }
