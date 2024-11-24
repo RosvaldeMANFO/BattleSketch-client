@@ -12,6 +12,7 @@
     <list default="true" id="c1eeb880-25b4-45cd-bb57-9ffebd918f0a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/remote/BoardRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/remote/BoardRepositoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/remote/WebSocketManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/data/remote/WebSocketManager.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/BoardViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/board/presentation/BoardViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/di/RoomModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/florientmanfo/battlesketch/room/di/RoomModule.kt" afterDir="false" />
     </list>
