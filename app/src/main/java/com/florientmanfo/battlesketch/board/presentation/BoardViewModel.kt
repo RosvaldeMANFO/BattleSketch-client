@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.board.presentation
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.florientmanfo.battlesketch.coordinator.Coordinator
 import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -28,6 +30,9 @@ class BoardViewModel(
 
 
     init {
+        viewModelScope.launch {
+            _boardState.value = _boardState.value.copy(payerName = args.playerName)
+        }
         joinRoom()
     }
 
@@ -37,30 +42,31 @@ class BoardViewModel(
                 args.playerName,
                 args.roomName,
                 args.password
-            ).collect { result ->
-                result.message?.let {
-                    when (it.messageType) {
-                        MessageType.PlayerJoined -> {
-                            val sessionData = getSessionDataUseCase(args.roomName)
-                            _boardState.update { state ->
-                                state.copy(
-                                    payerName = args.playerName,
-                                    sessionData = sessionData
-                                )
-                            }
-                        }
-
-                        else -> {
-                            coordinator.navigateBack()
-                        }
+            ).catch { e ->
+                // Handle any errors here
+                Log.d("SOCKET_ERROR", e.message ?: "Unknown error")
+            }.collect { message ->
+                when (message.messageType) {
+                    MessageType.PlayerJoined, MessageType.Refresh -> {
+                        onRefresh()
                     }
-                }
 
-                result.pathSettings?.let {
-                    _boardState.value.sessionData?.drawingData?.add(it)
+                    else -> {
+                        coordinator.navigateBack()
+                    }
                 }
             }
         }
     }
 
+
+    private suspend fun onRefresh() {
+        val sessionData = getSessionDataUseCase(args.roomName)
+        _boardState.update { state ->
+            state.copy(
+                payerName = args.playerName,
+                sessionData = sessionData
+            )
+        }
+    }
 }

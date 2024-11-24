@@ -114,8 +114,8 @@ fun RoomListItem(
             Text(
                 pluralStringResource(
                     R.plurals.room_player_number_label,
-                    room.players.size,
-                    room.players.size
+                    room.playerNames.size,
+                    room.playerNames.size
                 ),
                 style = MaterialTheme.typography.labelMedium
             )

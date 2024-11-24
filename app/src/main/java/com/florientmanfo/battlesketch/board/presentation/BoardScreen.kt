@@ -17,16 +17,25 @@ fun BoardScreen(
 
     Box(modifier) {
         state.sessionData?.let {
-            Board(
-                sessionData = it,
-                showDrawingTools = true,
-                modifier = modifier,
-                onUndo = {},
-                onRedo = {},
-                onReset = { _ -> },
-                onSendMessage = {_ ->},
-                onDrawPath =  { _ ->}
-            )
+            if (it.isRunning && it.wordToGuess.isNotEmpty()) {
+                Board(
+                    sessionData = it,
+                    showDrawingTools = true,
+                    modifier = modifier,
+                    onUndo = {},
+                    onRedo = {},
+                    onReset = { _ -> },
+                    onSendMessage = { _ -> },
+                    onDrawPath = { _ -> }
+                )
+            } else {
+                HoldingDialog(
+                    sessionData = it,
+                    isCurrentPlayer = it.currentPlayer.name == state.payerName,
+                    onQuitRoom = {},
+                    onGameStart = {}
+                )
+            }
         }
     }
 }

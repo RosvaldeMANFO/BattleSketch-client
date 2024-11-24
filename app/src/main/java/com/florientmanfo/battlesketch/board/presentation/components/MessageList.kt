@@ -20,7 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.florientmanfo.battlesketch.board.domain.models.Message
+import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 
 @Composable

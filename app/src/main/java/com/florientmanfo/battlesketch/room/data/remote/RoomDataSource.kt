@@ -8,14 +8,12 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
-class RoomDataSource {
+class RoomDataSource(private val ktorClient: KtorClient) {
 
     suspend fun createRoom(room: RoomEntity): Result<Unit> {
         return try {
-            KtorClient.httpClient.post(urlString = "room/create") {
+            ktorClient.httpClient.post(urlString = "room/create") {
                 contentType(ContentType.Application.Json)
                 setBody(room)
             }
@@ -26,7 +24,7 @@ class RoomDataSource {
     }
 
     suspend fun getAllRoom(): Result<List<RoomEntity>> = try {
-        val response = KtorClient.httpClient.get(urlString = "room")
+        val response = ktorClient.httpClient.get(urlString = "room")
         val rooms = response.body<List<RoomEntity>>()
             .filter { it.isOpen }
         Result.success(rooms)
@@ -35,7 +33,7 @@ class RoomDataSource {
     }
 
     suspend fun getRoomByName(name: String): Result<List<RoomEntity>> = try {
-        val response = KtorClient.httpClient.get(urlString = "room/$name")
+        val response = ktorClient.httpClient.get(urlString = "room/$name")
         val rooms = response.body<List<RoomEntity>>()
             .filter { it.isOpen }
         Result.success(rooms)

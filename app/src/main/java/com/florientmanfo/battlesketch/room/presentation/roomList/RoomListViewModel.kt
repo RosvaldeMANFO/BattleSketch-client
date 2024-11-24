@@ -7,9 +7,11 @@ import androidx.navigation.toRoute
 import com.florientmanfo.battlesketch.R
 import com.florientmanfo.battlesketch.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.coordinator.Coordinator
+import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import com.florientmanfo.battlesketch.room.domain.models.Room
 import com.florientmanfo.battlesketch.room.domain.use_cases.GetAllRoomUseCase
 import com.florientmanfo.battlesketch.room.domain.use_cases.GetRoomByNameUseCase
+import com.florientmanfo.battlesketch.room.domain.use_cases.WatchRoomListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,7 +21,8 @@ class RoomListViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val coordinator: Coordinator,
     private val getAllRoomUseCase: GetAllRoomUseCase,
-    private val getRoomByNameUseCase: GetRoomByNameUseCase
+    private val getRoomByNameUseCase: GetRoomByNameUseCase,
+    private val watchRoomListUseCase: WatchRoomListUseCase,
 ) : ViewModel() {
 
     private val _roomListState = MutableStateFlow(RoomListState())
@@ -41,6 +44,20 @@ class RoomListViewModel(
             getAllRoomUseCase().let { rooms ->
                 _roomListState.update {
                     it.copy(allRoom = rooms)
+                }
+            }
+
+            watchRoomListUseCase().collect { message ->
+                when (message.messageType) {
+                    MessageType.RoomUpdate -> {
+                        getAllRoomUseCase().let { rooms ->
+                            _roomListState.update {
+                                it.copy(allRoom = rooms)
+                            }
+                        }
+                    }
+
+                    else -> {}
                 }
             }
         }
@@ -115,18 +132,26 @@ class RoomListViewModel(
             }
 
             RoomListUiEvent.OnConfirmDialog -> {
-                if(
+                if (
                     _roomListState.value.playerName.isNotEmpty()
                     && _roomListState.value.roomPassword ==
                     _roomListState.value.selectedRoom?.password
-                ){
-                    viewModelScope.launch {
-                        _roomListState.value.selectedRoom?.name?.let {
-                            coordinator.navigateTo(BattleSketchRoute.Board(
-                                playerName = _roomListState.value.playerName,
-                                roomName = it,
-                                password = _roomListState.value.roomPassword
-                            ))
+                ) {
+                    _roomListState.value.selectedRoom?.let {
+                        if (it.playerNames.contains(_roomListState.value.playerName)) {
+                            _roomListState.value = _roomListState.value
+                                .copy(errorMessage = R.string.invalid_player_name)
+                            throw Error()
+                        } else {
+                            viewModelScope.launch {
+                                coordinator.navigateTo(
+                                    BattleSketchRoute.Board(
+                                        playerName = _roomListState.value.playerName,
+                                        roomName = it.name,
+                                        password = _roomListState.value.roomPassword
+                                    )
+                                )
+                            }
                         }
                     }
                 }

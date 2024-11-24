@@ -3,14 +3,13 @@ package com.florientmanfo.battlesketch.core.domain.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class MessageType{
+enum class MessageType {
+    Refresh,
     Suggestion,
-    PlayerJoined,
     GameStarted,
     PlayerLeft,
     NewSketch,
     SketchGuessed,
-    NextPlayer,
     EmptyRoom,
-    UnexpectedError
+    RoomUpdate
 }

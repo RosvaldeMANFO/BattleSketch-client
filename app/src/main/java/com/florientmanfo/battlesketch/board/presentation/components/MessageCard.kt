@@ -15,7 +15,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.tooling.preview.Preview
-import com.florientmanfo.battlesketch.board.domain.models.Message
+import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import com.florientmanfo.battlesketch.core.domain.models.Player
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
@@ -75,7 +75,7 @@ fun MessageCardPreview() {
     MessageCard(
         Message(
             "Maison",
-            Player("Test", 0),
+            Player("Test", 0, false),
             MessageType.Suggestion
         )
     )

@@ -32,6 +32,6 @@ sealed interface BattleSketchRoute {
         val password: String? = null
     ) : BattleSketchRoute {
         override val title: Int
-            get() = R.string.room_list_title
+            get() = R.string.board_title
     }
 }

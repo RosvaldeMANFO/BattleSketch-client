@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val boardModule = module {
-    single { BoardDataSource() }
+    single { BoardDataSource(get()) }
     single<BoardRepository> { BoardRepositoryImpl(get()) }
     single { JoinRoomUseCase(get()) }
     single { GetSessionDataUseCase(get()) }

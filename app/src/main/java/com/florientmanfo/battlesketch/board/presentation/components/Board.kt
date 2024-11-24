@@ -57,9 +57,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.florientmanfo.battlesketch.board.domain.models.PathSettings
 import com.florientmanfo.battlesketch.board.domain.models.SessionData
-import com.florientmanfo.battlesketch.board.domain.models.fake
 import com.florientmanfo.battlesketch.core.domain.models.DrawingMode
-import com.florientmanfo.battlesketch.core.domain.models.players
 import com.florientmanfo.battlesketch.core.presentation.components.CustomTextField
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 import com.florientmanfo.battlesketch.ui.theme.isTablet

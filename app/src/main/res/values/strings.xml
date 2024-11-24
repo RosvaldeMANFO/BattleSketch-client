@@ -11,11 +11,17 @@
     <string name="room_name_placeholder">Name</string>
     <string name="room_password_placeholder">Password</string>
     <string name="room_list_title">Rooms</string>
+    <string name="board_title">Board</string>
     <plurals name="room_player_number_label">
         <item quantity="zero">Empty</item>
         <item quantity="one">%d player</item>
         <item quantity="other">%d players</item>
     </plurals>
     <string name="invalid_room_password">Invalid password</string>
+    <string name="invalid_player_name">Name already used</string>
     <string name="player_score">Score: %d</string>
+    <string name="player_list_title">Players</string>
+    <string name="start_game_button_label">Start</string>
+    <string name="waiting_message">Waiting for all players</string>
+    <string name="word_to_guest_placeholder">Word to guest</string>
 </resources>

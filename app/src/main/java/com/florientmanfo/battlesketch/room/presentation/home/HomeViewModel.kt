@@ -63,10 +63,10 @@ class HomeViewModel(
                         createRoomUseCase(_homeSate.value.room)
                         coordinator.navigateTo(
                             BattleSketchRoute
-                                .RoomList(
+                                .Board(
+                                    _homeSate.value.room.creator,
                                     _homeSate.value.room.name,
                                     _homeSate.value.room.password,
-                                    _homeSate.value.room.creator
                                 )
                         )
                     } catch (e: Error) {
