@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.board.presentation
+package com.florientmanfo.battlesketch.board.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

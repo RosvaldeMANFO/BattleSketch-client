@@ -1,4 +1,4 @@
-package com.florientmanfo.battlesketch.room.presentation.roomList
+package com.florientmanfo.battlesketch.room.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +17,9 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.style.TextAlign
 import com.florientmanfo.battlesketch.R
 import com.florientmanfo.battlesketch.core.presentation.components.CustomAlertDialog
+import com.florientmanfo.battlesketch.room.presentation.roomList.RoomListState
+import com.florientmanfo.battlesketch.room.presentation.roomList.RoomListUiEvent
+import com.florientmanfo.battlesketch.room.presentation.roomList.RoomListViewModel
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 
 @Composable

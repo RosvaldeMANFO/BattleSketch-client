@@ -7,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.florientmanfo.battlesketch.board.domain.use_cases.GetSessionDataUseCase
 import com.florientmanfo.battlesketch.board.domain.use_cases.JoinRoomUseCase
+import com.florientmanfo.battlesketch.board.domain.use_cases.SendMessageUseCase
 import com.florientmanfo.battlesketch.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.coordinator.Coordinator
+import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +22,7 @@ class BoardViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val joinRoomUseCase: JoinRoomUseCase,
     private val getSessionDataUseCase: GetSessionDataUseCase,
+    private val sendMessageUseCase: SendMessageUseCase,
     private val coordinator: Coordinator
 ) : ViewModel() {
 
@@ -59,6 +62,18 @@ class BoardViewModel(
         }
     }
 
+    fun onUiEvent(event: BoardUiEvent){
+        when(event){
+            is BoardUiEvent.StartGame -> {
+                _boardState.value.sessionData?.wordToGuess?.let {
+                    viewModelScope.launch {
+                        sendMessageUseCase(event.message)
+                    }
+                }
+            }
+        }
+    }
+
 
     private suspend fun onRefresh() {
         val sessionData = getSessionDataUseCase(args.roomName)
@@ -69,4 +84,8 @@ class BoardViewModel(
             )
         }
     }
+}
+
+sealed interface BoardUiEvent{
+    data class StartGame(val message: Message): BoardUiEvent
 }

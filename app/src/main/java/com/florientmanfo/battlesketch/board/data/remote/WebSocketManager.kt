@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.board.data.remote
 
+import com.florientmanfo.battlesketch.board.data.entities.SocketResponseEntity
 import com.florientmanfo.battlesketch.core.data.KtorClient
 import com.florientmanfo.battlesketch.core.data.entity.MessageEntity
 import com.florientmanfo.battlesketch.core.data.entity.PlayerEntity
@@ -27,14 +28,14 @@ object WebSocketManager {
     private suspend fun connect(){
         if(!::socket.isInitialized){
             socket = KtorClient.httpClient.webSocketSession {
-                url.takeFrom("ws://10.0.2.2:8080/play")
+                url.takeFrom("ws://10.0.2.2:8080/join_room")
             }
         }
     }
 
     suspend fun watchIncomingData(playerName: String, roomName: String, password: String?):
             Flow<Result<MessageEntity>> = withContext(Dispatchers.IO) {
-
+        connect()
         val player = PlayerEntity(
             name = playerName,
             roomName = roomName,
@@ -60,8 +61,12 @@ object WebSocketManager {
             }
     }
 
-    suspend fun sendData(){
+    suspend fun sendMessage(messageEntity: MessageEntity){
         connect()
+        val responseModel = SocketResponseEntity(
+            message = messageEntity
+        )
+        socket.sendSerialized(responseModel)
     }
 
     suspend fun close() {

@@ -6,6 +6,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.florientmanfo.battlesketch.board.presentation.components.Board
+import com.florientmanfo.battlesketch.board.presentation.components.HoldingDialog
+import com.florientmanfo.battlesketch.core.domain.models.Message
+import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -20,7 +23,7 @@ fun BoardScreen(
             if (it.isRunning && it.wordToGuess.isNotEmpty()) {
                 Board(
                     sessionData = it,
-                    showDrawingTools = true,
+                    showDrawingTools = it.currentPlayer.name == state.payerName,
                     modifier = modifier,
                     onUndo = {},
                     onRedo = {},
@@ -33,7 +36,17 @@ fun BoardScreen(
                     sessionData = it,
                     isCurrentPlayer = it.currentPlayer.name == state.payerName,
                     onQuitRoom = {},
-                    onGameStart = {}
+                    onGameStart = {wordToGuest ->
+                        viewModel.onUiEvent(BoardUiEvent.StartGame(
+                            Message(
+                                content = wordToGuest,
+                                messageType = MessageType.GameStarted,
+                                sender = state.sessionData?.players?.first {
+                                    player -> player.name == state.payerName
+                                }
+                            )
+                        ))
+                    }
                 )
             }
         }

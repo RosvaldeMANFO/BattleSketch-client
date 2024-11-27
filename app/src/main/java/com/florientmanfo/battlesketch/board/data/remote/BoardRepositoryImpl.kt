@@ -7,6 +7,9 @@ import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.board.domain.models.PathSettings
 import com.florientmanfo.battlesketch.board.domain.models.SessionData
 import com.florientmanfo.battlesketch.board.domain.repository.BoardRepository
+import com.florientmanfo.battlesketch.core.data.entity.MessageEntity
+import com.florientmanfo.battlesketch.core.data.entity.PlayerEntity
+import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import com.florientmanfo.battlesketch.core.domain.models.Player
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -28,6 +31,7 @@ class BoardRepositoryImpl(
                         sender = entity.sender?.let { sender ->
                             Player(
                                 name = sender.name,
+                                roomName = sender.roomName,
                                 score = sender.score,
                                 false
                             )
@@ -53,6 +57,7 @@ class BoardRepositoryImpl(
                     currentPlayer = Player(
                         name = data.currentPlayer.name,
                         score = data.currentPlayer.score,
+                        roomName = data.currentPlayer.roomName,
                         isCurrentPlayer = true
                     ),
                     isRunning = data.isRunning,
@@ -61,6 +66,7 @@ class BoardRepositoryImpl(
                             sender = if (it.sender != null)
                                 Player(
                                     it.sender.name,
+                                    it.sender.roomName,
                                     it.sender.score,
                                     false,
                                 ) else null,
@@ -82,11 +88,26 @@ class BoardRepositoryImpl(
                         Player(
                             name = it.name,
                             score = it.score,
+                            roomName = it.roomName,
                             isCurrentPlayer = it.name == data.currentPlayer.name
                         )
                     }.toMutableList()
                 )
             }
         } else return null
+    }
+
+    override suspend fun startGame(message: Message) {
+        WebSocketManager.sendMessage(
+            MessageEntity(
+                content = message.content,
+                messageType = message.messageType,
+                sender = if(message.sender != null)
+                PlayerEntity(
+                    name = message.sender.name,
+                    roomName = message.sender.roomName
+                ) else null
+            )
+        )
     }
 }

@@ -51,6 +51,7 @@ class RoomRepositoryImpl(private val dataSource: RoomDataSource) : RoomRepositor
                         sender = entity.sender?.let { sender ->
                             Player(
                                 name = sender.name,
+                                roomName = sender.roomName,
                                 score = sender.score,
                                 false
                             )

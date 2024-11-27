@@ -31,6 +31,7 @@ import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 import org.koin.androidx.compose.koinViewModel
 import com.florientmanfo.battlesketch.core.presentation.components.CustomTextField
+import com.florientmanfo.battlesketch.room.presentation.components.JoinRoomDialog
 
 @Composable
 fun RoomListScreen(

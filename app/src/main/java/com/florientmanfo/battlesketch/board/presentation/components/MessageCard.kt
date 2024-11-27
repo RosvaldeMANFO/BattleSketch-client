@@ -75,7 +75,7 @@ fun MessageCardPreview() {
     MessageCard(
         Message(
             "Maison",
-            Player("Test", 0, false),
+            Player("Test", "", 0, false),
             MessageType.Suggestion
         )
     )
