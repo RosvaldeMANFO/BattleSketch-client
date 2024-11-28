@@ -1,12 +1,15 @@
 package com.florientmanfo.battlesketch.board.presentation
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.florientmanfo.battlesketch.board.domain.models.PathSettings
 import com.florientmanfo.battlesketch.board.domain.use_cases.GetSessionDataUseCase
 import com.florientmanfo.battlesketch.board.domain.use_cases.JoinRoomUseCase
+import com.florientmanfo.battlesketch.board.domain.use_cases.SendDrawnDataUseCase
 import com.florientmanfo.battlesketch.board.domain.use_cases.SendMessageUseCase
 import com.florientmanfo.battlesketch.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.coordinator.Coordinator
@@ -23,6 +26,7 @@ class BoardViewModel(
     private val joinRoomUseCase: JoinRoomUseCase,
     private val getSessionDataUseCase: GetSessionDataUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
+    private val sendDrawnDataUseCase: SendDrawnDataUseCase,
     private val coordinator: Coordinator
 ) : ViewModel() {
 
@@ -50,7 +54,7 @@ class BoardViewModel(
                 Log.d("SOCKET_ERROR", e.message ?: "Unknown error")
             }.collect { message ->
                 when (message.messageType) {
-                   MessageType.Refresh -> {
+                    MessageType.Refresh -> {
                         onRefresh()
                     }
 
@@ -62,13 +66,27 @@ class BoardViewModel(
         }
     }
 
-    fun onUiEvent(event: BoardUiEvent){
-        when(event){
+    fun onUiEvent(event: BoardUiEvent) {
+        when (event) {
             is BoardUiEvent.StartGame -> {
-                _boardState.value.sessionData?.wordToGuess?.let {
-                    viewModelScope.launch {
-                        sendMessageUseCase(event.message)
-                    }
+                viewModelScope.launch {
+                    sendMessageUseCase(
+                        Message(
+                            content = event.wordToGuest,
+                            messageType = MessageType.GameStarted,
+                            sender = _boardState.value.sessionData?.players?.first { player ->
+                                player.name == args.playerName
+                            }
+                        )
+                    )
+                }
+            }
+
+            is BoardUiEvent.OnPathDrawn -> {
+                viewModelScope.launch {
+                    sendDrawnDataUseCase(
+                        event.pathSettings
+                    )
                 }
             }
         }
@@ -86,6 +104,7 @@ class BoardViewModel(
     }
 }
 
-sealed interface BoardUiEvent{
-    data class StartGame(val message: Message): BoardUiEvent
+sealed interface BoardUiEvent {
+    data class StartGame(val wordToGuest: String) : BoardUiEvent
+    data class OnPathDrawn(val pathSettings: PathSettings) : BoardUiEvent
 }

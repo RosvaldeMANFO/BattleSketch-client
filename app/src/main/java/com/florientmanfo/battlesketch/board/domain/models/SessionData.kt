@@ -1,5 +1,7 @@
 package com.florientmanfo.battlesketch.board.domain.models
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.core.domain.models.Player
 
@@ -11,5 +13,5 @@ data class SessionData(
     var isRunning: Boolean = false,
     val players: MutableList<Player> = mutableListOf(),
     val messages: MutableList<Message> = mutableListOf(),
-    val drawingData: MutableList<PathSettings> = mutableListOf()
+    val drawingData: SnapshotStateList<PathSettings> = mutableStateListOf()
 )

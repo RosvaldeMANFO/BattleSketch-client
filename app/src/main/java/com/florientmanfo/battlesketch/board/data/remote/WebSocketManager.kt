@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.board.data.remote
 
+import com.florientmanfo.battlesketch.board.data.entities.DrawingDataEntity
 import com.florientmanfo.battlesketch.board.data.entities.SocketResponseEntity
 import com.florientmanfo.battlesketch.core.data.KtorClient
 import com.florientmanfo.battlesketch.core.data.entity.MessageEntity
@@ -61,10 +62,11 @@ object WebSocketManager {
             }
     }
 
-    suspend fun sendMessage(messageEntity: MessageEntity){
+    suspend fun sendData(messageEntity: MessageEntity? = null, drawingDataEntity: DrawingDataEntity? = null){
         connect()
         val responseModel = SocketResponseEntity(
-            message = messageEntity
+            message = messageEntity,
+            drawingData = drawingDataEntity
         )
         socket.sendSerialized(responseModel)
     }

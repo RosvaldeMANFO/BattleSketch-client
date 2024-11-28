@@ -1,18 +1,21 @@
 package com.florientmanfo.battlesketch.board.data.remote
 
 import android.util.Log
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import com.florientmanfo.battlesketch.board.data.entities.DrawingDataEntity
 import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.board.domain.models.PathSettings
 import com.florientmanfo.battlesketch.board.domain.models.SessionData
 import com.florientmanfo.battlesketch.board.domain.repository.BoardRepository
 import com.florientmanfo.battlesketch.core.data.entity.MessageEntity
 import com.florientmanfo.battlesketch.core.data.entity.PlayerEntity
-import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import com.florientmanfo.battlesketch.core.domain.models.Player
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import com.florientmanfo.battlesketch.board.data.entities.Offset as EntityOffset
 
 class BoardRepositoryImpl(
     private val dataSource: BoardDataSource
@@ -83,7 +86,7 @@ class BoardRepositoryImpl(
                             strokeWidth = it.thickness,
                             drawingMode = it.mode
                         )
-                    }.toMutableList(),
+                    }.toMutableStateList(),
                     players = data.players.map {
                         Player(
                             name = it.name,
@@ -97,9 +100,9 @@ class BoardRepositoryImpl(
         } else return null
     }
 
-    override suspend fun startGame(message: Message) {
-        WebSocketManager.sendMessage(
-            MessageEntity(
+    override suspend fun sendMessage(message: Message) {
+        WebSocketManager.sendData(
+            messageEntity = MessageEntity(
                 content = message.content,
                 messageType = message.messageType,
                 sender = if(message.sender != null)
@@ -107,6 +110,17 @@ class BoardRepositoryImpl(
                     name = message.sender.name,
                     roomName = message.sender.roomName
                 ) else null
+            )
+        )
+    }
+
+    override suspend fun sendDrawnData(pathSettings: PathSettings) {
+        WebSocketManager.sendData(
+            drawingDataEntity = DrawingDataEntity(
+                points = pathSettings.points.map { EntityOffset( it.x, it.y) },
+                mode = pathSettings.drawingMode,
+                thickness = pathSettings.strokeWidth,
+                brush = pathSettings.color.toArgb().toLong()
             )
         )
     }

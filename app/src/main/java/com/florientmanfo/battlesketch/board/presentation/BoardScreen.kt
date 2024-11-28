@@ -7,8 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.florientmanfo.battlesketch.board.presentation.components.Board
 import com.florientmanfo.battlesketch.board.presentation.components.HoldingDialog
-import com.florientmanfo.battlesketch.core.domain.models.Message
-import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -29,23 +27,17 @@ fun BoardScreen(
                     onRedo = {},
                     onReset = { _ -> },
                     onSendMessage = { _ -> },
-                    onDrawPath = { _ -> }
+                    onDrawPath = { pathSettings ->
+                        viewModel.onUiEvent(BoardUiEvent.OnPathDrawn(pathSettings))
+                    }
                 )
             } else {
                 HoldingDialog(
                     sessionData = it,
                     isCurrentPlayer = it.currentPlayer.name == state.payerName,
                     onQuitRoom = {},
-                    onGameStart = {wordToGuest ->
-                        viewModel.onUiEvent(BoardUiEvent.StartGame(
-                            Message(
-                                content = wordToGuest,
-                                messageType = MessageType.GameStarted,
-                                sender = state.sessionData?.players?.first {
-                                    player -> player.name == state.payerName
-                                }
-                            )
-                        ))
+                    onGameStart = { wordToGuest ->
+                        viewModel.onUiEvent(BoardUiEvent.StartGame(wordToGuest))
                     }
                 )
             }

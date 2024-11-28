@@ -12,7 +12,6 @@ data class Offset(
 
 @Serializable
 data class DrawingDataEntity(
-    val player: PlayerEntity,
     val points: List<Offset>,
     val mode: DrawingMode,
     val thickness: Float,
