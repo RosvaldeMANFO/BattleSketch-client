@@ -30,9 +30,15 @@ fun BoardScreen(
                     sessionData = it,
                     showDrawingTools = it.currentPlayer.name == state.payerName,
                     modifier = modifier,
-                    onUndo = {},
-                    onRedo = {},
-                    onReset = { _ -> },
+                    onUndo = {
+                        viewModel.onUiEvent(BoardUiEvent.OnUndoPath)
+                    },
+                    onRedo = { pathSettings ->
+                        viewModel.onUiEvent(BoardUiEvent.OnPathDrawn(pathSettings))
+                    },
+                    onReset = { pathSettings ->
+                        viewModel.onUiEvent(BoardUiEvent.OnPathDrawn(pathSettings))
+                    },
                     onSendMessage = { suggestion ->
                         viewModel.onUiEvent(BoardUiEvent.OnSendSuggestion(suggestion))
                     },

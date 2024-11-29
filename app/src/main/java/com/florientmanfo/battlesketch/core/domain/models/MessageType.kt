@@ -8,8 +8,9 @@ enum class MessageType {
     Suggestion,
     GameStarted,
     PlayerLeft,
-    NewSketch,
     SketchGuessed,
     EmptyRoom,
-    RoomUpdate
+    RoomDestroyed,
+    RoomUpdate,
+    UndoPath
 }

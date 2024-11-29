@@ -109,6 +109,20 @@ class BoardViewModel(
                     )
                 }
             }
+
+            BoardUiEvent.OnUndoPath -> {
+                viewModelScope.launch {
+                    sendMessageUseCase(
+                        Message(
+                            content = "",
+                            messageType = MessageType.UndoPath,
+                            sender = _boardState.value.sessionData?.players?.first { player ->
+                                player.name == args.playerName
+                            }
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -129,4 +143,5 @@ sealed interface BoardUiEvent {
     data class StartGame(val wordToGuest: String) : BoardUiEvent
     data class OnPathDrawn(val pathSettings: PathSettings) : BoardUiEvent
     data class OnSendSuggestion(val suggestion: String) : BoardUiEvent
+    data object OnUndoPath: BoardUiEvent
 }

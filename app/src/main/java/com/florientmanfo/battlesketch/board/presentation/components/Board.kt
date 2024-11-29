@@ -42,7 +42,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.UiComposable
@@ -71,7 +70,7 @@ fun Board(
     modifier: Modifier = Modifier,
     showDrawingTools: Boolean,
     onUndo: () -> Unit,
-    onRedo: () -> Unit,
+    onRedo: (PathSettings) -> Unit,
     onReset: (PathSettings) -> Unit,
     basePath: PathSettings = PathSettings(
         color = MaterialTheme.colorScheme.onSurface
@@ -244,14 +243,17 @@ fun Board(
             onRedo = {
                 if (redoPaths.isNotEmpty()) {
                     paths.add(redoPaths.last())
+                    onRedo(redoPaths.last())
                     redoPaths.removeAt(redoPaths.size - 1)
-                    onRedo()
                 }
             },
             onReset = {
                 paths.clear()
                 redoPaths.clear()
-                painterState = basePath
+                painterState = basePath.copy(
+                    color = painterState.color,
+                    strokeWidth = painterState.strokeWidth
+                )
                 onReset(painterState)
             },
             onChangeThickness = { thickness ->
