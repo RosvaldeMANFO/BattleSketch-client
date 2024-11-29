@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.florientmanfo.battlesketch.board.presentation.components.Board
 import com.florientmanfo.battlesketch.board.presentation.components.HoldingDialog
+import com.florientmanfo.battlesketch.board.presentation.components.WinnerDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -19,6 +20,12 @@ fun BoardScreen(
     Box(modifier) {
         state.sessionData?.let {
             if (it.isRunning && it.wordToGuess.isNotEmpty()) {
+                state.winner?.let { winner ->
+                    WinnerDialog(
+                        wordToGuest = it.wordToGuess,
+                        winnerName = winner
+                    )
+                }
                 Board(
                     sessionData = it,
                     showDrawingTools = it.currentPlayer.name == state.payerName,
@@ -26,7 +33,9 @@ fun BoardScreen(
                     onUndo = {},
                     onRedo = {},
                     onReset = { _ -> },
-                    onSendMessage = { _ -> },
+                    onSendMessage = { suggestion ->
+                        viewModel.onUiEvent(BoardUiEvent.OnSendSuggestion(suggestion))
+                    },
                     onDrawPath = { pathSettings ->
                         viewModel.onUiEvent(BoardUiEvent.OnPathDrawn(pathSettings))
                     }

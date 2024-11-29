@@ -7,8 +7,8 @@
     <string name="join_room_label">Join room</string>
     <string name="create_room_label">Create room</string>
     <string name="create_label">Create</string>
-    <string name="player_name_placeholder">Nic name</string>
-    <string name="room_name_placeholder">Name</string>
+    <string name="player_name_placeholder">Player name</string>
+    <string name="room_name_placeholder">Room name</string>
     <string name="room_password_placeholder">Password</string>
     <string name="room_list_title">Rooms</string>
     <string name="board_title">Board</string>
@@ -21,7 +21,9 @@
     <string name="invalid_player_name">Name already used</string>
     <string name="player_score">Score: %d</string>
     <string name="player_list_title">Players</string>
-    <string name="start_game_button_label">Start</string>
+    <string name="start_game_button_label">Start game</string>
     <string name="waiting_message">Waiting for all players</string>
     <string name="word_to_guest_placeholder">Word to guest</string>
+    <string name="winner_dialog_tittle">🎉🎉Word guested🎉🎉</string>
+    <string name="word_guested_message">guested the word %s 🙂</string>
 </resources>

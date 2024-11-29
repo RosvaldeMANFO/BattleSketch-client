@@ -58,6 +58,12 @@ class BoardViewModel(
                         onRefresh()
                     }
 
+                    MessageType.SketchGuessed -> {
+                        _boardState.update {
+                            it.copy(winner = message.content)
+                        }
+                    }
+
                     else -> {
                         coordinator.navigateBack()
                     }
@@ -89,6 +95,20 @@ class BoardViewModel(
                     )
                 }
             }
+
+            is BoardUiEvent.OnSendSuggestion -> {
+                viewModelScope.launch {
+                    sendMessageUseCase(
+                        Message(
+                            content = event.suggestion,
+                            messageType = MessageType.Suggestion,
+                            sender = _boardState.value.sessionData?.players?.first { player ->
+                                player.name == args.playerName
+                            }
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -98,7 +118,8 @@ class BoardViewModel(
         _boardState.update { state ->
             state.copy(
                 payerName = args.playerName,
-                sessionData = sessionData
+                sessionData = sessionData,
+                winner = null
             )
         }
     }
@@ -107,4 +128,5 @@ class BoardViewModel(
 sealed interface BoardUiEvent {
     data class StartGame(val wordToGuest: String) : BoardUiEvent
     data class OnPathDrawn(val pathSettings: PathSettings) : BoardUiEvent
+    data class OnSendSuggestion(val suggestion: String) : BoardUiEvent
 }

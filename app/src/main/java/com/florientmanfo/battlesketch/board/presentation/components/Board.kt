@@ -281,6 +281,7 @@ fun Board(
                     onClick = {
                         if (message.isNotEmpty()) {
                             onSendMessage?.invoke(message)
+                            message = ""
                         }
                     }
                 ) { Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null) }
