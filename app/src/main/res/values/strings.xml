@@ -26,4 +26,6 @@
     <string name="word_to_guest_placeholder">Word to guest</string>
     <string name="winner_dialog_tittle">🎉🎉Word guested🎉🎉</string>
     <string name="word_guested_message">guested the word %s 🙂</string>
+    <string name="close_room_dialog_title">Close room</string>
+    <string name="close_roomDialog_dialog_message">The room will be closed and players will be threw out 🥲</string>
 </resources>

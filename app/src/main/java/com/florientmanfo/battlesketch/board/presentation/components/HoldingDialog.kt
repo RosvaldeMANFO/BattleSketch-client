@@ -112,7 +112,7 @@ fun HoldingDialog(
                         }
                     }
                 }
-                if (isCurrentPlayer) {
+                if (isCurrentPlayer && sessionData.players.size > 1) {
                     ElevatedButton(
                         modifier = Modifier.fillMaxWidth(0.5f),
                         onClick = {

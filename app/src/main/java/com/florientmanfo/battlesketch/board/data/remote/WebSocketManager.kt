@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.withContext
@@ -24,10 +25,10 @@ import kotlinx.serialization.json.Json
 
 object WebSocketManager {
 
-    private lateinit var socket: DefaultClientWebSocketSession
+    private var socket: DefaultClientWebSocketSession? = null
 
-    private suspend fun connect(){
-        if(!::socket.isInitialized){
+    private suspend fun connect() {
+        if (socket == null) {
             socket = KtorClient.httpClient.webSocketSession {
                 url.takeFrom("ws://10.0.2.2:8080/join_room")
             }
@@ -43,35 +44,39 @@ object WebSocketManager {
             password = password
         )
 
-        socket.sendSerialized(player)
+        socket?.sendSerialized(player)
 
-        socket.incoming
-            .receiveAsFlow()
-            .map { frame ->
+        socket?.incoming
+            ?.receiveAsFlow()
+            ?.map { frame ->
                 if (frame is Frame.Text) {
                     val data = Json.decodeFromString<MessageEntity>(frame.readText())
                     Result.success(data)
                 } else throw Error(SocketError.UnexpectedError.message)
             }
-            .catch { error ->
+            ?.catch { error ->
                 when (error) {
                     is ClosedReceiveChannelException -> emit(Result.failure(Error()))
 
                     else -> emit(Result.failure(Error(SocketError.UnexpectedError.message)))
                 }
-            }
+            } ?: flowOf(Result.failure(Error("Failed to initialize WebSocket")))
     }
 
-    suspend fun sendData(messageEntity: MessageEntity? = null, drawingDataEntity: DrawingDataEntity? = null){
+    suspend fun sendData(
+        messageEntity: MessageEntity? = null,
+        drawingDataEntity: DrawingDataEntity? = null
+    ) {
         connect()
         val responseModel = SocketResponseEntity(
             message = messageEntity,
             drawingData = drawingDataEntity
         )
-        socket.sendSerialized(responseModel)
+        socket?.sendSerialized(responseModel)
     }
 
     suspend fun close() {
-        socket.close(CloseReason(CloseReason.Codes.NORMAL, SocketError.SessionClosed.message))
+        socket?.close(CloseReason(CloseReason.Codes.NORMAL, SocketError.SessionClosed.message))
+        socket = null
     }
 }

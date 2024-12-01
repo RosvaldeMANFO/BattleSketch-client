@@ -5,6 +5,7 @@ import com.florientmanfo.battlesketch.board.data.remote.BoardRepositoryImpl
 import com.florientmanfo.battlesketch.board.domain.repository.BoardRepository
 import com.florientmanfo.battlesketch.board.domain.use_cases.GetSessionDataUseCase
 import com.florientmanfo.battlesketch.board.domain.use_cases.JoinRoomUseCase
+import com.florientmanfo.battlesketch.board.domain.use_cases.QuitSessionUseCase
 import com.florientmanfo.battlesketch.board.domain.use_cases.SendDrawnDataUseCase
 import com.florientmanfo.battlesketch.board.domain.use_cases.SendMessageUseCase
 import com.florientmanfo.battlesketch.board.presentation.BoardViewModel
@@ -18,5 +19,6 @@ val boardModule = module {
     single { GetSessionDataUseCase(get()) }
     single { SendMessageUseCase(get()) }
     single { SendDrawnDataUseCase(get()) }
-    viewModel { BoardViewModel(get(), get(), get(), get(), get(), get()) }
+    single { QuitSessionUseCase(get()) }
+    viewModel { BoardViewModel(get(), get(), get(), get(), get(), get(), get()) }
 }

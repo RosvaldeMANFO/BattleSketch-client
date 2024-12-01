@@ -10,4 +10,5 @@ interface BoardRepository {
     suspend fun getSessionData(roomName: String): SessionData?
     suspend fun sendMessage(message: Message)
     suspend fun sendDrawnData(pathSettings: PathSettings)
+    suspend fun closeSocket()
 }

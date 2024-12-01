@@ -9,7 +9,6 @@ enum class MessageType {
     GameStarted,
     PlayerLeft,
     SketchGuessed,
-    EmptyRoom,
     RoomDestroyed,
     RoomUpdate,
     UndoPath

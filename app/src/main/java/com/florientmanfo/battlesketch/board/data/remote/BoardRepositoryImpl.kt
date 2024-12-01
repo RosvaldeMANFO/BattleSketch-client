@@ -124,4 +124,8 @@ class BoardRepositoryImpl(
             )
         )
     }
+
+    override suspend fun closeSocket() {
+        WebSocketManager.close()
+    }
 }
