@@ -3,8 +3,10 @@ package com.florientmanfo.battlesketch.room.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.florientmanfo.battlesketch.R
 import com.florientmanfo.battlesketch.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.coordinator.Coordinator
+import com.florientmanfo.battlesketch.core.domain.models.ErrorType
 import com.florientmanfo.battlesketch.room.domain.use_cases.CreateRoomUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -59,8 +61,16 @@ class HomeViewModel(
 
             HomeUiEvent.OnSubmitRoom -> {
                 viewModelScope.launch {
-                    try {
-                        createRoomUseCase(_homeSate.value.room)
+                    val error =  createRoomUseCase(_homeSate.value.room)
+                    if(error != null){
+                        _homeSate.update {
+                            it.copy(
+                                errorMessage = when (error){
+                                    ErrorType.DuplicatedRoomName -> R.string.invalid_room_name
+                                }
+                            )
+                        }
+                    } else  {
                         coordinator.navigateTo(
                             BattleSketchRoute
                                 .Board(
@@ -69,12 +79,6 @@ class HomeViewModel(
                                     _homeSate.value.room.password,
                                 )
                         )
-                    } catch (e: Error) {
-                        _homeSate.update {
-                            it.copy(
-                                errorMessage = e.message ?: "",
-                            )
-                        }
                     }
                 }
             }
@@ -84,6 +88,12 @@ class HomeViewModel(
                     it.copy(
                         showDialog = false
                     )
+                }
+            }
+
+            HomeUiEvent.OnDismissErrorDialog -> {
+                _homeSate.update {
+                    it.copy(errorMessage = null)
                 }
             }
         }
@@ -98,4 +108,5 @@ sealed interface HomeUiEvent {
     data class OnTypingRoomPassword(val roomPassword: String) : HomeUiEvent
     data object OnSubmitRoom : HomeUiEvent
     data object OnDismissDialog : HomeUiEvent
+    data object OnDismissErrorDialog: HomeUiEvent
 }

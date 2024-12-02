@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Battle Sketch</string>
     <string name="confirm">Confirm</string>
+    <string name="info">OK</string>
     <string name="cancel">Cancel</string>
     <string name="thickness_dialog_title">Thickness</string>
     <string name="color_wheel_dialog_title">Color wheel</string>
@@ -18,7 +19,9 @@
         <item quantity="other">%d players</item>
     </plurals>
     <string name="invalid_room_password">Invalid password</string>
-    <string name="invalid_player_name">Name already used</string>
+    <string name="invalid_player_name">Player name already used</string>
+    <string name="waring_dialog_title">Warning</string>
+    <string name="invalid_room_name">Room name already used</string>
     <string name="player_score">Score: %d</string>
     <string name="player_list_title">Players</string>
     <string name="start_game_button_label">Start game</string>

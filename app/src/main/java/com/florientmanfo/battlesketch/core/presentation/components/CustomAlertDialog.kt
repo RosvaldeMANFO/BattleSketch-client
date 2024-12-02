@@ -30,14 +30,14 @@ fun CustomAlertDialog(
     title: String,
     modifier: Modifier = Modifier,
     confirmLabel: String = stringResource(R.string.confirm),
-    cancelLabel: String = stringResource(R.string.cancel),
-    onDismissRequest: () -> Unit,
-    onConfirmRequest: () -> Unit,
+    cancelLabel: String? = stringResource(R.string.cancel),
+    onDismissRequest: (() -> Unit)? = null,
+    onConfirmRequest: (() -> Unit)? = null,
     content: @Composable () -> Unit,
-){
+) {
     BasicAlertDialog(
         modifier = modifier,
-        onDismissRequest = onDismissRequest
+        onDismissRequest = { onDismissRequest?.invoke() }
     ) {
         Card(modifier) {
             Column(
@@ -59,21 +59,24 @@ fun CustomAlertDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(
-                        onClick = {onDismissRequest()},
-                        colors = ButtonDefaults.textButtonColors(
-                            contentColor = MaterialTheme.colorScheme.error
-                        )
-                    ) {
-                        Text(cancelLabel)
+                    cancelLabel?.let {
+                        TextButton(
+                            onClick = { onDismissRequest?.invoke() },
+                            colors = ButtonDefaults.textButtonColors(
+                                contentColor = MaterialTheme.colorScheme.error
+                            )
+                        ) {
+                            Text(cancelLabel)
+                        }
                     }
                     Spacer(modifier = Modifier.width(LocalAppDimens.current.margin))
                     TextButton(
                         onClick = {
-                            try{
-                                onConfirmRequest()
-                                onDismissRequest()
-                            } catch (_: Error){}
+                            try {
+                                onConfirmRequest?.invoke()
+                                onDismissRequest?.invoke()
+                            } catch (_: Error) {
+                            }
                         },
                         colors = ButtonDefaults.textButtonColors(
                             contentColor = MaterialTheme.colorScheme.primary
@@ -89,7 +92,7 @@ fun CustomAlertDialog(
 
 @Composable
 @Preview
-fun CustomAlertDialogPreview(){
+fun CustomAlertDialogPreview() {
     BattleSketchTheme {
         CustomAlertDialog(
             title = "Test",

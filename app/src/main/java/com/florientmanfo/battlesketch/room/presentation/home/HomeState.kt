@@ -1,9 +1,10 @@
 package com.florientmanfo.battlesketch.room.presentation.home
 
+import androidx.annotation.StringRes
 import com.florientmanfo.battlesketch.room.domain.models.Room
 
 data class HomeState(
     val showDialog: Boolean = false,
     val room: Room = Room(),
-    val errorMessage: String? = null
+    @StringRes val errorMessage: Int? = null
 )

@@ -87,9 +87,6 @@ class BoardViewModel(
                         Message(
                             content = event.wordToGuest,
                             messageType = MessageType.GameStarted,
-                            sender = _boardState.value.sessionData?.players?.first { player ->
-                                player.name == args.playerName
-                            }
                         )
                     )
                 }
@@ -109,9 +106,6 @@ class BoardViewModel(
                         Message(
                             content = event.suggestion,
                             messageType = MessageType.Suggestion,
-                            sender = _boardState.value.sessionData?.players?.first { player ->
-                                player.name == args.playerName
-                            }
                         )
                     )
                 }
@@ -123,9 +117,6 @@ class BoardViewModel(
                         Message(
                             content = "",
                             messageType = MessageType.UndoPath,
-                            sender = _boardState.value.sessionData?.players?.first { player ->
-                                player.name == args.playerName
-                            }
                         )
                     )
                 }
@@ -137,9 +128,6 @@ class BoardViewModel(
                         Message(
                             content = "",
                             messageType = MessageType.PlayerLeft,
-                            sender = _boardState.value.sessionData?.players?.first { player ->
-                                player.name == args.playerName
-                            }
                         )
                     )
                     quitSessionUseCase()

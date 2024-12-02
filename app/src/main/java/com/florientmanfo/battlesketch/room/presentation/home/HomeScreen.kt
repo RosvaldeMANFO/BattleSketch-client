@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
@@ -15,7 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import com.florientmanfo.battlesketch.R
+import com.florientmanfo.battlesketch.core.presentation.components.CustomAlertDialog
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 import org.koin.androidx.compose.koinViewModel
 
@@ -30,6 +33,26 @@ fun HomeScreen(
             state = state,
             viewModel = viewModel
         )
+    }
+    state.errorMessage?.let {
+        CustomAlertDialog(
+            title = stringResource(R.string.waring_dialog_title),
+            cancelLabel = null,
+            onConfirmRequest = {viewModel.onUiEvent(HomeUiEvent.OnDismissErrorDialog)},
+            confirmLabel = stringResource(R.string.info)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(Modifier.width(LocalAppDimens.current.margin))
+                Text(
+                    text = stringResource(it),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 
     Column(

@@ -43,6 +43,7 @@ fun WinnerDialog(
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge
                 )
+                Spacer(Modifier.width(LocalAppDimens.current.margin))
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,

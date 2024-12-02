@@ -9,6 +9,7 @@ import com.florientmanfo.battlesketch.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.coordinator.Coordinator
 import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import com.florientmanfo.battlesketch.room.domain.models.Room
+import com.florientmanfo.battlesketch.room.domain.use_cases.CloseRoomSocketUseCase
 import com.florientmanfo.battlesketch.room.domain.use_cases.GetAllRoomUseCase
 import com.florientmanfo.battlesketch.room.domain.use_cases.GetRoomByNameUseCase
 import com.florientmanfo.battlesketch.room.domain.use_cases.WatchRoomListUseCase
@@ -23,6 +24,7 @@ class RoomListViewModel(
     private val getAllRoomUseCase: GetAllRoomUseCase,
     private val getRoomByNameUseCase: GetRoomByNameUseCase,
     private val watchRoomListUseCase: WatchRoomListUseCase,
+    private val closeRoomSocketUseCase: CloseRoomSocketUseCase
 ) : ViewModel() {
 
     private val _roomListState = MutableStateFlow(RoomListState())
@@ -156,6 +158,13 @@ class RoomListViewModel(
                     }
                 }
             }
+
+            RoomListUiEvent.OnNavigateBack -> {
+                viewModelScope.launch {
+                    closeRoomSocketUseCase()
+                    coordinator.navigateBack()
+                }
+            }
         }
     }
 }
@@ -168,4 +177,5 @@ sealed interface RoomListUiEvent {
     data class OnPlayerNameChange(val value: String) : RoomListUiEvent
     data object OnConfirmDialog : RoomListUiEvent
     data object OnDismissDialog : RoomListUiEvent
+    data object OnNavigateBack: RoomListUiEvent
 }

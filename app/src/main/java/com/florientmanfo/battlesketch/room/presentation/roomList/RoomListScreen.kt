@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.room.presentation.roomList
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
@@ -42,6 +43,10 @@ fun RoomListScreen(
 
     state.selectedRoom?.let {
         JoinRoomDialog(state, viewModel)
+    }
+
+    BackHandler {
+        viewModel.onUiEvent(RoomListUiEvent.OnNavigateBack)
     }
 
     LazyColumn(

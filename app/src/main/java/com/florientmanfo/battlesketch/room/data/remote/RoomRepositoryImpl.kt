@@ -2,9 +2,11 @@ package com.florientmanfo.battlesketch.room.data.remote
 
 import android.util.Log
 import com.florientmanfo.battlesketch.core.data.entity.MessageEntity
+import com.florientmanfo.battlesketch.core.domain.models.ErrorType
 import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import com.florientmanfo.battlesketch.core.domain.models.Player
+import com.florientmanfo.battlesketch.core.domain.models.getErrorType
 import com.florientmanfo.battlesketch.room.data.entities.RoomEntity
 import com.florientmanfo.battlesketch.room.domain.models.Room
 import com.florientmanfo.battlesketch.room.domain.repository.RoomRepository
@@ -13,17 +15,23 @@ import kotlinx.coroutines.flow.flow
 
 class RoomRepositoryImpl(private val dataSource: RoomDataSource) : RoomRepository {
 
-    override suspend fun createRoom(room: Room) {
-        dataSource.createRoom(
+    override suspend fun createRoom(room: Room): ErrorType? {
+        val result = dataSource.createRoom(
             RoomEntity(
                 name = room.name,
                 creator = room.creator,
                 password = room.password,
             )
         )
-        WebSocketManager.sendMessage(
-            MessageEntity(MessageType.RoomUpdate)
-        )
+        return if (result.isSuccess) {
+            WebSocketManager.sendMessage(
+                MessageEntity(MessageType.RoomUpdate)
+            )
+            null
+        } else {
+            val error = result.exceptionOrNull()
+            return error?.message.getErrorType()
+        }
     }
 
     override suspend fun getAllRoom(): List<Room> {
@@ -62,6 +70,10 @@ class RoomRepositoryImpl(private val dataSource: RoomDataSource) : RoomRepositor
                 }
             )
         }
+    }
+
+    override suspend fun closeRoomSocket() {
+        WebSocketManager.close()
     }
 
     private fun mapRooms(result: Result<List<RoomEntity>>) =

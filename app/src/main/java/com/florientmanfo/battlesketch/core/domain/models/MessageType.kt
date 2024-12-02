@@ -11,5 +11,6 @@ enum class MessageType {
     SketchGuessed,
     RoomDestroyed,
     RoomUpdate,
-    UndoPath
+    UndoPath,
+    UserQuitGame,
 }

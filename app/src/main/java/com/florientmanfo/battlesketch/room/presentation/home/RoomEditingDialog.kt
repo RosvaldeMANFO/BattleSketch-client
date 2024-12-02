@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -14,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.style.TextAlign
 import com.florientmanfo.battlesketch.R
 import com.florientmanfo.battlesketch.core.presentation.components.CustomAlertDialog
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
@@ -63,14 +61,6 @@ fun RoomEditingDialog(
                     },
                     placeholder = { Text(stringResource(R.string.room_password_placeholder)) }
                 )
-                state.errorMessage?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center
-                    )
-                }
             }
         },
         confirmLabel = stringResource(R.string.create_label),

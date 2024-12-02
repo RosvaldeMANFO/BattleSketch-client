@@ -4,6 +4,7 @@ import com.florientmanfo.battlesketch.coordinator.Coordinator
 import com.florientmanfo.battlesketch.room.data.remote.RoomDataSource
 import com.florientmanfo.battlesketch.room.data.remote.RoomRepositoryImpl
 import com.florientmanfo.battlesketch.room.domain.repository.RoomRepository
+import com.florientmanfo.battlesketch.room.domain.use_cases.CloseRoomSocketUseCase
 import com.florientmanfo.battlesketch.room.domain.use_cases.CreateRoomUseCase
 import com.florientmanfo.battlesketch.room.domain.use_cases.GetAllRoomUseCase
 import com.florientmanfo.battlesketch.room.domain.use_cases.GetRoomByNameUseCase
@@ -21,6 +22,7 @@ val roomModule = module {
     single { GetRoomByNameUseCase(get()) }
     single { CreateRoomUseCase(get()) }
     single { WatchRoomListUseCase(get()) }
+    single { CloseRoomSocketUseCase(get()) }
     viewModel { HomeViewModel(get(), get()) }
-    viewModel { RoomListViewModel(get(), get(), get(), get(), get()) }
+    viewModel { RoomListViewModel(get(), get(), get(), get(), get(), get()) }
 }

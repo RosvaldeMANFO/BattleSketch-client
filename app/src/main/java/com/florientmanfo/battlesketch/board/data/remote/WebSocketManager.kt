@@ -5,6 +5,7 @@ import com.florientmanfo.battlesketch.board.data.entities.SocketResponseEntity
 import com.florientmanfo.battlesketch.core.data.KtorClient
 import com.florientmanfo.battlesketch.core.data.entity.MessageEntity
 import com.florientmanfo.battlesketch.core.data.entity.PlayerEntity
+import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.client.plugins.websocket.sendSerialized
 import io.ktor.client.plugins.websocket.webSocketSession
