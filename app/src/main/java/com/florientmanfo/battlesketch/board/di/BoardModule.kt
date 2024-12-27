@@ -20,5 +20,5 @@ val boardModule = module {
     single { SendMessageUseCase(get()) }
     single { SendDrawnDataUseCase(get()) }
     single { QuitSessionUseCase(get()) }
-    viewModel { BoardViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { BoardViewModel(get(), get(), get(), get(), get(), get(), get()) }
 }

@@ -64,7 +64,7 @@ class RoomListViewModel(
             }
         }
         coordinator.setCallBack {
-            onUiEvent(RoomListUiEvent.OnNavigateBack)
+            stopWatchingRoomListUseCase()
             true
         }
     }

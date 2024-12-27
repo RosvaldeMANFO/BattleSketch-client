@@ -29,13 +29,14 @@ class BoardViewModel(
     private val getSessionDataUseCase: GetSessionDataUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
     private val sendDrawnDataUseCase: SendDrawnDataUseCase,
+    private val quitSessionUseCase: QuitSessionUseCase,
     private val coordinator: Coordinator
 ) : ViewModel() {
 
     private val _boardState = MutableStateFlow(BoardState())
     val boardState = _boardState.asStateFlow()
     private val _closeRoom = MutableStateFlow(false)
-    val closeRoom: StateFlow<Boolean>
+    private val closeRoom: StateFlow<Boolean>
         get() = _closeRoom
 
     private val args = savedStateHandle.toRoute<BattleSketchRoute.Board>()
@@ -49,9 +50,11 @@ class BoardViewModel(
         coordinator.setCallBack {
             if (_boardState.value.payerName == _boardState.value.sessionData?.roomCreator) {
                 onUiEvent(BoardUiEvent.OnTriggerRoomClosing)
-                closeRoom.first()
+                val result = closeRoom.first()
+                if (result) quitSessionUseCase()
+                result
             } else {
-                onUiEvent(BoardUiEvent.OnPlayerLeftRoom)
+                quitSessionUseCase()
                 true
             }
         }
@@ -135,12 +138,7 @@ class BoardViewModel(
 
             BoardUiEvent.OnPlayerLeftRoom -> {
                 viewModelScope.launch {
-                    sendMessageUseCase(
-                        Message(
-                            content = "",
-                            messageType = MessageType.PlayerLeft,
-                        )
-                    )
+                    quitSessionUseCase()
                     if (_boardState.value.showCloseRoomDialog)
                         _closeRoom.value = true
                     coordinator.navigateBack()

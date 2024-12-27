@@ -31,7 +31,7 @@ object WebSocketManager {
     private suspend fun connect() {
         if (socket == null) {
             socket = KtorClient.httpClient.webSocketSession {
-                url.takeFrom("ws://54.36.100.102:8080/join_room")
+                url.takeFrom("ws://10.0.2.2:8080/join_room")
             }
         }
     }
@@ -77,7 +77,12 @@ object WebSocketManager {
     }
 
     suspend fun close() {
-        socket?.sendSerialized(MessageEntity(MessageType.PlayerLeft))
+        socket?.sendSerialized(
+            SocketResponseEntity(
+                message = MessageEntity(MessageType.PlayerLeft),
+                drawingData = null
+            )
+        )
         socket?.close(CloseReason(CloseReason.Codes.NORMAL, SocketError.SessionClosed.message))
         socket = null
     }
