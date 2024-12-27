@@ -18,11 +18,20 @@ class Coordinator {
     }
 
     fun lastDestination() = _navStack.lastOrNull()
+    fun setCallBack(onNavigateBAck: suspend () -> Boolean) {
+        callBck = onNavigateBAck
+    }
 
     suspend fun navigateBack() {
-        if (_navStack.isNotEmpty()) {
-            _navStack.remove(_navStack.last())
-            _currentRoute.emit(_navStack.lastOrNull() ?: BattleSketchRoute.Home)
+        callBck?.invoke()?.let { result ->
+            if (result && _navStack.isNotEmpty()) {
+                _navStack.remove(_navStack.last())
+                _currentRoute.emit(_navStack.lastOrNull() ?: BattleSketchRoute.Home)
+            }
         }
+    }
+
+    companion object {
+        var callBck: (suspend () -> Boolean)? = null
     }
 }

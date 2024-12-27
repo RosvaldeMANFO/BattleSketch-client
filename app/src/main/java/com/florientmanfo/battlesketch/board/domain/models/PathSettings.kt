@@ -11,4 +11,5 @@ data class PathSettings(
     val colorPickerOffset: Offset? = null,
     val strokeWidth: Float = 1f,
     val drawingMode: DrawingMode = DrawingMode.Draw,
+    val isLandScape: Boolean = false
 )

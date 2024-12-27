@@ -10,7 +10,7 @@ sealed interface BattleSketchRoute {
     val title: Int
 
     @Serializable
-    data object Home : BattleSketchRoute {
+    data object Home: BattleSketchRoute {
         override val title: Int
             get() = R.string.app_name
     }

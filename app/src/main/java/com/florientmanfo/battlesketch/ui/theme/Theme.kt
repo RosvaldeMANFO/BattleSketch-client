@@ -105,7 +105,7 @@ val LocalAppDimens = staticCompositionLocalOf {
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun BattleSketchTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
     content: @Composable () -> Unit,
 ) {

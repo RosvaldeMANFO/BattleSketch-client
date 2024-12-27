@@ -16,8 +16,10 @@ import com.florientmanfo.battlesketch.coordinator.Coordinator
 import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -27,12 +29,14 @@ class BoardViewModel(
     private val getSessionDataUseCase: GetSessionDataUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
     private val sendDrawnDataUseCase: SendDrawnDataUseCase,
-    private val quitSessionUseCase: QuitSessionUseCase,
     private val coordinator: Coordinator
 ) : ViewModel() {
 
     private val _boardState = MutableStateFlow(BoardState())
     val boardState = _boardState.asStateFlow()
+    private val _closeRoom = MutableStateFlow(false)
+    val closeRoom: StateFlow<Boolean>
+        get() = _closeRoom
 
     private val args = savedStateHandle.toRoute<BattleSketchRoute.Board>()
 
@@ -42,6 +46,15 @@ class BoardViewModel(
             _boardState.value = _boardState.value.copy(payerName = args.playerName)
         }
         joinRoom()
+        coordinator.setCallBack {
+            if (_boardState.value.payerName == _boardState.value.sessionData?.roomCreator) {
+                onUiEvent(BoardUiEvent.OnTriggerRoomClosing)
+                closeRoom.first()
+            } else {
+                onUiEvent(BoardUiEvent.OnPlayerLeftRoom)
+                true
+            }
+        }
     }
 
     private fun joinRoom() {
@@ -66,12 +79,10 @@ class BoardViewModel(
                     }
 
                     MessageType.RoomDestroyed -> {
-                        quitSessionUseCase()
                         coordinator.navigateBack()
                     }
 
                     else -> {
-                        quitSessionUseCase()
                         coordinator.navigateBack()
                     }
                 }
@@ -130,7 +141,8 @@ class BoardViewModel(
                             messageType = MessageType.PlayerLeft,
                         )
                     )
-                    quitSessionUseCase()
+                    if (_boardState.value.showCloseRoomDialog)
+                        _closeRoom.value = true
                     coordinator.navigateBack()
                 }
             }
@@ -170,8 +182,8 @@ sealed interface BoardUiEvent {
     data class StartGame(val wordToGuest: String) : BoardUiEvent
     data class OnPathDrawn(val pathSettings: PathSettings) : BoardUiEvent
     data class OnSendSuggestion(val suggestion: String) : BoardUiEvent
-    data object OnUndoPath: BoardUiEvent
-    data object OnPlayerLeftRoom: BoardUiEvent
-    data object OnCancelRoomClosing: BoardUiEvent
-    data object OnTriggerRoomClosing: BoardUiEvent
+    data object OnUndoPath : BoardUiEvent
+    data object OnPlayerLeftRoom : BoardUiEvent
+    data object OnCancelRoomClosing : BoardUiEvent
+    data object OnTriggerRoomClosing : BoardUiEvent
 }

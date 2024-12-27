@@ -53,7 +53,7 @@ class HomeViewModel(
                         BattleSketchRoute.RoomList(
                             null,
                             null,
-                            null,
+                            null
                         )
                     )
                 }

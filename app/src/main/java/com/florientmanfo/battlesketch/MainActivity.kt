@@ -36,6 +36,9 @@ import org.koin.android.ext.android.inject
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
+
+    private val coordinator: Coordinator by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -45,8 +48,6 @@ class MainActivity : ComponentActivity() {
         } else {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
-
-        val coordinator: Coordinator by inject()
 
         setContent {
             val navController = rememberNavController()

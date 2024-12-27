@@ -15,5 +15,6 @@ data class DrawingDataEntity(
     val points: List<Offset>,
     val mode: DrawingMode,
     val thickness: Float,
-    val brush: Long
+    val brush: Long,
+    val isLandScape: Boolean
 )

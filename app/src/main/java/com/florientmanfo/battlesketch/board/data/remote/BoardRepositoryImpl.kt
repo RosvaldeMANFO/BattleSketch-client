@@ -84,7 +84,8 @@ class BoardRepositoryImpl(
                             }.toMutableList(),
                             color = Color(it.brush),
                             strokeWidth = it.thickness,
-                            drawingMode = it.mode
+                            drawingMode = it.mode,
+                            isLandScape = it.isLandScape,
                         )
                     }.toMutableStateList(),
                     players = data.players.map {
@@ -120,7 +121,8 @@ class BoardRepositoryImpl(
                 points = pathSettings.points.map { EntityOffset( it.x, it.y) },
                 mode = pathSettings.drawingMode,
                 thickness = pathSettings.strokeWidth,
-                brush = pathSettings.color.toArgb().toLong()
+                brush = pathSettings.color.toArgb().toLong(),
+                isLandScape = pathSettings.isLandScape
             )
         )
     }

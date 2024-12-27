@@ -29,7 +29,7 @@ object WebSocketManager {
     private suspend fun connect() {
         if (socket == null) {
             socket = KtorClient.httpClient.webSocketSession {
-                url.takeFrom("ws://10.0.2.2:8080/watch_room")
+                url.takeFrom("ws://54.36.100.102:8080/watch_room")
             }
 
         }

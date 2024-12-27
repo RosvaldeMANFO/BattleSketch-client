@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.board.presentation.components
 
+import android.graphics.PointF
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -14,6 +15,7 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -33,6 +35,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,15 +50,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.UiComposable
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.PointerId
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.florientmanfo.battlesketch.board.domain.models.PathSettings
 import com.florientmanfo.battlesketch.board.domain.models.SessionData
@@ -116,7 +123,7 @@ fun Board(
                     y = (offset.y + scale * panChange.y).coerceIn(-maxY, maxY)
                 )
             }
-
+            val onSurface = MaterialTheme.colorScheme.onSurface
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
@@ -155,7 +162,8 @@ fun Board(
                                                 paths[paths.size - 1] = painterState.copy(
                                                     points = paths.last().points
                                                         .toMutableList()
-                                                        .apply { add(transformedPoint) })
+                                                        .apply { add(transformedPoint) },
+                                                )
                                             }
                                         }
                                         pointerId = event.id
@@ -170,11 +178,25 @@ fun Board(
                     val path = Path().apply {
                         if (pathSettings.points.size > 1) {
                             pathSettings.points.forEachIndexed { index, point ->
-                                if (index == 0) moveTo(point.x, point.y)
-                                else lineTo(point.x, point.y)
+                                if (index == 0) {
+                                    moveTo(point.x, point.y)
+                                } else {
+                                    val prevPoint = pathSettings.points[index - 1]
+                                    val controlPoint = PointF(
+                                        (prevPoint.x + point.x) / 2,
+                                        (prevPoint.y + point.y) / 2
+                                    )
+                                    quadraticTo(
+                                        controlPoint.x,
+                                        controlPoint.y,
+                                        point.x,
+                                        point.y
+                                    )
+                                }
                             }
                         }
                     }
+
                     val style = Stroke(
                         width = pathSettings.strokeWidth,
                         cap = StrokeCap.Round,
@@ -353,4 +375,17 @@ fun Board(
             }
         }
     }
+}
+
+fun normalizePoint(point: Offset, constraints: Constraints): Offset {
+    return Offset(
+        x = point.x / constraints.maxWidth,
+        y = point.y / constraints.maxHeight
+    )
+}
+fun denormalizePoint(point: Offset, constraints: Constraints): Offset {
+    return Offset(
+        x = point.x * constraints.maxWidth,
+        y = point.y * constraints.maxHeight
+    )
 }
