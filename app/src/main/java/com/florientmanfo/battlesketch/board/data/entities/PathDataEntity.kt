@@ -1,6 +1,5 @@
 package com.florientmanfo.battlesketch.board.data.entities
 
-import com.florientmanfo.battlesketch.core.data.entity.PlayerEntity
 import com.florientmanfo.battlesketch.core.domain.models.DrawingMode
 import kotlinx.serialization.Serializable
 
@@ -11,10 +10,10 @@ data class Offset(
 )
 
 @Serializable
-data class DrawingDataEntity(
+data class PathDataEntity(
     val points: List<Offset>,
     val mode: DrawingMode,
-    val thickness: Float,
+    val strokeWidth: Float,
     val brush: Long,
     val isLandScape: Boolean
 )

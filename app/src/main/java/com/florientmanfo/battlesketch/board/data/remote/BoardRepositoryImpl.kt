@@ -6,7 +6,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.florientmanfo.battlesketch.board.data.entities.DrawingDataEntity
+import com.florientmanfo.battlesketch.board.data.entities.PathDataEntity
 import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.board.domain.models.PathSettings
 import com.florientmanfo.battlesketch.board.domain.models.SessionData
@@ -64,6 +64,7 @@ class BoardRepositoryImpl(
                         roomName = data.currentPlayer.roomName,
                         isCurrentPlayer = true
                     ),
+                    elapsedTime = data.elapsedTime,
                     isRunning = data.isRunning,
                     messages = data.messages.map {
                         Message(
@@ -84,7 +85,7 @@ class BoardRepositoryImpl(
                                 Offset(point.x, point.y)
                             }.toMutableList(),
                             color = Color(it.brush),
-                            strokeWidth = it.thickness,
+                            strokeWidth = it.strokeWidth,
                             drawingMode = it.mode,
                             isLandScape = it.isLandScape,
                         )
@@ -118,10 +119,10 @@ class BoardRepositoryImpl(
 
     override suspend fun sendDrawnData(pathSettings: PathSettings) {
         WebSocketManager.sendData(
-            drawingDataEntity = DrawingDataEntity(
+            drawingDataEntity = PathDataEntity(
                 points = pathSettings.points.map { EntityOffset( it.x, it.y) },
                 mode = pathSettings.drawingMode,
-                thickness = pathSettings.strokeWidth,
+                strokeWidth = pathSettings.strokeWidth,
                 brush = pathSettings.color.toArgb().toLong(),
                 isLandScape = pathSettings.isLandScape
             )

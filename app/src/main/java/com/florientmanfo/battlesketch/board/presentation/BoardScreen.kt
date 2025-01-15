@@ -2,17 +2,21 @@ package com.florientmanfo.battlesketch.board.presentation
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.florientmanfo.battlesketch.R
 import com.florientmanfo.battlesketch.board.presentation.components.Board
 import com.florientmanfo.battlesketch.board.presentation.components.HoldingDialog
+import com.florientmanfo.battlesketch.board.presentation.components.TimeoutDialog
 import com.florientmanfo.battlesketch.board.presentation.components.WinnerDialog
 import com.florientmanfo.battlesketch.core.presentation.components.CustomAlertDialog
 import org.koin.androidx.compose.koinViewModel
@@ -33,6 +37,14 @@ fun BoardScreen(
     }
 
     Box(modifier) {
+        state.sessionData?.elapsedTime?.let {
+            LinearProgressIndicator(
+                progress = { it.toFloat() / 1000 * 70 },
+                modifier = Modifier
+                    .fillMaxWidth(0.7f)
+                    .align(Alignment.TopCenter),
+            )
+        }
         if (state.showCloseRoomDialog) {
             CustomAlertDialog(
                 title = stringResource(R.string.close_room_dialog_title),
@@ -53,6 +65,9 @@ fun BoardScreen(
                         wordToGuest = it.wordToGuess,
                         winnerName = winner
                     )
+                }
+                if (state.timeout) {
+                    TimeoutDialog(wordToGuest = it.wordToGuess)
                 }
                 Board(
                     sessionData = it,

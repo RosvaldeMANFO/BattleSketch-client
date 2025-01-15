@@ -31,4 +31,8 @@
     <string name="word_guested_message">guested the word %s 🙂</string>
     <string name="close_room_dialog_title">Close room</string>
     <string name="close_roomDialog_dialog_message">The room will be closed and players will be threw out 🥲</string>
+    <string name="no_room_found">No room found!😔</string>
+    <string name="timeout_placeholder">Set a timeout</string>
+    <string name="timeout_dialog_title">Timeout</string>
+    <string name="timeout_dialog_message">Timeout! Sketch not guessed, it was %s 😔</string>
 </resources>

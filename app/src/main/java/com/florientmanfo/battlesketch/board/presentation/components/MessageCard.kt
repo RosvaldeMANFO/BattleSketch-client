@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.board.presentation.components
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
@@ -9,16 +10,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import com.florientmanfo.battlesketch.core.domain.models.Player
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
+import com.florientmanfo.battlesketch.ui.theme.smallDimens
 
 @Composable
 fun MessageCard(
@@ -26,7 +30,7 @@ fun MessageCard(
     modifier: Modifier = Modifier
 ) {
     val color = MaterialTheme.colorScheme.tertiaryContainer
-    val localDimension = LocalAppDimens.current.margin.value
+    val localDimension = LocalAppDimens.provides(smallDimens).value.margin.value
 
     ListItem(
         colors = ListItemDefaults.colors(containerColor = color),

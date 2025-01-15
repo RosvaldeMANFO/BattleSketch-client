@@ -114,7 +114,7 @@ fun ThicknessEditor(
 
     var boxSize by remember { mutableStateOf(IntSize.Zero) }
     val interactionSource = remember { MutableInteractionSource() }
-    var thickness by remember { mutableFloatStateOf(currentThickness * 0.1f) }
+    var strokeWidth by remember { mutableFloatStateOf(currentThickness * 0.1f) }
     var cursorOffset by remember { mutableStateOf(Offset(currentThickness * 0.1f, 0f)) }
     val slideColor = MaterialTheme.colorScheme.primary
     val scope = rememberCoroutineScope()
@@ -123,7 +123,7 @@ fun ThicknessEditor(
         modifier = modifier,
         title = stringResource(R.string.thickness_dialog_title),
         onConfirmRequest = {
-            onThicknessChange(thickness * 0.1f)
+            onThicknessChange(strokeWidth * 0.1f)
         },
         onDismissRequest = { onDismissRequest() }
     ) {
@@ -138,7 +138,7 @@ fun ThicknessEditor(
                     onDrawBehind {
                         scope.collectForPress(interactionSource) { position ->
                             if (position.x in 0f..boxSize.width.toFloat()) {
-                                thickness = position.x
+                                strokeWidth = position.x
                                 cursorOffset = Offset(
                                     x = position.x,
                                     y = 0f

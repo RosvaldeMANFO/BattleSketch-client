@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import com.florientmanfo.battlesketch.R
 import com.florientmanfo.battlesketch.core.presentation.components.CustomAlertDialog
+import com.florientmanfo.battlesketch.room.presentation.components.CustomTimeoutPicker
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 
 @Composable
@@ -60,6 +61,11 @@ fun RoomEditingDialog(
                         )
                     },
                     placeholder = { Text(stringResource(R.string.room_password_placeholder)) }
+                )
+                CustomTimeoutPicker(
+                    modifier = Modifier.fillMaxWidth(),
+                    availableValue = state.timeoutValues,
+                    onValueChange = {viewModel.onUiEvent(HomeUiEvent.OnSetTimeout(it))},
                 )
             }
         },

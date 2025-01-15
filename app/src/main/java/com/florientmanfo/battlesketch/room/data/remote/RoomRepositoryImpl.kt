@@ -21,6 +21,7 @@ class RoomRepositoryImpl(private val dataSource: RoomDataSource) : RoomRepositor
                 name = room.name,
                 creator = room.creator,
                 password = room.password,
+                timeout = room.timeout
             )
         )
         return if (result.isSuccess) {
@@ -82,7 +83,8 @@ class RoomRepositoryImpl(private val dataSource: RoomDataSource) : RoomRepositor
                 name = entity.name,
                 creator = entity.creator,
                 playerNames = entity.players.map { it.name },
-                password = entity.password
+                password = entity.password,
+                timeout = entity.timeout
             )
         }
 

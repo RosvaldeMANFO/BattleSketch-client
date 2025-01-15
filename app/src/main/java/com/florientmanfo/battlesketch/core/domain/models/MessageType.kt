@@ -13,4 +13,5 @@ enum class MessageType {
     RoomUpdate,
     UndoPath,
     UserQuitGame,
+    Timeout
 }

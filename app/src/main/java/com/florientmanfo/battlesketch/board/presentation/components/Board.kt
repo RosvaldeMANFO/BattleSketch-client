@@ -278,8 +278,8 @@ fun Board(
                 )
                 onReset(painterState)
             },
-            onChangeThickness = { thickness ->
-                painterState = painterState.copy(strokeWidth = thickness)
+            onChangeThickness = { strokeWidth ->
+                painterState = painterState.copy(strokeWidth = strokeWidth)
             },
             onColorChange = { color, offset ->
                 painterState = painterState.copy(

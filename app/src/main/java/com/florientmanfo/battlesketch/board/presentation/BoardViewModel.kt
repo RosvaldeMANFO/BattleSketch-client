@@ -9,7 +9,7 @@ import com.florientmanfo.battlesketch.board.domain.models.PathSettings
 import com.florientmanfo.battlesketch.board.domain.use_cases.GetSessionDataUseCase
 import com.florientmanfo.battlesketch.board.domain.use_cases.JoinRoomUseCase
 import com.florientmanfo.battlesketch.board.domain.use_cases.QuitSessionUseCase
-import com.florientmanfo.battlesketch.board.domain.use_cases.SendDrawnDataUseCase
+import com.florientmanfo.battlesketch.board.domain.use_cases.SendPathDataUseCase
 import com.florientmanfo.battlesketch.board.domain.use_cases.SendMessageUseCase
 import com.florientmanfo.battlesketch.coordinator.BattleSketchRoute
 import com.florientmanfo.battlesketch.coordinator.Coordinator
@@ -28,7 +28,7 @@ class BoardViewModel(
     private val joinRoomUseCase: JoinRoomUseCase,
     private val getSessionDataUseCase: GetSessionDataUseCase,
     private val sendMessageUseCase: SendMessageUseCase,
-    private val sendDrawnDataUseCase: SendDrawnDataUseCase,
+    private val sendDrawnDataUseCase: SendPathDataUseCase,
     private val quitSessionUseCase: QuitSessionUseCase,
     private val coordinator: Coordinator
 ) : ViewModel() {
@@ -83,6 +83,12 @@ class BoardViewModel(
 
                     MessageType.RoomDestroyed -> {
                         coordinator.navigateBack()
+                    }
+
+                    MessageType.Timeout -> {
+                        _boardState.update {
+                            it.copy(timeout = true)
+                        }
                     }
 
                     else -> {
@@ -170,7 +176,8 @@ class BoardViewModel(
             state.copy(
                 payerName = args.playerName,
                 sessionData = sessionData,
-                winner = null
+                winner = null,
+                timeout = false
             )
         }
     }

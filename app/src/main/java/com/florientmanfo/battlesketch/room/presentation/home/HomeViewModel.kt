@@ -61,16 +61,16 @@ class HomeViewModel(
 
             HomeUiEvent.OnSubmitRoom -> {
                 viewModelScope.launch {
-                    val error =  createRoomUseCase(_homeSate.value.room)
-                    if(error != null){
+                    val error = createRoomUseCase(_homeSate.value.room)
+                    if (error != null) {
                         _homeSate.update {
                             it.copy(
-                                errorMessage = when (error){
+                                errorMessage = when (error) {
                                     ErrorType.DuplicatedRoomName -> R.string.invalid_room_name
                                 }
                             )
                         }
-                    } else  {
+                    } else {
                         coordinator.navigateTo(
                             BattleSketchRoute
                                 .Board(
@@ -96,6 +96,12 @@ class HomeViewModel(
                     it.copy(errorMessage = null)
                 }
             }
+
+            is HomeUiEvent.OnSetTimeout -> {
+                _homeSate.update {
+                    it.copy(room = it.room.copy(timeout = event.value))
+                }
+            }
         }
     }
 }
@@ -108,5 +114,6 @@ sealed interface HomeUiEvent {
     data class OnTypingRoomPassword(val roomPassword: String) : HomeUiEvent
     data object OnSubmitRoom : HomeUiEvent
     data object OnDismissDialog : HomeUiEvent
-    data object OnDismissErrorDialog: HomeUiEvent
+    data object OnDismissErrorDialog : HomeUiEvent
+    data class OnSetTimeout(val value: Int?) : HomeUiEvent
 }

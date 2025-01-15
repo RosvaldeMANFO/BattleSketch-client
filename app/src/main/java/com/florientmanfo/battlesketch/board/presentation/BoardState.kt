@@ -7,5 +7,6 @@ data class BoardState(
     val errorMessage: String? = null,
     val payerName: String = "",
     val winner: String? = null,
-    val showCloseRoomDialog: Boolean = false
+    val showCloseRoomDialog: Boolean = false,
+    val timeout: Boolean = false
 )

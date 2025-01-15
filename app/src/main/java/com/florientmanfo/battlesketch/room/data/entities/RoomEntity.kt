@@ -10,4 +10,5 @@ data class RoomEntity(
     val password: String? = null,
     var isOpen: Boolean = true,
     val players: MutableList<PlayerEntity> = mutableListOf(),
+    val timeout: Int? = null
 )

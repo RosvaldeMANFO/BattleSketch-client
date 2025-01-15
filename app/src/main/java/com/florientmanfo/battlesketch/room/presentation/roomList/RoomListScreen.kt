@@ -3,7 +3,10 @@ package com.florientmanfo.battlesketch.room.presentation.roomList
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +27,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.florientmanfo.battlesketch.R
 import com.florientmanfo.battlesketch.room.domain.models.Room
@@ -49,60 +55,80 @@ fun RoomListScreen(
         viewModel.onUiEvent(RoomListUiEvent.OnNavigateBack)
     }
 
-    LazyColumn(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item {
-            CustomTextField(
-                modifier = Modifier.fillMaxWidth(0.75f),
-                onValueChange = {
-                    viewModel.onUiEvent(
-                        RoomListUiEvent.OnSearchingKeywordChange(it)
-                    )
-                },
-                value = state.searchingKeyword,
-                trailingIcon = {
-                    IconButton(onClick = {
-                        viewModel.onUiEvent(RoomListUiEvent.RefreshList)
-                    }
-                    ) { Icon(Icons.Default.Refresh, null) }
-                },
-                leadingIcon = {
-                    IconButton(onClick = {
-                        if (state.searchingKeyword.isNotEmpty()) {
-                            viewModel.onUiEvent(
-                                RoomListUiEvent.OnSearchingKeywordChange(state.searchingKeyword)
-                            )
+    if (state.filteredRoom.isNotEmpty() || state.allRoom.isNotEmpty()) {
+        LazyColumn(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(LocalAppDimens.current.margin),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                CustomTextField(
+                    modifier = Modifier.fillMaxWidth(0.75f),
+                    onValueChange = {
+                        viewModel.onUiEvent(
+                            RoomListUiEvent.OnSearchingKeywordChange(it)
+                        )
+                    },
+                    value = state.searchingKeyword,
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            viewModel.onUiEvent(RoomListUiEvent.RefreshList)
                         }
-                    }) {
-                        Icon(Icons.Default.Search, null)
+                        ) { Icon(Icons.Default.Refresh, null) }
+                    },
+                    leadingIcon = {
+                        IconButton(onClick = {
+                            if (state.searchingKeyword.isNotEmpty()) {
+                                viewModel.onUiEvent(
+                                    RoomListUiEvent.OnSearchingKeywordChange(state.searchingKeyword)
+                                )
+                            }
+                        }) {
+                            Icon(Icons.Default.Search, null)
+                        }
+                    }
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(LocalAppDimens.current.margin))
+            }
+
+            if (state.searchingKeyword.isNotEmpty()) {
+                itemsIndexed(state.filteredRoom) { index, room ->
+                    RoomListItem(room) {
+                        viewModel.onUiEvent(RoomListUiEvent.OnSelectRoom(room))
+                    }
+                    if (index != state.filteredRoom.size - 1) {
+                        HorizontalDivider()
                     }
                 }
-            )
-        }
-        item {
-            Spacer(modifier = Modifier.height(LocalAppDimens.current.margin))
-        }
-
-        if (state.searchingKeyword.isNotEmpty()) {
-            itemsIndexed(state.filteredRoom) { index, room ->
-                RoomListItem(room) {
-                    viewModel.onUiEvent(RoomListUiEvent.OnSelectRoom(room))
-                }
-                if (index != state.filteredRoom.size - 1) {
-                    HorizontalDivider()
+            } else {
+                itemsIndexed(state.allRoom) { index, room ->
+                    RoomListItem(room) {
+                        viewModel.onUiEvent(RoomListUiEvent.OnSelectRoom(room))
+                    }
+                    if (index != state.allRoom.size - 1) {
+                        HorizontalDivider()
+                    }
                 }
             }
-        } else {
-            itemsIndexed(state.allRoom) { index, room ->
-                RoomListItem(room) {
-                    viewModel.onUiEvent(RoomListUiEvent.OnSelectRoom(room))
-                }
-                if (index != state.allRoom.size - 1) {
-                    HorizontalDivider()
-                }
+        }
+    } else {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = stringResource(R.string.no_room_found),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Icon(
+                    painter = painterResource(R.drawable.no_room_found),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }
