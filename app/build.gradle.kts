@@ -1,9 +1,13 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
 }
+
 
 android {
     namespace = "com.florientmanfo.battlesketch"
@@ -22,7 +26,15 @@ android {
         }
     }
 
+
     buildTypes {
+        val localProperties = Properties()
+        localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
+        debug {
+            buildConfigField("String", "HTTP_BASE_URL", localProperties.getProperty("http", ""))
+            buildConfigField("String", "WS_BASE_URL", localProperties.getProperty("ws", ""))
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -31,6 +43,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -40,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"

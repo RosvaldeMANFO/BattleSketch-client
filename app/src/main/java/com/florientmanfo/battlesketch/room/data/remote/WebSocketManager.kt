@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.room.data.remote
 
+import com.florientmanfo.battlesketch.BuildConfig
 import com.florientmanfo.battlesketch.board.data.remote.SocketError
 import com.florientmanfo.battlesketch.core.data.KtorClient
 import com.florientmanfo.battlesketch.core.data.entity.MessageEntity
@@ -29,8 +30,7 @@ object WebSocketManager {
     private suspend fun connect() {
         if (socket == null) {
             socket = KtorClient.httpClient.webSocketSession {
-//                url.takeFrom("ws://54.36.100.102:8080/watch_room")
-                url.takeFrom("ws://10.0.2.2:8080/watch_room")
+                url.takeFrom("${BuildConfig.WS_BASE_URL}watch_room")
             }
 
         }

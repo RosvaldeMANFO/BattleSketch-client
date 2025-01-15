@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.core.data
 
+import com.florientmanfo.battlesketch.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
@@ -20,7 +21,7 @@ object KtorClient {
             contentConverter = KotlinxWebsocketSerializationConverter(Json)
         }
         defaultRequest {
-            url("http://10.0.2.2:8080")
+            url(BuildConfig.HTTP_BASE_URL)
         }
         install(DefaultRequest) {
             headers.append("Content-Type", "application/json")

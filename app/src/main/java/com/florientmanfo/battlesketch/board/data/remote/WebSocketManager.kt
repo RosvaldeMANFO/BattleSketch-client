@@ -1,5 +1,6 @@
 package com.florientmanfo.battlesketch.board.data.remote
 
+import com.florientmanfo.battlesketch.BuildConfig
 import com.florientmanfo.battlesketch.board.data.entities.PathDataEntity
 import com.florientmanfo.battlesketch.board.data.entities.SocketResponseEntity
 import com.florientmanfo.battlesketch.core.data.KtorClient
@@ -31,7 +32,7 @@ object WebSocketManager {
     private suspend fun connect() {
         if (socket == null) {
             socket = KtorClient.httpClient.webSocketSession {
-                url.takeFrom("ws://10.0.2.2:8080/join_room")
+                url.takeFrom("${BuildConfig.WS_BASE_URL}join_room")
             }
         }
     }

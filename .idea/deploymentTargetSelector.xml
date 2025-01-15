@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DIALOG" />
-        <DropdownSelection timestamp="2024-12-30T11:38:15.388572400Z">
+        <DropdownSelection timestamp="2025-01-15T21:08:12.281393400Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Florient\.android\avd\Medium_Phone_API_33.avd" />
@@ -15,12 +15,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Florient\.android\avd\Medium_Phone_API_33.avd" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Florient\.android\avd\Resizable_Experimental_API_34.avd" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Florient\.android\avd\Resizable_Experimental_API_34.avd" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Florient\.android\avd\Medium_Phone_API_33.avd" />
               </handle>
             </Target>
           </targets>
