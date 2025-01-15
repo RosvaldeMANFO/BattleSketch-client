@@ -89,9 +89,9 @@ fun Board(
     val paths = remember { mutableStateListOf<PathSettings>() }
     val redoPaths = remember { mutableStateListOf<PathSettings>() }
 
-    LaunchedEffect(sessionData.drawingData) {
+    LaunchedEffect(sessionData.pathData) {
         paths.clear()
-        paths.addAll(sessionData.drawingData)
+        paths.addAll(sessionData.pathData)
     }
 
     var showMessageList by remember { mutableStateOf(false) }

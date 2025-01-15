@@ -72,7 +72,7 @@ object WebSocketManager {
         connect()
         val responseModel = SocketResponseEntity(
             message = messageEntity,
-            drawingData = drawingDataEntity
+            pathData = drawingDataEntity
         )
         socket?.sendSerialized(responseModel)
     }
@@ -81,7 +81,7 @@ object WebSocketManager {
         socket?.sendSerialized(
             SocketResponseEntity(
                 message = MessageEntity(MessageType.PlayerLeft),
-                drawingData = null
+                pathData = null
             )
         )
         socket?.close(CloseReason(CloseReason.Codes.NORMAL, SocketError.SessionClosed.message))

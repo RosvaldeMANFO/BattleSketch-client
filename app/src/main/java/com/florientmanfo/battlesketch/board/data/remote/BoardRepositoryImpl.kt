@@ -79,7 +79,7 @@ class BoardRepositoryImpl(
                             messageType = it.messageType
                         )
                     }.toMutableList(),
-                    drawingData = data.drawingData.map {
+                    pathData = data.pathData.map {
                         PathSettings(
                             points = it.points.map { point ->
                                 Offset(point.x, point.y)

@@ -13,7 +13,7 @@ data class SessionDataEntity(
     var isRunning: Boolean = false,
     val players: List<PlayerEntity> = listOf(),
     val messages: List<MessageEntity> = listOf(),
-    val drawingData: List<PathDataEntity> = listOf(),
+    val pathData: List<PathDataEntity> = listOf(),
     val elapsedTime: Int? = null
 )
 

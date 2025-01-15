@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SocketResponseEntity(
-    val drawingData: PathDataEntity? = null,
+    val pathData: PathDataEntity? = null,
     val message: MessageEntity? = null
 )
