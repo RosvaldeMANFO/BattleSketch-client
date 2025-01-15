@@ -7,5 +7,5 @@ data class Room(
     val creator: String = "",
     val password: String? = null,
     val playerNames: List<String> = listOf(),
-    val timeout: Int? = null
+    val timeout: Int? = 15
 )

@@ -99,6 +99,13 @@ class BoardViewModel(
         }
     }
 
+    fun computeTimeTick(elapse: Int): Float{
+        val delay = _boardState.value.sessionData?.actionDelay
+        return if( delay != null){
+            elapse * 1.0f / delay
+        } else 0f
+    }
+
     fun onUiEvent(event: BoardUiEvent) {
         when (event) {
             is BoardUiEvent.StartGame -> {

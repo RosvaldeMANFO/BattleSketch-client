@@ -14,5 +14,6 @@ data class SessionData(
     val players: MutableList<Player> = mutableListOf(),
     val messages: MutableList<Message> = mutableListOf(),
     val pathData: SnapshotStateList<PathSettings> = mutableStateListOf(),
-    val elapsedTime: Int? = null
+    val elapsedTime: Int? = null,
+    val actionDelay: Int? = null
 )

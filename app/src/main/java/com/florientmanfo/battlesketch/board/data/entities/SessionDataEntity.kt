@@ -14,7 +14,8 @@ data class SessionDataEntity(
     val players: List<PlayerEntity> = listOf(),
     val messages: List<MessageEntity> = listOf(),
     val pathData: List<PathDataEntity> = listOf(),
-    val elapsedTime: Int? = null
+    val elapsedTime: Int? = null,
+    val actionDelay: Int? = null
 )
 
 

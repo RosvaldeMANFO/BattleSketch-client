@@ -39,7 +39,7 @@ fun BoardScreen(
     Box(modifier) {
         state.sessionData?.elapsedTime?.let {
             LinearProgressIndicator(
-                progress = { it.toFloat() / 1000 * 70 },
+                progress = { viewModel.computeTimeTick(it) },
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
                     .align(Alignment.TopCenter),

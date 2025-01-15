@@ -65,6 +65,7 @@ class BoardRepositoryImpl(
                         isCurrentPlayer = true
                     ),
                     elapsedTime = data.elapsedTime,
+                    actionDelay = data.actionDelay,
                     isRunning = data.isRunning,
                     messages = data.messages.map {
                         Message(
