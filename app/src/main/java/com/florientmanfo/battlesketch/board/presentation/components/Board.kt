@@ -15,7 +15,6 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -35,8 +34,6 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,20 +41,18 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.UiComposable
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.input.pointer.PointerId
+import androidx.compose.ui.input.pointer.changedToUp
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.platform.LocalContext
@@ -69,7 +64,6 @@ import com.florientmanfo.battlesketch.core.domain.models.DrawingMode
 import com.florientmanfo.battlesketch.core.presentation.components.CustomTextField
 import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 import com.florientmanfo.battlesketch.ui.theme.isTablet
-import kotlinx.coroutines.launch
 
 @Composable
 fun Board(
@@ -97,7 +91,6 @@ fun Board(
     var showMessageList by remember { mutableStateOf(false) }
     var showPlayerList by remember { mutableStateOf(false) }
     var painterState by remember { mutableStateOf(basePath) }
-    val coroutineScope = rememberCoroutineScope()
     var message by remember { mutableStateOf("") }
 
     val eraser = MaterialTheme.colorScheme.surface
@@ -123,7 +116,6 @@ fun Board(
                     y = (offset.y + scale * panChange.y).coerceIn(-maxY, maxY)
                 )
             }
-            val onSurface = MaterialTheme.colorScheme.onSurface
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
@@ -137,38 +129,33 @@ fun Board(
                     .pointerInput(Unit) {
                         if (showDrawingTools) {
                             awaitEachGesture {
-                                val down = awaitFirstDown()
-                                paths.add(
-                                    painterState.copy(
-                                        points = mutableListOf(down.position)
-                                    )
-                                )
-                                var pointerId: PointerId = down.id
+                                val pathPoints = mutableListOf<Offset>()
+                                awaitFirstDown().also { down ->
+                                    val normalizedPoint = down.position.normalize(offset, scale)
+                                    if (normalizedPoint.matchConstraints(constraints)) {
+                                        pathPoints.add(normalizedPoint)
+                                    }
+                                }
                                 while (true) {
-                                    val event =
-                                        awaitTouchSlopOrCancellation(pointerId) { change, _ ->
-                                            if (change.positionChange() != Offset.Zero) change.consume()
-                                        }
-                                    if (event != null) {
-                                        coroutineScope.launch {
-                                            val transformedPoint = Offset(
-                                                x = (event.position.x - offset.x) / scale,
-                                                y = (event.position.y - offset.y) / scale
-                                            )
-                                            if (
-                                                transformedPoint.x in 0f..constraints.maxWidth.toFloat()
-                                                && transformedPoint.y in 0f..constraints.maxHeight.toFloat()
-                                            ) {
-                                                paths[paths.size - 1] = painterState.copy(
-                                                    points = paths.last().points
-                                                        .toMutableList()
-                                                        .apply { add(transformedPoint) },
-                                                )
+                                    val event = awaitPointerEvent()
+                                    event.changes.forEach { change ->
+                                        if (change.pressed) {
+                                            val normalizedPoint =
+                                                change.position.normalize(offset, scale)
+                                            if (normalizedPoint.matchConstraints(constraints)) {
+                                                pathPoints.add(normalizedPoint)
+                                                change.consume()
+                                                paths.add(painterState.copy(points = pathPoints))
                                             }
                                         }
-                                        pointerId = event.id
-                                    } else break
+                                    }
+                                    if (event.changes.any { it.changedToUp() }) break
                                 }
+                                paths.add(
+                                    painterState.copy(
+                                        points = pathPoints
+                                    )
+                                )
                                 onDrawPath?.invoke(paths.last())
                             }
                         }
@@ -377,15 +364,14 @@ fun Board(
     }
 }
 
-fun normalizePoint(point: Offset, constraints: Constraints): Offset {
-    return Offset(
-        x = point.x / constraints.maxWidth,
-        y = point.y / constraints.maxHeight
-    )
-}
-fun denormalizePoint(point: Offset, constraints: Constraints): Offset {
-    return Offset(
-        x = point.x * constraints.maxWidth,
-        y = point.y * constraints.maxHeight
-    )
-}
+private fun Offset.matchConstraints(constraints: Constraints) =
+    (this.x in 0f..constraints.maxWidth.toFloat()
+            && this.y in 0f..constraints.maxHeight.toFloat())
+
+private fun Offset.normalize(
+    offset: Offset,
+    scale: Float
+) = Offset(
+    x = (this.x - offset.x) / scale,
+    y = (this.y - offset.y) / scale
+)

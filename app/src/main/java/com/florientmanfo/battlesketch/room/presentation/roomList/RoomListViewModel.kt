@@ -45,7 +45,7 @@ class RoomListViewModel(
 
             getAllRoomUseCase().let { rooms ->
                 _roomListState.update {
-                    it.copy(allRoom = rooms)
+                    it.copy(allRoom = rooms, loading = false)
                 }
             }
 
@@ -73,13 +73,16 @@ class RoomListViewModel(
         when (event) {
             is RoomListUiEvent.OnSearchingKeywordChange -> {
                 _roomListState.update {
-                    it.copy(searchingKeyword = event.value)
+                    it.copy(searchingKeyword = event.value, loading = true)
                 }
                 if (event.value.isNotEmpty()) {
                     viewModelScope.launch {
                         getRoomByNameUseCase(event.value).let { rooms ->
                             _roomListState.update {
-                                it.copy(filteredRoom = rooms)
+                                it.copy(
+                                    filteredRoom = rooms,
+                                    loading = false
+                                )
                             }
                         }
                     }
@@ -114,6 +117,7 @@ class RoomListViewModel(
             }
 
             RoomListUiEvent.RefreshList -> {
+                _roomListState.value = _roomListState.value.copy(loading = true)
                 viewModelScope.launch {
                     getAllRoomUseCase().let { rooms ->
                         _roomListState.update {
@@ -121,6 +125,7 @@ class RoomListViewModel(
                                 allRoom = rooms,
                                 filteredRoom = mutableListOf(),
                                 searchingKeyword = "",
+                                loading = false
                             )
                         }
                     }

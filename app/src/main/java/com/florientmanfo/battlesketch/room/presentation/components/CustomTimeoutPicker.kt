@@ -28,12 +28,13 @@ import com.florientmanfo.battlesketch.ui.theme.BattleSketchTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTimeoutPicker(
+    value: Int?,
     availableValue: List<Int>,
     onValueChange: (Int?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedValue by remember { mutableStateOf<Int?>(availableValue.first()) }
+    var selectedValue by remember { mutableStateOf(value) }
     var isEnabled by remember { mutableStateOf(true) }
 
     LaunchedEffect(selectedValue) {
@@ -105,8 +106,10 @@ fun CustomTimeoutPicker(
 @Composable
 fun CustomTimeoutPickerPreview() {
     BattleSketchTheme {
+        val availableValue = listOf(15, 30, 45, 60)
         CustomTimeoutPicker(
-            availableValue = listOf(15, 30, 45, 60),
+            value = availableValue.first(),
+            availableValue = availableValue,
             onValueChange = {}
         )
     }

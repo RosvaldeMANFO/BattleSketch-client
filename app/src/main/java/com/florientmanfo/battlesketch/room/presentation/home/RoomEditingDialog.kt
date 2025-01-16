@@ -63,6 +63,7 @@ fun RoomEditingDialog(
                     placeholder = { Text(stringResource(R.string.room_password_placeholder)) }
                 )
                 CustomTimeoutPicker(
+                    value = state.room.timeout,
                     modifier = Modifier.fillMaxWidth(),
                     availableValue = state.timeoutValues,
                     onValueChange = {viewModel.onUiEvent(HomeUiEvent.OnSetTimeout(it))},

@@ -10,5 +10,6 @@ data class RoomListState(
     val roomPassword: String? = null,
     val playerName: String = "",
     val selectedRoom: Room? = null,
+    val loading: Boolean = true,
     @StringRes val errorMessage: Int? = null
 )

@@ -30,10 +30,9 @@ android {
     buildTypes {
         val localProperties = Properties()
         localProperties.load(FileInputStream(rootProject.file("local.properties")))
-
-        debug {
-            buildConfigField("String", "HTTP_BASE_URL", localProperties.getProperty("http", ""))
-            buildConfigField("String", "WS_BASE_URL", localProperties.getProperty("ws", ""))
+        buildTypes.forEach {
+            it.buildConfigField("String", "HTTP_BASE_URL", localProperties.getProperty("http", ""))
+            it.buildConfigField("String", "WS_BASE_URL", localProperties.getProperty("ws", ""))
         }
         release {
             isMinifyEnabled = false
