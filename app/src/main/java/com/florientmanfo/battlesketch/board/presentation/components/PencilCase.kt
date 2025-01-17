@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.LineWeight
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +45,7 @@ import com.florientmanfo.battlesketch.ui.theme.smallDimens
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PencilCase(
+    initialStrokeWidth: Float,
     modifier: Modifier = Modifier,
     canUndo: Boolean = false,
     canRedo: Boolean = false,
@@ -51,18 +53,18 @@ fun PencilCase(
     onUndo: () -> Unit,
     onRedo: () -> Unit,
     onReset: () -> Unit,
-    onChangeThickness: (Float) -> Unit,
+    onChangeStrokeWidth: (Float) -> Unit,
     onChangeDrawingMode: (DrawingMode) -> Unit
 ) {
     var showThicknessEditor by remember { mutableStateOf(false) }
-    var currentThickness by remember { mutableFloatStateOf(1f) }
+    var currentThickness by remember { mutableFloatStateOf(initialStrokeWidth) }
 
     if (showThicknessEditor) {
         ThicknessEditor(
             currentThickness = currentThickness,
             onDismissRequest = { showThicknessEditor = false }
         ) {
-            onChangeThickness(it)
+            onChangeStrokeWidth(it)
             currentThickness = it
         }
     }
@@ -106,24 +108,29 @@ fun PencilCase(
 
 @Composable
 fun ThicknessEditor(
+    currentThickness: Float,
     modifier: Modifier = Modifier,
-    currentThickness: Float = 1f,
     onDismissRequest: () -> Unit,
     onThicknessChange: (Float) -> Unit
 ) {
-
     var boxSize by remember { mutableStateOf(IntSize.Zero) }
     val interactionSource = remember { MutableInteractionSource() }
-    var strokeWidth by remember { mutableFloatStateOf(currentThickness * 0.1f) }
-    var cursorOffset by remember { mutableStateOf(Offset(currentThickness * 0.1f, 0f)) }
+    var strokeWidth by remember { mutableFloatStateOf(currentThickness / 0.2f) }
+    var cursorOffset by remember {
+        mutableStateOf(Offset(currentThickness / 0.2f, 0f))
+    }
     val slideColor = MaterialTheme.colorScheme.primary
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(currentThickness, boxSize) {
+        cursorOffset = Offset(currentThickness / 0.2f, 0f)
+    }
 
     CustomAlertDialog(
         modifier = modifier,
         title = stringResource(R.string.thickness_dialog_title),
         onConfirmRequest = {
-            onThicknessChange(strokeWidth * 0.1f)
+            onThicknessChange(strokeWidth * 0.2f)
         },
         onDismissRequest = { onDismissRequest() }
     ) {
@@ -162,14 +169,16 @@ fun ThicknessEditor(
     }
 }
 
+
 @Composable
 @Preview
 fun PencilCasePreview() {
     BattleSketchTheme {
         PencilCase(
+            initialStrokeWidth = 30f,
             onUndo = {},
             onRedo = {},
-            onChangeThickness = {},
+            onChangeStrokeWidth = {},
             onChangeDrawingMode = {},
             onReset = {}
         )

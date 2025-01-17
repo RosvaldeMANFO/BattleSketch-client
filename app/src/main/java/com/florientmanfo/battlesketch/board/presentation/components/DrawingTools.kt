@@ -22,6 +22,7 @@ import com.florientmanfo.battlesketch.ui.theme.smallDimens
 @Composable
 fun DrawingTools(
     modifier: Modifier = Modifier,
+    initialStrokeWidth: Float = 30f,
     pickerOffset: Offset = Offset.Zero,
     currentColor: Color = MaterialTheme.colorScheme.surface,
     canUndo: Boolean = false,
@@ -30,7 +31,7 @@ fun DrawingTools(
     onUndo: () -> Unit = {},
     onRedo: () -> Unit = {},
     onReset: () -> Unit = {},
-    onChangeThickness: (Float) -> Unit = { _ -> },
+    onChangeStrokeWidth: (Float) -> Unit = { _ -> },
     onColorChange: (Color, Offset?) -> Unit = { _, _ -> },
     onChangeDrawingMode: (DrawingMode) -> Unit = { _ -> }
 ) {
@@ -45,13 +46,14 @@ fun DrawingTools(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             PencilCase(
+                initialStrokeWidth = initialStrokeWidth,
                 canUndo = canUndo,
                 canRedo = canRedo,
                 canErase = canErase,
                 onUndo = onUndo,
                 onRedo = onRedo,
                 onReset = onReset,
-                onChangeThickness = onChangeThickness,
+                onChangeStrokeWidth = onChangeStrokeWidth,
                 onChangeDrawingMode = onChangeDrawingMode
             )
             Spacer(modifier = Modifier.width(LocalAppDimens.provides(smallDimens).value.margin))

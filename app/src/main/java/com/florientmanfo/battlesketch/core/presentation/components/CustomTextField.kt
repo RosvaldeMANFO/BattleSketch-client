@@ -22,6 +22,7 @@ import com.florientmanfo.battlesketch.ui.theme.LocalAppDimens
 @OptIn(ExperimentalMaterial3Api::class)
 fun CustomTextField(
     modifier: Modifier = Modifier,
+    singleLine: Boolean = true,
     onValueChange: (String) -> Unit,
     value: String,
     trailingIcon: (@Composable () -> Unit)? = null,
@@ -35,6 +36,7 @@ fun CustomTextField(
         cursorBrush = SolidColor(TextFieldDefaults.colors().cursorColor),
         onValueChange = onValueChange,
         textStyle = LocalTextStyle.current.copy(MaterialTheme.colorScheme.onSurface),
+        singleLine = singleLine,
         decorationBox = { innerTextField ->
             TextFieldDefaults.DecorationBox(
                 colors = TextFieldDefaults.colors(

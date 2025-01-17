@@ -9,7 +9,7 @@ data class PathSettings(
     var points: MutableList<Offset> = mutableStateListOf(),
     val color: Color,
     val colorPickerOffset: Offset? = null,
-    val strokeWidth: Float = 1f,
+    val strokeWidth: Float = 30f,
     val drawingMode: DrawingMode = DrawingMode.Draw,
     val isLandScape: Boolean = false
 )

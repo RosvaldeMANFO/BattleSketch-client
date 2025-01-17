@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BoardViewModel(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val joinRoomUseCase: JoinRoomUseCase,
     private val getSessionDataUseCase: GetSessionDataUseCase,
     private val sendMessageUseCase: SendMessageUseCase,

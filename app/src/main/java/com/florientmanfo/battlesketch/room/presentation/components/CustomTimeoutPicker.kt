@@ -35,7 +35,7 @@ fun CustomTimeoutPicker(
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedValue by remember { mutableStateOf(value) }
-    var isEnabled by remember { mutableStateOf(true) }
+    var isEnabled by remember { mutableStateOf(value != null) }
 
     LaunchedEffect(selectedValue) {
         onValueChange(selectedValue)
