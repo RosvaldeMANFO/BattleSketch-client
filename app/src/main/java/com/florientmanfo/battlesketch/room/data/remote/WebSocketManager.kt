@@ -28,11 +28,11 @@ object WebSocketManager {
     private var socket: DefaultClientWebSocketSession? = null
 
     private suspend fun connect() {
+
         if (socket == null) {
             socket = KtorClient.httpClient.webSocketSession {
                 url.takeFrom("${BuildConfig.WS_BASE_URL}watch_room")
             }
-
         }
     }
 

@@ -16,10 +16,8 @@ import com.florientmanfo.battlesketch.coordinator.Coordinator
 import com.florientmanfo.battlesketch.core.domain.models.Message
 import com.florientmanfo.battlesketch.core.domain.models.MessageType
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -35,9 +33,6 @@ class BoardViewModel(
 
     private val _boardState = MutableStateFlow(BoardState())
     val boardState = _boardState.asStateFlow()
-    private val _closeRoom = MutableStateFlow(false)
-    private val closeRoom: StateFlow<Boolean>
-        get() = _closeRoom
 
     private val args = savedStateHandle.toRoute<BattleSketchRoute.Board>()
 
@@ -50,12 +45,8 @@ class BoardViewModel(
         coordinator.setCallBack {
             if (_boardState.value.payerName == _boardState.value.sessionData?.roomCreator) {
                 onUiEvent(BoardUiEvent.OnTriggerRoomClosing)
-                val result = closeRoom.first()
-                if (result) quitSessionUseCase()
-                result
             } else {
                 quitSessionUseCase()
-                true
             }
         }
     }
@@ -152,8 +143,6 @@ class BoardViewModel(
             BoardUiEvent.OnPlayerLeftRoom -> {
                 viewModelScope.launch {
                     quitSessionUseCase()
-                    if (_boardState.value.showCloseRoomDialog)
-                        _closeRoom.value = true
                     coordinator.navigateBack()
                 }
             }

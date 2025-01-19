@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RoomListViewModel(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val coordinator: Coordinator,
     private val getAllRoomUseCase: GetAllRoomUseCase,
     private val getRoomByNameUseCase: GetRoomByNameUseCase,
@@ -65,7 +65,6 @@ class RoomListViewModel(
         }
         coordinator.setCallBack {
             stopWatchingRoomListUseCase()
-            true
         }
     }
 
@@ -143,26 +142,28 @@ class RoomListViewModel(
             }
 
             RoomListUiEvent.OnConfirmDialog -> {
-                if (
-                    _roomListState.value.playerName.isNotEmpty()
-                    && _roomListState.value.roomPassword ==
-                    _roomListState.value.selectedRoom?.password
-                ) {
-                    _roomListState.value.selectedRoom?.let {
-                        if (it.playerNames.contains(_roomListState.value.playerName)) {
-                            _roomListState.value = _roomListState.value
-                                .copy(errorMessage = R.string.invalid_player_name)
-                            throw Error()
-                        } else {
-                            viewModelScope.launch {
-                                coordinator.navigateTo(
-                                    BattleSketchRoute.Board(
-                                        playerName = _roomListState.value.playerName,
-                                        roomName = it.name,
-                                        password = _roomListState.value.roomPassword,
-                                    )
+                if (_roomListState.value.playerName.isEmpty())
+                    throw Error(R.string.empty_player_name.toString())
+
+                _roomListState.value.selectedRoom?.password?.let {
+                    if(it != _roomListState.value.roomPassword)
+                        throw Error(R.string.invalid_room_password.toString())
+                }
+
+                _roomListState.value.selectedRoom?.let {
+                    if (it.playerNames.contains(_roomListState.value.playerName)) {
+                        _roomListState.value = _roomListState.value
+                        throw Error(R.string.invalid_player_name.toString())
+                    } else {
+                        viewModelScope.launch {
+                            stopWatchingRoomListUseCase()
+                            coordinator.navigateTo(
+                                BattleSketchRoute.Board(
+                                    playerName = _roomListState.value.playerName,
+                                    roomName = it.name,
+                                    password = _roomListState.value.roomPassword,
                                 )
-                            }
+                            )
                         }
                     }
                 }

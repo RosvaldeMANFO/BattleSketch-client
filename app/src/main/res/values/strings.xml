@@ -20,6 +20,7 @@
     </plurals>
     <string name="invalid_room_password">Invalid Password</string>
     <string name="invalid_player_name">Player Name Already Used</string>
+    <string name="empty_player_name">Player Name can not be empty</string>
     <string name="warning_dialog_title">Warning</string>
     <string name="invalid_room_name">Room Name Already Used</string>
     <string name="player_score">Score: %d</string>

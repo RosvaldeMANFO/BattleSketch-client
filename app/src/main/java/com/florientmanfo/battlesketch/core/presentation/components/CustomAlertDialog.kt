@@ -1,5 +1,7 @@
 package com.florientmanfo.battlesketch.core.presentation.components
 
+import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -35,6 +41,8 @@ fun CustomAlertDialog(
     onConfirmRequest: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
+    @StringRes var  errorMessage by remember { mutableStateOf<Int?>(null) }
+
     BasicAlertDialog(
         modifier = modifier,
         onDismissRequest = { onDismissRequest?.invoke() }
@@ -75,7 +83,10 @@ fun CustomAlertDialog(
                             try {
                                 onConfirmRequest?.invoke()
                                 onDismissRequest?.invoke()
-                            } catch (_: Error) {
+                            } catch (e: Error) {
+                                e.message?.let {
+                                    errorMessage = it.toIntOrNull()
+                                }
                             }
                         },
                         colors = ButtonDefaults.textButtonColors(
@@ -84,6 +95,12 @@ fun CustomAlertDialog(
                     ) {
                         Text(confirmLabel)
                     }
+                }
+                errorMessage?.let {
+                    Text(
+                        text = stringResource(it),
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
             }
         }
