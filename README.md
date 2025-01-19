@@ -17,7 +17,9 @@ There are many features such as:
 # Remarks
 To test this project, you need to launch the server which is in this repository: `https://github.com/RosvaldeMANFO/BattleSketch-server.git`
 Then update the `local.properties` like this:
-![local.properties](./screenshot/properties.png) 
+
+![local.properties](./screenshot/properties.png)
+
 Here I am running the server on my local host. Make sure the IP address matches your server, in case you have deployed the server on a “VPS”.
 
 # Demo
