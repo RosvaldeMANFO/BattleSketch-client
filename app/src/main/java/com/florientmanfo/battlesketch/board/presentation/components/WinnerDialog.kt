@@ -39,7 +39,7 @@ fun WinnerDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    stringResource(R.string.winner_dialog_tittle),
+                    stringResource(R.string.winner_dialog_title),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -58,7 +58,7 @@ fun WinnerDialog(
                     )
                     Spacer(Modifier.width(LocalAppDimens.current.margin))
                     Text(
-                        stringResource(R.string.word_guested_message, wordToGuest),
+                        stringResource(R.string.word_guessed_message, wordToGuest),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyLarge
                     )

@@ -55,7 +55,7 @@ fun BoardScreen(
                 onDismissRequest = { viewModel.onUiEvent(BoardUiEvent.OnCancelRoomClosing) }
             ) {
                 Text(
-                    text = stringResource(R.string.close_roomDialog_dialog_message),
+                    text = stringResource(R.string.close_room_dialog_message),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium
                 )

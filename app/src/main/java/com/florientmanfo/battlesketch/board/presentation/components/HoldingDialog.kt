@@ -92,7 +92,7 @@ fun HoldingDialog(
                         onValueChange = { worldToGuest = it },
                         isError = worldToGuest.length < 3,
                         singleLine = true,
-                        placeholder = { Text(stringResource(R.string.word_to_guest_placeholder)) }
+                        placeholder = { Text(stringResource(R.string.word_to_guess_placeholder)) }
                     )
                 }
                 LazyColumn(
